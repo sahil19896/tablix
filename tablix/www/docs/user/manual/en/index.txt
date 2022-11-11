@@ -1,0 +1,8 @@
+tablix
+CRM
+selling
+buying
+projects
+support
+human-resources
+stock

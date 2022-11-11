@@ -1,0 +1,14 @@
+# -*- coding: utf-8 -*-
+# Copyright (c) 2018, Tablix and contributors
+# For license information, please see license.txt
+
+from __future__ import unicode_literals
+import frappe
+from frappe.model.document import Document
+
+class SiteLocation(Document):
+	
+	def validate(self):
+		pass
+
+

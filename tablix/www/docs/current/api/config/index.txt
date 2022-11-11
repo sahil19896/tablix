@@ -1,0 +1,15 @@
+tablix.config.metabase
+tablix.config.tablix_accounts
+tablix.config.docs
+tablix.config.tmobileapp
+tablix.config.boq
+tablix.config.tdashboard
+tablix.config.tablix
+tablix.config.tablix_support
+tablix.config
+tablix.config.time_and_attendance
+tablix.config.tgeo
+tablix.config.desktop
+tablix.config.tablix_crm
+tablix.config.tablix_hr
+tablix.config.cpm

@@ -1,0 +1,1 @@
+tablix.www.current.api.healthcare.print_format.consultation_print

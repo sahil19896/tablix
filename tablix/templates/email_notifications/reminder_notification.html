@@ -1,0 +1,16 @@
+<div class="tablix-reminder">
+	
+	<div class="greetings"><h2>Hi {{  full_name }},</h2></div>
+	<div class="reminder-text"><h3>Test </h3></div>
+	<div class="previous-message">
+		{{ args.get("description") }}
+	</div>
+	<div class="link">
+		Click on link {{ get_link_to_form(doctype, doc.get("name")) }} to open in {{ doctype }} tab. <br>
+		Click on link {{ get_link_to_form('ToDo', args.get("name")) }} to open task ToDo tab.
+	</div>
+	<div class="regards">
+		<h3>Regards</h3>
+		<h4> Tablix Notification</h4>
+	</div>
+</div>

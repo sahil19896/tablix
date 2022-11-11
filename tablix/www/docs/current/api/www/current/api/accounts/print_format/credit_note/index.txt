@@ -1,0 +1,1 @@
+tablix.www.current.api.accounts.print_format.credit_note

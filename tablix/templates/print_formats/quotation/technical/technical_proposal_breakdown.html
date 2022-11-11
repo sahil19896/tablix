@@ -1,0 +1,109 @@
+<!-- Cost Breakdown !-->
+<div class="row">
+	<div class="col-xs-12">
+		<p id="toc" style="font-size:18px;text-align:left;"><b>6. Bill of Quantities</b></p><hr>
+		<p id="toc" style="font-size:15px;text-align:left;"><b>6.1 BOQ Breakdown</b></p><br>
+		<p style="font-size:13px;text-align:justify;">The BoQ is detailed in the table below:</p>
+		<p style="font-size:13px;text-align:left;text-indent:1em;">
+			<b>{{boq_profile.get("solution_type")}} for {{doc.customer_name}}</b>
+		</p><br>
+		<div class="col-xs-12">
+			{% if boq_profile.get("is_project") %}
+			<!-- Start of Site Costing !-->
+				{% set idx = 1 %}
+				{% for site_item in doc.get("site_costing_items") %}
+				<p style="font-size:13px;text-align:left;text-indent:1em;"><b>{{ idx }})<u>Project Site: {{site_item.get("site")}}</u></b></p>
+				<table class="table table-bordered">
+					<tbody>
+						<thead>
+							<tr>
+								<th class="text-center"><b>Sr No.</b></th>
+								<th class="text-center"><b>Item Description</b></th>
+								<th class="text-right"><b>Qty</b></th>
+							</tr>
+						</thead>
+						{% set n = 0 %}
+						{%- for item in doc.get("items") -%}
+							{% if item.get("site") == site_item.get("site") and not item.get("is_amc_item") %}
+								{% set n = n+1 %}
+								<tr>
+									<td style="width: 3%; text-align: center;">{{site_item.get("idx")}}.{{n }}</td>
+									<td style="width: 60%; text-align: left;">
+										<span style="float:left;">Model&nbsp;No:</span>
+										<span style="display:inline-block; margin-left:1%;">
+											<b>{{item.get("item_code")}}</b>
+										</span>
+										{% if item.get("oem_no") %}
+											<span style="display:inline-block;margin-left:3%;">Part&nbsp;No:</span>
+											<span style="display:inline-block;margin-left:1%;">
+												<b>{{item.get("oem_no")}}</b>
+											</span>
+										{% endif %}
+										{% if item.get("brand") %}
+											<span style="display:inline-block;margin-left:3%;">Brand:</span>
+											<span style="display:inline-block;margin-left:1%;">
+												<b>{{item.get("brand")}}</b>
+											</span>
+										{% endif %}<br>
+										{{ item.get("description")}}
+									</td>
+									<td style="width: 12%; text-align: right;">
+										<span style="float:left;font-size:10px;">{{item.get("stock_uom")}}</span>
+										<span style="font-size:12px;">{{ item.get("qty")|replace(".0", "") }}</span>
+									</td>
+								</tr>
+							{% set j = j+1 %}
+							{%endif %}
+						{% endfor %}
+					</tbody>
+				</table>
+				{% endfor %}
+			{% endif %}
+			<!-- End of Costing for Project !-->
+			<!-- Start of costing for AMC !-->
+			{%- if boq_profile.get("is_amc") == 1 -%}
+				<p style="font-size:13px;text-align:left;"><b><u>AMC Service Items:</u></b></p>
+				<table class="table table-bordered" style="border-collapse:collapse;">
+					<tbody>
+						<thead>
+							<tr>
+								<th class="text-center">Sr No.</th>
+								<th class="text-center">Item Description</th>
+								<th class="text-right">Qty</th>
+							</tr>
+						</thead>
+						{% set idx = 1 %}
+						{%- for amc_item  in doc.get("items")-%}
+						{% if amc_item.is_amc_item %}
+							<tr>
+								<td style="width: 5%; text-align: center;">{{ idx }}</td>
+								<td style="width: 60%; text-align: left;">
+									<span style="float:left;">Item&nbsp;Name:</span>
+									<span style="display:inline-block; margin-left:1%;"><b>{{amc_item.get("item_name")}}</b></span>
+									{% if amc_item.get("oem_no") %}
+										<span style="display:inline-block;margin-left:3%;">Part&nbsp;No:</span>
+										<span style="display:inline-block;margin-left:1%;"><b>{{amc_item.get("oem_no")}}</b></span>
+  									{% endif %}
+  									{% if amc_item.get("brand") %}
+      										<span style="display:inline-block;margin-left:3%;">Brand:</span>
+      										<span style="display:inline-block;margin-left:1%;"><b>{{amc_item.get("brand")}}</b></span>
+									{% endif %}<br>
+									<span style="display:inline-block;width:375px;">{{amc_item.get("description")}}</span>
+								</td>
+								<td style="width: 12%; text-align: right;">
+									<span style="float:left;font-size:10px;">{{amc_item.get("stock_uom")}}</span>
+									<span style="float:right;font-size:12px;">{{ amc_item.get("qty")|replace(".0", "") }}</span>
+								</td>
+							</tr>
+							{% set idx = idx+1 %}
+							{% endif %}
+						{%- endfor -%}
+					</tbody>
+				</table><br><br>
+			{%- endif -%}
+			<!-- AMC Costing Ends here !-->
+			<!-- Total Charges  !-->
+			</table>
+		</div>
+	</div>
+</div>

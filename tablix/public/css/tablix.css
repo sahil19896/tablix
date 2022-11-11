@@ -1,0 +1,199 @@
+/*
+Developer Varna Manoj
+*/
+
+#navbar-search {
+    width: 100% !important;
+    background-color: #36414c !important;
+}
+
+.form-group-sm .form-control {
+    height: 30px !important;
+    padding: 5px 10px !important;
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+    border-radius: 0px !important;
+    color: white !important;
+}
+
+.app-icon{
+  border-radius: 4px !important;
+  border: 1px solid transparent !important;
+  box-shadow: 1px 7px 14px #333 !important;
+}
+.navbar-default{
+	background-color:#0184A4 !important;
+	color: #0184A4 !important;
+	border-color: #0184A4 !important;
+}
+.btn-primary{
+	background-color:#0184A4 !important;
+	border-color: white !important;
+}
+
+.navbar-default .navbar-nav > li > a, .navbar-default .navbar-brand {
+    color: black !important;
+}
+
+.form-dashboard-wrapper{
+}
+
+.message-bubble, .my-message{
+
+	background-color: #0184A4 !important;
+}
+
+.message-bubble.my-message::before{
+	background-color: #0184A4 !important;
+	opacity: 0.7;
+}
+
+
+@media (min-width: 1200px){
+	.container {
+		width: 90% !important;
+	}
+}
+
+
+#page-desktop{
+	background-color:#0184A4 !important ;
+}
+
+
+
+
+.btn-primary:hover{
+	opacity: 0.5 !important;
+}
+
+#description {
+  font-family: Roboto;
+  font-size: 15px;
+  font-weight: 300;
+}
+
+#infowindow-content .title {
+  font-weight: bold;
+}
+
+#infowindow-content {
+ display: none;
+}
+
+#map #infowindow-content {
+  display: inline;
+}
+
+.pac-card {
+  margin: 10px 10px 0 0;
+  border-radius: 2px 0 0 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  outline: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  background-color: #fff;
+  font-family: Roboto;
+}
+
+#pac-container {
+  padding-bottom: 12px;
+  margin-right: 12px;
+}
+
+.pac-controls {
+  display: inline-block;
+  padding: 5px 11px;
+}
+
+.pac-controls label {
+  font-family: Roboto;
+  font-size: 13px;
+  font-weight: 300;
+}
+
+#google-map-search {
+  background-color: #fff;
+  font-family: Roboto;
+  font-size: 15px;
+  font-weight: 300;
+  margin-left: 12px;
+  padding: 0 11px 0 13px;
+  text-overflow: ellipsis;
+  width: 400px;
+}
+
+#google-map-search:focus {
+  border-color: #4d90fe;
+}
+
+#title {
+  color: #fff;
+  background-color: #4d90fe;
+  font-size: 25px;
+  font-weight: 500;
+  padding: 6px 12px;
+}
+#target {
+ width: 345px;
+}
+
+/*
+	Dashboard Pages Related Changes
+*/
+.tablix-page{
+  width: 90% !important;
+  margin-left: 5%;
+  margin-right: 5%;
+
+}
+.tablix-info-div{
+  border: 2px solid #0184A7 !important;
+  font-size:150% !important;
+  border-radius: 20px;
+  font-family:"Times New Roman", Georgia, Serif;
+}
+
+.user-image{
+  max-height: 200px !important;
+  float: right !important;
+}
+
+.tablix-control:hover{
+  border:1px solid #0184A4 !important;
+	
+}
+.tablix-color{
+  color:#0184A4 !important;	
+}
+.tablix-border-color{
+  border: 2px solid #0184A4 !important;
+  border-radius: 20px;
+}
+
+.tablix-btn{
+  color: white;
+  background-color:#0184A4;
+}
+
+.tablix-btn:hover{
+  color:white;
+  opacity: 0.5;
+
+}
+.tablix-link-field{
+  position: static !important;
+}
+
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus {
+    color: #555;
+    background-color: #0184a4 !important;
+}
+
+.app-icon:hover i, .app-icon:hover {
+    color: #333 !important;
+}
+
+.ql-container {
+	font-size: 14px !important;
+}

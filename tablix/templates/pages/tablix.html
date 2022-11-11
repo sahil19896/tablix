@@ -1,0 +1,30 @@
+{% extends "templates/web.html" %}
+
+
+{% block content %}
+
+
+	{% block page_content %}
+
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="col-sm-2"></div>
+				<div class="col-sm-8">
+					<img src="assets/tablix/images/print-on-gray-bg.png" class="text-center" style=' width:250px;height:250px;margin-left:auto; margin-right:auto;display:block;'>
+					<h1 class="text-center" style="color: rgb(1, 132, 167); font-size:40px;"> <strong>{{ homepage.company  or '' }} </strong> </h1>
+					<h3 class="text-center text-justify">{{ homepage.description or '' }}</h3>
+				</div>
+				<div class="col-sm-2"></div>
+			</div>
+		</div>
+	{% endblock %}
+
+	{% block google_map %}
+		{{ super() }}
+	{% endblock %}
+
+
+{%  endblock %}
+
+{% block style %}
+{% endblock %}

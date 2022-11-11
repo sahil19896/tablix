@@ -1,0 +1,1 @@
+tablix.www.current.api.hr.email_alert.training_scheduled

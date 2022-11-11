@@ -1,0 +1,20 @@
+<div id="footer-html" class="visible-pdf">
+	{% if not no_letterhead and footer %}
+	<div class="letter-head-footer">
+		<p style="text-align:center;"><b>Tablix Technologies Private Limited</b></p>
+		<p style="text-align:center;">E-107, 8th A Cross, Manyata Residency, Manyata Tech Park, Rachenahalli, Thanisandra, Bengaluru, Karnataka - 560045</p>
+		<p style="text-align:center;">www.tablix.in</p>
+	</div>
+	{% endif %}
+	<p style="text-align:center;">
+		<span style="line-height: 9px;">
+			{% if flags.disclaimer %}
+				<b>{{ flags.disclaimer }}</b>
+			{% endif %}
+        	</span>
+	</p>
+	<p class="text-right small page-number visible-pdf">
+		{{ _("Page {0} of {1}").format('<span class="page"></span>', '<span class="topage"></span>') }}
+	</p>
+</div>
+

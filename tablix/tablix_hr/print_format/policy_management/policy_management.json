@@ -1,0 +1,23 @@
+{
+ "align_labels_right": 0, 
+ "creation": "2019-04-03 13:41:07.100988", 
+ "css": ".print-format {\n    font-size: 8.4pt;\n    font-family: \"Helvetica Bold\";\n}\n\n.body {\n    font-size: 8.4pt;\n    line-height: 1;\n    \n}\n\ntable, th{\n    border: 1px solid black;\n    border-collapse: collapse;\n    height:35%;\n}\n\ntd {\n  border: 1px solid black;\n  border-collapse: collapse;\n}\n\nthead {display: table-header-group;}\n", 
+ "custom_format": 1, 
+ "disabled": 0, 
+ "doc_type": "Policy Document Management", 
+ "docstatus": 0, 
+ "doctype": "Print Format", 
+ "font": "Default", 
+ "html": "{% include \"templates/print_formats/policy_management/policy_management.html\" %}", 
+ "idx": 0, 
+ "line_breaks": 0, 
+ "modified": "2019-04-30 14:23:23.333562", 
+ "modified_by": "Administrator", 
+ "module": "Tablix HR", 
+ "name": "Policy Management", 
+ "owner": "Administrator", 
+ "print_format_builder": 0, 
+ "print_format_type": "Server", 
+ "show_section_headings": 0, 
+ "standard": "Yes"
+}

@@ -1,0 +1,1 @@
+tablix.www.current.api.erpnext_integrations.connectors

@@ -1,0 +1,82 @@
+'''
+	Developer Sahil
+	Email sahil.saini@tablix.ae
+'''
+
+import frappe	
+from frappe import msgprint, throw, _
+from frappe.utils import cint, cstr, flt,money_in_words
+from tablix import exceptions
+from tablix.controllers import stock_controller
+
+
+class BuyingController(stock_controller.StockController):
+
+	def validate_buying(self):
+		super(BuyingController, self).validate()
+		self.validate_over_billing_and_qty()
+		
+	def validate_buying_submit(self):
+		super(BuyingController, self).validate_submit()
+
+	def validate_buying_cancel(self):
+		super(BuyingController, self).validate_cancel()
+
+
+	
+	def validate_over_billing_and_qty(self):
+
+		if not self.dt == "Purchase Order":
+			return
+		if self.setting.get("allow_over_costing") and self.setting.get("allow_over_costing"):
+			return False
+		
+		items = self.doc.get("items")
+		for tran_item in items:
+			item_detail = frappe.get_doc("Item", tran_item.get("item_code"))
+			quotation_item = frappe.get_doc("Sales Order Item", tran_item.get("sales_order_item"))
+			if item_detail.get("is_stock_item"):
+				if self.setting.get("allow_over_qty"):
+					continue
+				self.validate_over_qty(tran_item, quotation_item)
+			else:
+				if self.setting.get("allow_over_costing"):
+					continue
+				self.validate_over_billing(tran_item, quotation_item)
+
+
+						
+	def validate_over_billing(self, transaction_item, quotation_item):
+		po_cost = self.get_purchased_order_cost(transaction_item)	
+		if po_cost and po_cost.get("total_cost") > quotation.get("base_cost_amount"):
+			frappe.throw(_("Over Billing isn't allowed, Ref: \
+				Item Code={0}".format(quotation_item.get("item_code"))))
+
+		
+	def validate_over_qty(self, transaction_item, quotation_item):
+		po_cost = self.get_purchased_order_cost(transaction_item)
+		if po_cost and po_cost.get("total_qty") > quotation_item.get("qty"):
+			frappe.throw(_("Over Qty isn't allowed, Ref: \
+				Item Code={0}".format(quotation_item.get("item_code"))))
+		
+	def get_purchased_order_cost(self, transaction_item):
+	
+		filters = {"item_code": transaction_item.get("quotation_item_detail"),
+			"quotation_item": transaction_item.get("quotation_item_detail")}
+
+		po_cost = {"total_cost": flt(transaction_item.get("base_amount")),  
+			"total_qty": flt(transaction_item.get("qty"))}
+
+		po_items = frappe.db.sql(""" SELECT item_code, item_code, qty, base_amount FROM `tabPurchase Order Item`
+				WHERE docstatus=1 AND item_code=%(item_code)s AND quotation_item_detail=%(quotation_item)s
+				""", filters, as_dict=True)
+		for po_item in po_items:
+			po_cost["total_cost"] += flt(po_item.get("base_amount"))
+			po_qty["total_qty"] += flt(po_item.get("qty"))
+			
+		
+		return po_cost	
+
+
+
+		

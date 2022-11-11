@@ -1,0 +1,310 @@
+/*	
+	Created By Sahil
+	Email sahil.saini@tablix.ae
+*/
+
+
+/*
+/* Copying Standard Input */
+
+/* ********** START OF STANDARD CSS *********** */
+.watermark{
+	background-image: url('/assets/tablix/images/proposals/Verified.png');
+	background-size: 125px 50px;
+	background-repeat: no-repeat !important;
+	background-position:10% 88% !important;	
+}
+
+.row{ 
+word-wrap: break-word; 
+}
+
+.print-format {
+    font-size: 9pt;
+    font-family: "Helvetica Light", calibri,  sans-serif;
+}
+
+.container {
+    background-image:url('/files/Tablix_circular_logo390aa1.png');
+    background-repeat:no-repeat important!;
+    background-position:left bottom important!;
+}
+
+.body {
+    font-size: 8.4pt;
+    line-height: 1;
+    
+}
+
+table, th {
+    border: 1px solid black;
+    border-collapse: collapse;
+    height:35%;
+}
+
+td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+thead {display: table-header-group;}
+
+.pagebreak
+{
+    page-break-after: always;
+}
+
+.indented 
+{   
+   padding-left: 7pt;   
+   padding-right: 7pt; 
+}
+
+.single-page th, td, span, p{
+	font-size:12px !important;
+	
+}
+.single-page-info p{
+	font-size: 12px;
+	text-align: left;
+
+}
+/* ********** END OF STANDARD CSS *********** */
+
+/* START OF CUSTOMIZED CSS */
+
+.table-column-border-left-50{
+  text-align:left;
+  border-top-style:none;
+  border-right-style:none;
+  border-bottom-style:none;
+  border-left-style:none;
+  font-size:13px;
+  width:50%;
+}
+.table-column-border-right-50{
+  text-align:left;
+  border-top-style:none;
+  border-right:1px solid #DCDCDC;
+  border-bottom-style:none;
+  border-left-style:none;
+  font-size:13px;
+  width:50% 
+}
+
+li{
+	text-align: justify;
+	
+}
+ul{
+	text-align: justify;
+	font-size: 14px;	
+}
+p{
+	text-align: justify;
+	font-size: 14px;
+}
+
+/* END OF CUSTOMIZED CSS */
+
+/* FOR MAIN TITLE FOR EG. 1. */
+.sectionone-title{
+	padding: 15px;
+	font-size: 18px;
+	font-weight: bold;
+	text-align: left;
+}
+
+/* FOR MAIN TITLE FOR EG. 1.1 */
+.sectiontwo-title{
+	font-size: 15px;
+	font-weight: bold;
+	text-align: left;
+}
+
+/* FOR MAIN TITLE FOR EG. 1.1.1 */
+.sectionthree-title{
+	font-size: 15px;
+	font-weight: bold;
+	text-align: left;
+}
+
+.sectionfour-title{
+	font-size: 14px;
+	font-weight: bold;
+	text-align: left;
+}
+/*
+.sectionone-title:before,
+.sectionone-title:after {
+  content: "";
+  position: absolute;
+  height: 5px;
+  border-bottom: 1px solid grey;
+  border-top: 1px solid grey;
+  top: 0;
+  width: 100%;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+*/
+.
+table, th {
+    border: 1px solid black;
+    border-collapse: collapse;
+    height:35%;
+}
+
+td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+thead {
+	display: table-header-group;
+}
+/* GRAND TOTAL FOR TABLE DESCRIPTION*/
+.grand-total{
+	text-align:right;
+	border-top-style:none;
+	border-right-style:none;
+	border-bottom-style:none;
+	border-left-style:none;
+	font-size:12px;
+}
+
+.summary-of-price{
+	text-align:center;
+	border-top-style:none;
+	border-right-style:none;
+	border-bottom-style:none;
+	border-left-style:none;
+	font-size:12px;
+}
+
+.pagebreak{
+    page-break-after: always;
+}
+
+.indented {   
+   padding-left: 7pt;   
+   padding-right: 7pt; 
+}
+
+/*
+	Table content CSS
+	Author Sahil
+*/
+
+.table-of-contents{
+	counter-reset: sectionone;
+}
+.sectionone{
+	counter-reset: sectiontwo;
+}
+.sectiontwo{
+	counter-reset: sectionthree;
+}
+.sectionthree{
+	counter-reset: sectionfour;
+}
+.sectionfour{
+	counter-reset: sectionfive;
+}
+.sectionfive{
+	counter-reset: sectionsix;
+}
+
+
+.sectionone:before{
+	counter-increment: sectionone;
+	content: counter(sectionone) ". ";
+}
+.sectiontwo:before{
+	counter-increment: sectiontwo;
+	content: counter(sectionone) "." counter(sectiontwo) ". ";
+}
+.sectionthree:before{
+	counter-increment: sectionthree;
+	content: counter(sectionone) "." counter(sectiontwo) "." counter(sectionthree) ". ";
+}
+
+.sectionfour:before{
+	counter-increment: sectionfour;
+	content: counter(sectionone) "." counter(sectiontwo) "." counter(sectionthree) "." counter(sectionfour) ". ";
+}
+.sectionfive:before{
+	counter-increment: sectionfive;
+	content: counter(sectionone) "." counter(sectiontwo) "." counter(sectionthree) "." counter(sectionfour) "." counter(sectionfive) " ";
+}
+.sectionsix:before{
+	counter-increment: sectionsix;
+	content: counter(sectionone) "." counter(sectiontwo) "." counter(sectionthree) "." counter(sectionfour) "." counter(sectionfive) "." counter(sectionsix) " ";
+}
+
+/* Main contents */
+.reset-section{
+	counter-reset: sectionone;
+}
+
+/* Proposal Margin Settings */
+.sectionone-contents{
+	margin-left: 1em;
+}
+.sectiontwo-contents{
+	margin-left: 1em;
+}
+.sectionthree-contents{
+	margin-left: 2em;
+}
+.sectionfour-contents{
+	margin-left: 3em;
+}
+.sectionfive-contents{
+	margin-left: 4em;
+}
+.sectionsix-contents{
+	margin-left: 5em;
+}
+
+/* TABLE OF CONTENTS */
+.sectionone-table{
+	font-size: 15px !important;
+	font-weight: bold !important;
+}
+.sectiontwo-table{
+	font-size: 14px !important;
+	font-weight: normal !important;
+	margin-left: 1em !important;
+}
+.sectionthree-table{
+	font-size: 14px !important;
+	font-weight: normal !important;
+	margin-left: 2em !important;
+}
+.sectionfour-table{
+	font-size: 14px !important;
+	font-weight: normal !important;
+	margin-left: 3em !important;
+}
+
+/* TERMS AND CONDITIONS */
+.terms-and-conditions  p,
+.terms-and-conditions ul,
+.terms-and-conditions li{
+	font-size: 8px;
+	margin: 0;
+	padding: 0;
+}
+
+.letter-head {
+	width: 60px;
+	height: 10px;
+}
+
+.ql-editor.read-mode {
+	min-height: 50px;
+}
+
+.ql-editor.read-mode {
+	display: contents;
+}

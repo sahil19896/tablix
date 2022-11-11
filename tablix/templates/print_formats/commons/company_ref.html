@@ -1,0 +1,12 @@
+<div class="col-xs-12">
+	<h3 class="sectiontwo sectiontwo-title">Our Clients</h3>
+	{% for system in boq_profile.get("system_items") %}
+		{% set temp = frappe.get_doc("Solution System Type", system.get("system_type")).get("achievement_items") %}
+		{% for image in temp %}
+			<div class="col-xs-4">
+				<img class="responsive" src="{{ image.get("image") }}" alt="{{image.get("description_of_achievement")}}" style="width:150px;height:150px;radius:10px;">
+			</div>
+		{% endfor %}
+		
+	{% endfor %}
+</div>

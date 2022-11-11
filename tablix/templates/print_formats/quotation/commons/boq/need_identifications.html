@@ -1,0 +1,200 @@
+<div class="row">
+	<div class="col-xs-12">
+		<h3 class="sectionone sectionone-title">Identification of Needs</h3><hr>
+		<div class="col-xs-12">
+			<h3 class="sectiontwo sectiontwo-title">
+				{{boq_profile.get("system_type")}} for {{doc.customer_name}} Requirements
+			</h3>
+			<p>Tablix understands the requirements to be as such:</p>
+			<h3 class="sectionthree sectionthree-title">General Requirements:</h3>
+			<ul>
+				<li>{{boq_profile.get("system_type")}} for {{doc.customer_name}}.</li>
+				<li> Kick of meeting. </li>
+				<li>Approval for the solution to be secured before procurement and installation.</li>
+				<li>Work as per the agreed project schedule.</li>
+				<li>Testing/Commissioning of {{boq_profile.get("solution")}}.</li>
+				<li>Documentation as per the requirements.</li>
+			</ul>
+			<h3 class="sectionthree sectionthree-title" ><b>Technical Requirements:</b></h3>
+			<ul>
+				<li>Mock up and approval.</li>
+				<li>Operational requirements.</li>
+				<li>Site wise operational system training.</li>
+				<li>Post implementation support.</li>
+			</ul>
+			<h3 class="sectionthree sectionthree-title"><b>Management/ Reporting Methods:</b></h3>
+			<ul>
+				<li>As provided by the {{doc.customer_name}}.</li>
+				<li>User levels at Admin / Maintenance/ Manager / Operator level.</li>
+			</ul>
+			<h3 class="sectionthree sectionthree-title"><b>Evaluation Methods:</b></h3>
+			<ul>
+				<li>As per the {{doc.customer_name}} evaluation Process.</li>
+			</ul>
+			<h3 class="sectionthree sectionthree-title"><b>Needs Identification</b></h3>
+			<p>
+				After analyzing different scenarios and taking into account the strengths and 
+				expertise of both companies, we see the following potential solution:
+			</p>
+			<ul>
+				<li><b>{{boq_profile.get("system_type")}}.</b></li>
+				<li>	
+					Industry trends, notably {{boq_profile.get("solution")}}, have shaped our 
+					proposed solution as described in section 5.1.1. Tablix Technology LLC will be 
+					instrumental in helping {{doc.customer_name}} reach its requirements; 
+					address operational requirements.
+				</li>
+			</ul>
+			<h3 class="sectionthree sectionthree-title"><b>Project Scope</b></h3>
+			<ul>	
+				<li>This project will involve over several {{doc.customer_name}} employees and require the coordination of Engineering & Security departments in specified properties and project locations.
+				</li>
+				<li>The successful implementation of {{boq_profile.get("solution")}}, will dramatically affect {{doc.customer_name}} and Tablix Technology LLC.
+				</li>
+				<li>Please view APPENDIX-A (project schedule) for a diagram illustrating the overall workflow and scope of the project.
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<p style="page-break-after: always;"></p>
+<!-- PROPOSED SOLTION STARTED HERE !-->
+<div class="row">
+	<div class="col-xs-12">
+		<h3 class="sectionone sectionone-title"><b>Proposed Solution</b></h3><hr>
+		<div class="col-xs-12">
+			<h3 class="sectiontwo sectiontwo-title"><b>Objectives</b></h3>
+			<p>We have analyzed the present situation and believe the following objectives must be achieved:</p>
+			<ul>
+				<li>Implementation of {{boq_profile.get("system_type")}}.</li>
+				<li>Meet Operational requirement for {{doc.customer_name}}.</li>
+			</ul>
+			<h3 class="sectionthree sectionthree-title" ><b>Solution</b></h3>
+			<ul>
+				<li>The proposed {{boq_profile.get("system_type")}} solution is successfully deployed in UAE.</li>
+				<li>The proposed system will help achieve {{doc.customer_name}} with its operational requirements. The installed solution will manage effectively in a secured way to facilitate {{doc.customer_name}} operations related to {{boq_profile.get("system_type")}}
+				</li>
+			</ul>
+			<h3 class="sectionthree sectionthree-title"><b>Deliverables</b></h3>
+			<p style="font-size:14px !important;">In the course of this project, we will deliver the following:</p>
+			<ul>
+				{%- for row in boq_profile.deliverable_items -%}
+					{%- if row.check == 1 -%}
+						<li>{{row.topic}}</li>
+					{%- endif -%}
+				{%- endfor -%}
+			</ul>
+		{% if boq_profile.req_vs_solution_items %}
+				<h3 class="sectionthree sectionthree-title"><b>Requirements vs. Solution</b></h3>
+				<p>The following table shows how each requirement will be addressed:<p>
+				<p><b>
+					Table 1.&nbsp;{{boq_profile.get("system_type")}} for 
+					{{doc.customer_name}} Requirements & Solutions
+				</b></p>
+				<table class="table table-bordered" style="border-collapse:collapse;">
+					<tbody>
+						<thead>
+							<tr>
+								<th class="text-center"><b>Sr No.</b></th>
+								<th class="text-center"><b>Requirements</b></th>
+								<th class="text-center"><b>Solutions</b></th>
+								<th class="text-center"><b>Deliverables</b></th>
+							</tr>
+						</thead>
+						{%- for row in boq_profile.req_vs_solution_items -%}
+							<tr>
+								<td style="width: 5%; text-align: center;">{{row.idx}}</td>
+								<td style="width: 25%; text-align: center;">
+									{{row.requirements}}
+								</td>
+								<td style="width: 50%; text-align: center;">
+									{{row.solutions}}
+								</td>
+								<td style="width: 20%; text-align: center;">
+									{%- if row.deliverables -%} {{row.deliverables}} {%- endif -%}
+								</td>
+							</tr>
+						{%- endfor -%}
+					</tbody>
+				</table>
+			{% endif %}
+			<h3 class="sectionthree sectionthree-title">System Overview</h3>
+			<p>{{ boq_profile.get("system_type") }}:</p>
+			<ul>
+				{% for system in boq_profile.get("system_items") %}
+					{% set temp  = frappe.get_doc("Solution System Type", system.get("system_type")) %}
+					{%- if temp.get("system_overview") -%}	<li> {{ temp.get("system_overview") }}</li> {%- endif -%}
+				{% endfor %}
+			</ul>
+			<h3 class="sectionfour sectionfour-title">Product Overview</h3>
+			{% if boq_profile.get("product_overview_items") %}
+				<table class="table table-bordered" style="border-collapse:collapse;">
+					<tbody>
+						<thead>
+							<tr>
+								<th class="text-center"><b>Sr No.</b></th>
+								<th class="text-center"><b>Product</b></th>
+								<th class="text-center"><b>Description</b></th>
+							</tr>
+						</thead>
+						{%- for row in boq_profile.get("product_overview_items") -%}
+							<tr>
+								<td style="width: 5%; text-align: center;">{{row.idx}}</td>
+								<td style="width: 45%; text-align: center;">
+									{{row.product}}
+								</td>
+								<td style="width: 50%; text-align: center;">
+									{{row.description}}
+								</td>
+							</tr>
+						{%- endfor -%}
+					</tbody>
+				</table>
+			{% endif %}
+			<h3 class="sectionfour sectionfour-title">Site Overview</h3>
+			<p>Property Snapshot of {{boq_profile.get("project_site_name")}}</p>
+			{%- if boq_profile.get("site_image") -%}
+				<br>
+				<img src="{{ boq_profile.get("site_image")}}" style="width: 100%" height="341" width="635">
+				<br>
+				<br>
+			{% else %}
+				<br>
+				<p class="text-center">
+					<img src="/assets/tablix/images/proposals/invalid.png" style="width:100%;height:341px;" >
+				</p>
+				<br><br>	
+			{%- endif -%}
+			<h3 class="sectionthree sectionthree-title">
+				{{doc.customer_name}} - {{boq_profile.get("system_type")}} Proposed Project Team</b>
+			</h3>
+			<p><b>For detailed Project Organization Chart refer to APPENDIX-B.</b></p>
+			{% if boq_profile.get("project_team") %}
+				{% set project_team = frappe.get_doc("Project Team", boq_profile.get("project_team")) %}
+				<ul>
+					<li>
+						<b>{{ project_team.get("project_manager_full_name")}},</b>
+						 {{ project_team.get("description")}}
+					</li>
+					<li>He will be in charge of the project and will manage the work done by the following teams:
+					</li>
+					{% for employee in project_team.get("items") %}
+						{% if employee.get("is_manager") %}
+							<li><b>
+								{{ employee.get("employee_description")}}:
+								{{ employee.get("employee_name") }}
+							</b></li>
+						{% else %}
+							<ul>
+								<li>
+									{{ employee.get("employee_name")}}:  &nbsp;
+									{{ employee.get("employee_description")}}
+								</li>
+							</ul>
+						{% endif %}
+					{% endfor %}
+				</ul>
+			{% endif %}
+		</div>
+	</div>
+</div>

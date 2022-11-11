@@ -1,0 +1,299 @@
+<!-- Cost Breakdown !-->
+<div class="row">
+	<div class="col-xs-12">
+		{% if proposal_type == "Commercial" %}
+			<h3 class="sectionone sectionone-title"><b>Costs</b></h3><hr>
+			<div class="col-xs-12">
+				<h3 class="sectiontwo sectiontwo-title"><b>Cost Breakdown</b></h3><br>
+				<p>
+					Based on our analysis of your needs and the nature of our proposed solution, the total funds required are estimated at:
+				<u>
+					<b>{{doc.currency}} {{"{:,.2f}".format(doc.grand_total)}}/- 
+					({{doc.in_words|replace(".", "")|replace("And", "")}})</b>
+				</u>
+			</p>
+				<p>The cost breakdown is detailed in the table below:</p>
+		{% else %}
+			<p class="sectionone sectionone-title"><b>Bill of Quantities</b></p><hr>
+			<div class="col-xs-12">
+				<p class="sectiontwo sectiontwo-title"><b>BoQ</b></p>
+				<p>The BoQ breakdown is detailed in the table below:</p>
+			
+		{% endif %}	
+			<p><b>{{boq_profile.get("system_type")}} for {{doc.customer_name}}</b></p>
+			
+			{% if boq_profile.get("is_project") %}
+				<!-- Start of Site Costing !-->
+				{% for site_item in doc.get("site_costing_items") %}
+					{% set flags.site_total = 0.0 %}
+					{% set flags.count = 1 %}
+					<p styl="text-indent:1em;">
+						<b>{{site_item.get("idx")}})<u>Project Site: {{site_item.get("site")}}</u></b>
+					</p>
+					<table class="table table-bordered">
+						<tbody>
+							<thead><tr>
+								<th style="text-align:center; width:10%;">
+									<b>Sr No.</b>
+								</th>
+								<th style="text-align:left; width:45%;">
+									<b>Item Description</b>
+								</th>
+								<th style="text-align:right; width:15%;">
+									<b>Qty</b>
+								</th>
+								{% if proposal_type == "Commercial"  %}
+								{% if doc.get("print_without_price") %}
+									<th style="text-align:right; width:15%;">
+										<b>{{doc.currency}}</b>
+									</th>
+									<th style="text-align:right; width:15%;">
+										<b>{{doc.currency}}</b>
+									</th>
+								{% else %}
+									<th style="text-align:right;width:15%;">
+										<b>Unit Price ({{doc.currency}})</b>
+									</th>
+									<th style="text-align:right; width:15%;">
+										<b>Total Price ({{doc.currency}})</b>
+									</th>
+								{% endif %}
+								{% endif %}
+									
+							</tr></thead>
+						{%- for item in doc.get("items") -%}
+							{% if item.get("site") == site_item.get("site") and not 
+									item.get("is_amc_item") %}
+								<tr>
+									<td style="text-align:center;width:10%;">
+										{{ site_item.idx }}. {{flags.count}}
+									</td>
+									<td style="width:45%;text-align:justify;">
+									<span>
+									{% if not doc.get("print_without_model") %}
+										Model&nbsp;No:&nbsp;
+										<b>{{item.get("item_code")}}</b>
+										{% if item.get("oem_no") %}
+											,&nbsp;
+											Part&nbsp;No:&nbsp;
+											<b>{{item.get("oem_no")}}</b>
+										{% endif %}
+									{% endif %}
+									{% if item.get("brand") %}
+										,&nbsp;Brand: &nbsp;
+										<b>{{item.get("brand")}}</b>
+									{% endif %}<br>
+									{{ item.get("description")}}<br>
+									{% if item.get("more_info") %}
+										{{ item.info }}
+									{% endif %}
+									</span>
+									</td>
+									<td style="width:15%;text-align:right;">
+										<span>
+											{{item.get("stock_uom")}}
+											:&nbsp;
+											{{ item.get("qty")|replace(".0", "") }}
+										</span>
+									</td>
+									{% if proposal_type == "Commercial" %}
+									{% if doc.get("print_without_price") %}
+										<td style="width:15%;text-align: right;"> 
+												-
+										</td>
+										<td style="width:15%;text-align: right;">
+											- 
+										</td>
+									{% else %}
+										<td style="width:15%;text-align: right;"> 
+											{{"{:,.2f}".format(item.get("rate"))}}
+										</td>
+										<td style="width:15%; text-align: right;"> 
+											{{"{:,.2f}".format(item.get("amount"))}}
+										</td>
+									{% endif %}	
+									{% endif %}
+								</tr>
+								{% set flags.count = flags.count +1 %}
+								{% set flags.site_total = flags.site_total+item.get("amount") %}
+							{% endif %}
+						{% endfor %}
+						{% if proposal_type == "Commercial"%}
+							<tr>
+								<td colspan="4" class="grand-total">
+									<b>Total Price(Site:{{site_item.site}})</b>
+								</td>
+								<td class="grand-total">
+									<b>{{"{:,.2f}".format(flags.site_total)}}</b>
+								</td>
+							</tr>
+						{% endif %}
+					</tbody>
+				</table>
+			{% endfor %}
+			{% if doc.get("is_spare_part_included") %}
+			{% set flags.count = 1 %}
+			<p> <b><u>Spare Parts Cost:</u></b></p>
+			<table class="table table-bordered">
+				<tbody>
+					<thead><tr>
+						<th style="text-align:center;width:10%;"><b>Sr No.</b></th>
+						<th style="text-align:left; width:45%;">
+							<b>Item Description</b>
+						</th>
+						<th style="text-align:right; width:15%;">
+							<b>Qty</b>
+						</th>
+						{% if proposal_type == "Commercial"  %}
+							{% if doc.get("print_without_price") %}
+								<th style="text-align:right; width:15%;">
+									<b>{{doc.currency}}</b>
+								</th>
+								<th style="text-align:right; width:15%;">
+									<b>{{doc.currency}}</b>
+								</th>
+							{% else %}
+								<th style="text-align:right; width:15%;">
+									<b>Unit Price ({{doc.currency}})</b>
+								</th>
+								<th style="text-align:center; width:15%;">
+									<b>Total Price ({{doc.currency}})</b>
+								</th>
+							{% endif %}
+						{% endif %}
+					</tr></thead>
+					{%- for item in doc.get("items") -%}
+						{% if item.get("is_spare_part_item") and not item.get("is_amc_item") %}
+							<tr>
+								<td style="width: 10%; text-align: center;">
+									{{flags.count}}
+								</td>
+								<td style="width: 45%; text-align: justify;">
+								<span>
+								{% if not doc.get("print_without_model") %}
+									Model&nbsp;No:&nbsp;
+									<b>{{item.get("item_code")}}</b>
+									{% if item.get("oem_no") %}
+										,&nbsp;Part&nbsp;No:&nbsp;
+										<b>{{item.get("oem_no")}}</b>
+									{% endif %}
+								{% endif %}
+								{% if item.get("brand") %}
+									&nbsp;Brand: &nbsp;
+									<b>{{item.get("brand")}}</b>
+								{% endif %}<br>
+								{{ item.get("description")}}<br>
+								{% if item.get("more_info") %}
+									{{ item.info }}
+								{% endif %}
+								</td>
+								<td style="width:15%;text-align:right;">
+									<span>
+										{{item.get("stock_uom")}}
+										:&nbsp;
+										{{ item.get("qty")|replace(".0", "") }}
+									</span>
+								</td>
+								{% if proposal_type == "Commercial" %}
+								{% if doc.get("print_without_price") %}
+									<td style="width:15%;text-align:right;"> 
+										-
+									</td>
+									<td style="width:15%;text-align:right;">
+										- 
+									</td>
+									{% else %}
+									<td style="width:15%;text-align: right;"> 
+										{{"{:,.2f}".format(item.get("rate"))}}
+									</td>
+									<td style="width:15%;text-align:right;"> 
+									       {{"{:,.2f}".format(item.get("amount"))}}
+									</td>
+									{% endif %}
+								{% endif %}
+							</tr>
+							{% set flags.count = flags.count+1 %}
+						{%endif %}
+					{% endfor %}
+					{% if proposal_type == "Commercial"%}
+						<tr>
+							<td colspan="4" class="grand-total">
+								<b>Total Price</b>
+							</td>
+							<td class="grand-total">
+								<b>{{"{:,.2f}".format(doc.spare_part_selling_amount)}}</b>
+							</td>
+						</tr>
+					{% endif %}
+				</tbody>
+			</table>
+			{% endif %}
+		{% endif %}
+		<!-- End of Costing for Project !-->
+		<!-- Total Charges  !-->
+		{% if proposal_type == "Commercial" %}
+			<p style="font-size:14px;text-align:left;"><b><u>Total Charges:</u></b></p>
+			<table class="table table-bordered" style="border-collapse:collapse;">
+				<tbody>
+					<thead>
+						<tr>
+							<th class="text-center">Title</th>
+							<th class="text-right">Amount({{ doc.currency }})</th>
+						</tr>
+					</thead>
+					{% if doc.get("boq_selling_amount") > 0.0 %}
+						<tr>
+							<td class="grand-total">
+								<b>Total Amount</b>
+							</td>
+							<td class="grand-total">
+								<b>{{"{:,.2f}".format(doc.get("boq_selling_amount"))}}</b>
+							</td>
+						</tr>
+					{% endif %}
+					{% if doc.get("discount_amount") %}
+						<tr>
+							<td class="grand-total">
+								<b>Discount Amount(less)</b>
+							</td>
+							<td class="grand-total">
+								<b>{{"{:,.2f}".format(doc.get("discount_amount"))}}</b>
+							</td>
+						</tr>
+						<tr>
+							<td class="grand-total">
+								<b>Total Amount after Discount</b>
+							</td>
+							<td class="grand-total">
+								<b>{{"{:,.2f}".format(doc.get("net_total"))}}</b>
+							</td>
+						</tr>
+						
+					{% endif %}
+					{% if doc.get("total_taxes_and_charges") > 0.0 %}
+						<tr>
+							<td class="grand-total">
+								<b>VAT Amount</b>
+							</td>
+							<td class="grand-total">
+								<b>{{"{:,.2f}".format(doc.get("total_taxes_and_charges"))}}</b>
+							</td>
+						</tr>
+					{% endif %}
+					<tr>
+						<td class="grand-total">
+							<b>Grand Total</b>
+						</td>
+						<td class="grand-total">
+							<b>{{"{:,.2f}".format(doc.get("grand_total"))}}</b>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<p style="font-size:14px;" ><strong>NOTE: </strong> Total Price excludes Duties and Freight. </p>
+			{% endif %}
+			{% include "templates/print_formats/quotation/commons/optional_items.html" %}
+			{% include "templates/print_formats/quotation/commons/boq/terms_and_conditions.html" %}
+		</div>
+	</div>
+</div>

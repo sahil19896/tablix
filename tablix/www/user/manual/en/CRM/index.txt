@@ -1,0 +1,4 @@
+lead
+opportunity
+customer
+contact

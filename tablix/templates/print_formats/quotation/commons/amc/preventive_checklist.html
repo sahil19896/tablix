@@ -1,0 +1,28 @@
+<h3 class="sectiontwo-title sectiontwo"><b>The Solution</b></h3>
+<h3  class="sectionthree sectionthree-title"><b>Annexure B</b></h3>
+<p>
+	<u>Checklist for {{ boq_profile.get("total_amc_months")}} months Maintenance (PPM)</u>
+</p>
+{% for system in boq_profile.get("system_items") %}
+	<ul style="font-size:14px;">
+		<li> 
+			<b>
+				{{ system.get("system_type") }}
+				{% if system.get("abbreviation_of_system") %}
+					({{ system.get("abbreviation_of_system")}})
+				{% endif %}
+			</b>
+		</li>
+	<!--	{% set temp = frappe.get_doc("Solution System Type", system.get("system_type")) %}
+		<ul style="font-size:14px;">
+			{%- for checklist in temp.get("preventive_checklist_items") -%} 
+				{%- if checklist.enabled == 1 -%}
+					<li style="text-justify:inter-word;">
+						{{checklist.description}}
+					</li>
+				{%- endif -%}
+			{%- endfor -%}
+		</ul>
+	-->
+	</ul>
+{% endfor %}

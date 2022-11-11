@@ -1,0 +1,295 @@
+<!-- Cost Breakdown !-->
+<div class="row">
+	<div class="col-xs-12">
+		{% if proposal_type == "Commercial" %}
+			<h3 class="sectionone sectionone-title">
+				Pricing and Terms
+			</h3><hr>
+		{% else %}
+			<h3 class="sectionone sectionone-title">
+				AMC Terms
+			</h3><hr>
+			
+		{% endif %}
+		{% if proposal_type == "Commercial" %}
+			<div class="col-xs-12">
+				<h3 class="sectiontwo sectiontwo-title"><b>Pricing Summary</b></h3>
+				<!-- Start of costing for AMC !-->
+				{%- if boq_profile.get("is_amc") == 1 -%}
+					{% set flags.total_amount = 0.0 %}
+					<h3 class="sectionthree sectionthree-title"><b>AMC Cost</b></h3>
+					<table class="table table-bordered" style="border-collapse:collapse;">
+						<tbody>
+							<thead>
+								<tr>
+									<th style="text-align:center;width:5%;">
+										Sr No.
+									</th>
+									<th style="text-align:left;width:70%;">
+										Description
+									</th>
+									<th style="text-align:left;width:10%;">
+										QTY
+									</th>
+									{% if not doc.get("print_without_price") %}
+										<th style="text-align:right;width:25;">
+											Amount({{doc.currency}})
+										</th>
+									{% else %}
+										<th style="text-align:right;width:25%;">
+											{{doc.currency}}
+										</th>	
+									{% endif %}
+								</tr>
+							</thead>
+							{% set flags.count = 1 %}
+							{%- for amc_item  in doc.get("items")-%}
+								{% if amc_item.get("is_amc_item") and 
+									not amc_item.get("is_spare_part_item") %}
+								<tr>
+									<td style="width:5%;text-align:center;">
+										{{ flags.count }}
+									</td>
+									<td style="width:70%;text-align:justify;">
+										<span>
+										{% if doc.get("print_without_models") %}
+											<b>{{amc_item.get("item_name")}}</b>
+											{% if amc_item.get("oem_no") %}
+												,&nbsp;
+												Part&nbsp;No:
+												<b>{{amc_item.get("oem_no")}}</b>
+											{% endif %}
+										{% else %}
+											<b>{{amc_item.get("item_name")}}</b>
+										{% endif %}
+										{% if amc_item.get("brand") %}
+											,&nbsp;Brand:
+											<b>{{amc_item.get("brand")}}</b>
+										{% endif %}<br>
+										{{amc_item.get("description")}}<br>
+										{% if amc_item.get("more_info") %}
+											{{ amc_item.info }}
+										{% endif %}
+										</span>
+									</td>
+									<td style="width:10%;text-align:justify;">
+										<b>{{amc_item.get("qty")}}</b>
+									</td>
+									{% if not doc.get("price_without_price") %}
+										<td style="width:25%;text-align: right;">
+											<span>
+											  <b>{{"{:,.2f}".format(amc_item.amount)}}</b>
+											</span>
+										</td>
+									{% else %}
+										<td style="width:25%;text-align: right;">
+											<span>-</span>
+										</td>
+								
+									{% endif %}
+								</tr>
+								{% set flags.count = flags.count+1 %}
+								{% set flags.total_amount = flags.total_amount+amc_item.amount %}
+								{% endif %}
+							{%- endfor -%}
+							<tr>
+								<td colspan="1" class="grand-total"></td>
+								<td colspan="2" class="grand-total"><b>Total Price</b></td>
+								<td class="grand-total">
+									<b>{{"{:,.2f}".format(flags.total_amount)}}</b>
+								</td>
+						</tbody>
+					</table>
+					{% if doc.get("spare_part_selling_amount") > 0.0 %}
+						<h3 class="sectionthree sectionthree-title"><b>Spare Total Price</b></h3>
+						<table class="table table-bordered" style="border-collapse:collapse;">
+							<tbody>
+								<thead><tr>
+									<th style="text-align:center;width:5%;">
+										Sr No.
+									</th>
+									<th style="text-align:left;width:40%;">
+										Item Description
+									</th>
+									<th style="text-align:right;width:15%;">
+											Qty
+									</th>
+									{% if not doc.get("print_without_price") %}
+										<th style="text-align:right;width:20%;">
+											Unit Price({{ doc.currency }})
+										</th>
+										<th style="text-align:right;width:20%;">
+											Total Price({{ doc.currency }})
+										</th>
+									{% endif %}
+									</tr>
+								</thead>
+							{% set flags.count = 1 %}
+							{% for sp in doc.get("items") %}
+								{% if sp.get("is_spare_part_item") and not sp.get("is_amc_item") %}
+								<tr>
+									<td style="width:5%;text-align:center;">
+										{{ flags.count }}
+									</td>
+									<td style="width:60%;text-align:justify;">
+										<span>
+										{% if doc.get("print_without_model") %}
+									
+											Item&nbsp;Name:
+											<b>{{sp.get("item_name")}}</b>
+											{% if sp.get("oem_no") %}
+												,&nbsp;
+												Part&nbsp;No:
+												<b>{{sp.get("oem_no")}}</b>
+											{% endif %}
+										{% endif %}
+										{% if sp.get("brand") %}
+											,&nbsp;Brand:
+											<b>{{sp.get("brand")}}</b>
+										{% endif %}<br>
+										{{sp.get("description")}}<br>
+										{% if sp.get("more_info") %}
+											{{ sp.info }}
+										{% endif %}
+										</span>
+									</td>
+									<td style="width:15%;text-align:right;">
+										<span>
+											{{ sp.uom }}: &nbsp;
+											<b>{{ sp.qty}}</b>
+										</span>
+									</td>
+								{% if not doc.get("print_without_price") %}
+									<td style="width:20%;text-align:right;">
+										<span>
+											<b>{{"{:,.2f}".format(sp.rate)}}</b>
+										</span>
+									</td>
+									<td style="width:20%;text-align:right;">
+										<span>
+											<b>{{"{:,.2f}".format(sp.amount)}}</b>
+										</span>
+									</td>
+								{% else %}
+									<td style="width:20%;text-align:right;">
+										<span>-</span>
+									</td>
+									
+								{% endif %}
+								</tr>
+									{% set flags.count = flags.count+1 %}
+								{% endif %}
+							{% endfor %}
+							<tr>
+								<td colspan="4" class="grand-total">
+									<b>Spare Parts Total</b>
+								</td>
+								<td class="grand-total">
+										<b>{{"{:,.2f}".format(doc.spare_part_selling_amount)}}</b>
+								</td>
+
+							</tr>
+							</tbody>
+						</table>
+					{% endif %}	
+					<h3 class="sectionthree sectionthree-title"><b>Total Cost</b></h3>
+					<table class="table table-bordered" style="border-collapse:collapse;">
+						<tbody>
+							<thead><tr>
+								<th style="width:60%;font-align:center;">
+									Description
+								</th>
+								<th style="width:60%;text-align:center;">
+									Amount({{ doc.currency}})
+								</th>
+							</tr></thead>
+							<tr>
+								<td class="grand-total">
+									<b>Total Price</b>
+								</td>
+								<td class="grand-total">
+									<b>{{"{:,.2f}".format(doc.total)}}</b>
+								</td>
+							</tr>
+							{% if doc.get("amc_discount") > 0.0 %}
+								<tr>
+									<td class="grand-total">
+										<b>Discount Amount</b>
+									</td>
+									<td class="grand-total">
+										<b>{{"{:,.2f}".format(doc.amc_discount)}}</b>
+									</td>
+								</tr>
+								<tr>
+									<td class="grand-total">
+										<b>After Discount Amount</b>
+									</td>
+									
+									<td class="grand-total">
+										{% if doc.get("amc_selling_amount_after_discount") > 0.0 %}
+											<b>{{"{:,.2f}".format(doc.amc_selling_amount_after_discount)}}</b>
+										{% else %}
+											<b>{{"{:,.2f}".format(doc.net_total)}}</b>
+										{% endif %}
+									</td>
+								</tr>
+							{% endif %}
+							{% if doc.get("total_taxes_and_charges") > 0.0 %}
+								{% if doc.get("duties") and doc.get("duties") > 0.0 %}
+									<tr>
+										<td class="grand-total">
+											<b>(add) Duties</b>
+										</td>
+										<td class="grand-total">
+											<b>{{"{:,.2f}".format(doc.duties)}}</b>
+										</td>
+									</tr>
+								{% endif %}
+								{% if doc.get("other_charges") %}
+									<tr>
+										<td  class="grand-total">
+											<b>(add) Other Charges</b>
+										</td>
+										<td class="grand-total">
+											<b>{{"{:,.2f}".format(doc.other_charges)}}</b>
+										</td>
+									</tr>
+								{% endif %}
+								{% if doc.get("vat") and doc.get("vat") > 0.0 %}
+									<tr>
+										<td  class="grand-total">
+											<b>(add) VAT</b>
+										</td>
+										<td class="grand-total">
+											<b>{{"{:,.2f}".format(doc.vat)}}</b>
+										</td>
+									</tr>
+								{% endif %}
+							{% endif %}
+							<tr>
+								<td  class="grand-total">
+									<b>Grand Total</b>
+								</td>
+								<td class="grand-total">
+									<b>{{"{:,.2f}".format(doc.grand_total)}}</b>
+								</td>
+							</tr>
+							
+						</tbody>
+					</table><br><br>
+					{%- if boq_profile.get("amc_type") == "Comprehensive" -%}
+						<p><b><u>AMC Pricing including spares:</u></b></p>
+					{%- else -%}
+						<p><b><u>AMC Pricing excluding spares:</u></b></p>
+					{%- endif -%}
+			
+				{%- endif -%}
+				<!-- AMC Costing Ends here !-->
+				<!-- Total Charges  !-->
+				<h6><strong>NOTE: </strong> Total Price excludes Duties and Freight. </h6>
+			{% endif %}
+			{% include "templates/print_formats/quotation/commons/amc/terms_and_conditions.html" %}
+			{% include "templates/print_formats/quotation/commons/amc/reactive_checklist.html" %}
+		</div>
+	</div>
+</div>

@@ -1,0 +1,44 @@
+<style>
+	{% include "templates/print_formats/quotation/proposal.css" %}
+</style>
+<table class="table table-bordered" style="border-collapse:collapse;">
+	<tbody>
+		<thead><tr>
+
+			<th style="text-align:center;width:5%;"><b>Sr No.</b></th>
+			<th style="text-align:left;width:50%;"><b>Description</b></th>
+			<th style="text-align:right;width:15%;"><b>Qty</b></th>
+		</tr></thead>
+		{% set total_val = [0] %}
+		{% set total = 0 %}
+		{%- for row in doc.items -%}
+			<tr>	
+				<td style="width: 5%; text-align: center;">{{row.idx}}</td>
+				<td style="width: 50%; text-align: justify;">
+					<span>
+						Model&nbsp;No:<b>{{row.item_code}}</b>
+						<br>{{row.description}}
+					</span>
+				</td>
+				<td style="width: 15%; text-align: right;">
+					<span>
+						{{row.stock_uom}}:&nbsp; {{ row.qty|replace(".0", "") }}
+					</span>
+				</td>
+			</tr>
+		{% set total = total_val | last + row.qty %}
+		{% if total_val.append(total) %}{% endif %}
+		{% endfor %}
+		<tr>
+			<td colspan="2" style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:12px;"><b>Total Qty</b></td>
+			<td style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:12px;"><b>{{total_val|last|replace(".0", "")}}</b></td>
+		</tr>
+</table>
+{% if flags.include_terms == True %}
+	<div class="col-xs-12">
+		{% if doc.get("terms") %}
+			<p><u><b>Terms and Conditions:</b></u></p>
+			{{ doc.get("terms") }}
+		{% endif %}
+	</div>
+{% endif %}

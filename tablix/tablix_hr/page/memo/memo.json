@@ -1,0 +1,23 @@
+{
+ "content": null, 
+ "creation": "2019-04-21 14:03:10.482284", 
+ "docstatus": 0, 
+ "doctype": "Page", 
+ "idx": 0, 
+ "modified": "2019-04-21 14:03:10.482284", 
+ "modified_by": "Administrator", 
+ "module": "Tablix HR", 
+ "name": "memo", 
+ "owner": "Administrator", 
+ "page_name": "Memo", 
+ "roles": [
+  {
+   "role": "All"
+  }
+ ], 
+ "script": null, 
+ "standard": "Yes", 
+ "style": null, 
+ "system_page": 1, 
+ "title": "Memo"
+}

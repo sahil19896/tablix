@@ -1,0 +1,51 @@
+<style>
+.danger-row{
+	color:white;
+	background-color:#0184A4;
+	border: 1px solid black;
+	
+}
+.danger-row:hover{
+
+	background-color: #d74338;
+}
+.success-row{
+	color:white;
+	background-color:#d74338;
+	border: 1px solid white;
+}
+
+</style>
+<div class="container">
+	<div class="col-lg-12">
+		<h3>HI!, </h3>
+		<h3>Please find the list of Employees for expired documents:</h3>
+		<div>
+			<table style="width:100%;border: 1px solid black;">
+				<thead>
+					<tr style="success-row">
+						{%- for header in headers -%}
+							<th > {{ header }}</th>
+						{%- endfor -%}
+					</tr>
+				</thead>
+				<tbody>
+					{%- for item in records -%}
+						{%- set doc = item.get("doc") -%}
+						<tr class="danger-row">
+							<td>{{ item.get("doc_type") }}</td>
+							<td>{{ doc.get("name") }} </td> 
+							<td>{{ doc.get("employee_name") }}</td>
+							<td>{{ doc.get("user_id") }}</td>
+							<td>{{ doc.get(item.get("field")) }}</td>
+							<td> {{ item.get("days") }}</td>
+						</tr>
+					{%- endfor -%}
+				</tbody>
+
+			</table>
+		</div>
+		<h1>Thanks</h1>
+		<h3>Tablix Notification</h3>
+	</div>
+</div>

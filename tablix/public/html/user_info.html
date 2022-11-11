@@ -1,0 +1,33 @@
+<div class="row" style="margin-top:100px;">
+	<div class="col-lg-12 tablix-info-div">
+		<h1 style="color:#0184A4" class="text-center"> USER INFO</h1>
+
+		<div class="col-lg-6">
+
+			<div class="col-lg-12">
+				<strong>{{ __("Employee Name: ") }} </strong>{{ ("Test") }}
+			</div>
+			<div class="col-lg-12">
+				<strong>{{ __("Employee ID: ") }}</strong> {{ emp_info.employee }}
+			</div>
+			<div class="col-lg-12"> 
+				<strong>{{ __("Gender: ") }}</strong> {{ emp_info.gender }}
+			</div>
+			<div class="col-lg-12">
+				<strong>{{ __("Designation: ") }} </strong> {{ emp_info.designation }}
+			</div>
+			<div class="col-lg-12">
+				<strong>{{ __("Username: ") }}</strong> {{ user_info.first_name }}
+			</div>
+			<div class="col-lg-12">
+				<strong>{{ __("Email: ") }}</strong> {{ user_info.email }}
+			</div>
+		</div>
+		<div class="col-lg-6">
+			<div class="col-lg-12">
+				<img src="{{ emp_info.image }}" class="user-image" alt="User Image">
+			</div>
+		</div>
+		</div>
+	</div>
+</div>

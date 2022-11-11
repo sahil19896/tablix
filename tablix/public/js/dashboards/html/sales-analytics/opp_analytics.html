@@ -1,0 +1,150 @@
+<div class="row" style="background-color:white ;">
+	<hr>
+	<h1 class="text-center"> 
+		{{ __("Opportunities Overview") }}
+		({{ data.prev_label }} {{ data.sep }} {{data.cur_label }})
+	<hr>
+	</h1>
+	<div class="col-lg-3" style="height:250px;">
+		<div class="panel panel-default bootcards-media"> 
+			<div class="panel-heading"> 
+				<h3 class="text-center">{{ __("Total Opportunities") }}</h3>
+			</div>
+			<div class="panel-body">
+				<div style="float:right;font-size:30px">
+					<span style="font-size:30px">{{ data.cur_opps }}</span>
+					{% if(data.cur_opps >= data.prev_opps){ %}	
+						<i class="fa fa-arrow-circle-up" style="color:green"></i>
+					{% } %}
+					{% if(data.cur_opps < data.prev_opps){ %}	
+						<i class="fa fa-arrow-circle-down" style="color:red"></i>
+					{% } %}
+				</div>	
+			</div> 
+			<div class="panel-footer">
+				<p class="float-right">
+					{{ data.prev_label }} {{ data.sep }} {{data.prev_opps }}
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-lg-3" style="height:250px;">
+		<div class="panel panel-default bootcards-media"> 
+			<div class="panel-heading"> 
+				<h3 class="text-center">{{ __("Opportunities to Quote") }}</h3>
+			</div>
+			<div class="panel-body">
+				<div style="float:right;font-size:30px">
+					<span style="font-size:30px">{{ data.cur_quotes }}</span>
+					{% if(data.cur_quotes >= data.prev_quotes){ %}	
+						<i class="fa fa-arrow-circle-up" style="color:green"></i>
+					{% } %}
+					{% if(data.cur_quotes < data.prev_quotes){ %}	
+						<i class="fa fa-arrow-circle-down" style="color:red"></i>
+					{% } %}
+				</div>	
+			</div> 
+			<div class="panel-footer">
+				<p class="float-right">
+					{{ data.prev_label }} {{ data.sep }} {{data.prev_quotes }}
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-lg-3" style="height:250px;">
+		<div class="panel panel-default bootcards-media"> 
+			<div class="panel-heading"> 
+				<h3 class="text-center">{{ __("Quotation Value") }}</h3>
+			</div>
+			<div class="panel-body">
+				<div style="float:right;font-size:30px">
+					<span style="font-size:30px">{{ data.cur_quotes_value }}</span>
+					{% if(data.cur_quotes_value >= data.prev_quotes_value){ %}	
+						<i class="fa fa-arrow-circle-up" style="color:green"></i>
+					{% } %}
+					{% if(data.cur_quotes_value < data.prev_quotes_value){ %}	
+						<i class="fa fa-arrow-circle-down" style="color:red"></i>
+					{% } %}
+				</div>	
+			</div> 
+			<div class="panel-footer">
+				<p class="float-right">
+					<span>{{data.prev_label}}{{data.sep}}{{data.prev_quotes_value}}</span>
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-lg-3" style="height:250px;">
+		<div class="panel panel-default bootcards-media"> 
+			<div class="panel-heading"> 
+				<h3 class="text-center">{{ __("Conversion Rate") }}</h3>
+			</div>
+			<div class="panel-body">
+				<div style="float:right;font-size:30px">
+					<span style="font-size:30px">{{ data.cur_conversion }}</span>
+					{% if(data.cur_conversion >= data.prev_conversion){ %}	
+						<i class="fa fa-arrow-circle-up" style="color:green"></i>
+					{% } %}
+					{% if(data.cur_conversion < data.prev_conversion){ %}	
+						<i class="fa fa-arrow-circle-down" style="color:red"></i>
+					{% } %}
+				</div>	
+			</div> 
+			<div class="panel-footer">
+				<p class="float-right">
+					{{ data.prev_label }} {{ data.sep }} {{data.prev_conversion }}
+				</p>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-3" style="height:250px;">
+		<div class="panel panel-default bootcards-media"> 
+			<div class="panel-heading"> 
+				<h3 class="text-center">{{ __("Won Deals Count") }}</h3>
+			</div>
+			<div class="panel-body">
+				<div style="float:right;font-size:30px">
+					<span style="font-size:30px">{{ data.cur_so }}</span>
+					{% if(data.cur_so >= data.prev_so){ %}	
+						<i class="fa fa-arrow-circle-up" style="color:green"></i>
+					{% } %}
+					{% if(data.cur_so < data.prev_so){ %}	
+						<i class="fa fa-arrow-circle-down" style="color:red"></i>
+					{% } %}
+				</div>	
+			</div> 
+			<div class="panel-footer">
+				<p class="float-right">
+					{{ data.prev_label }} {{ data.sep }} {{data.prev_so }}
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-lg-3" style="height:250px;">
+		<div class="panel panel-default bootcards-media"> 
+			<div class="panel-heading"> 
+				<h3 class="text-center">{{ __("Lost Opportunities Count") }}</h3>
+			</div>
+			<div class="panel-body">
+				<div style="float:right;font-size:30px">
+					<span style="font-size:30px">{{ data.cur_lost_opps }}</span>
+					{% if(data.cur_lost_opps >= data.prev_lost_opps){ %}	
+						<i class="fa fa-arrow-circle-up" style="color:green"></i>
+					{% } %}
+					{% if(data.cur_lost_opps < data.prev_lost_opps){ %}	
+						<i class="fa fa-arrow-circle-down" style="color:red"></i>
+					{% } %}
+				</div>	
+			</div> 
+			<div class="panel-footer">
+				<p class="float-right">
+					{{ data.prev_label }} {{ data.sep }} {{data.prev_lost_opps }}
+				</p>
+			</div>
+		</div>
+	</div>
+</div>

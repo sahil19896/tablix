@@ -1,0 +1,46 @@
+{
+ "add_total_row": 0,
+ "creation": "2020-09-24 08:58:36.923832",
+ "disable_prepared_report": 0,
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "idx": 0,
+ "is_standard": "Yes",
+ "letter_head": "Standard",
+ "modified": "2020-09-24 08:58:36.923832",
+ "modified_by": "Administrator",
+ "module": "Tablix",
+ "name": "Quotation Detail",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "ref_doctype": "Quotation",
+ "report_name": "Quotation Detail",
+ "report_type": "Script Report",
+ "roles": [
+  {
+   "role": "Sales Manager"
+  },
+  {
+   "role": "Maintenance Manager"
+  },
+  {
+   "role": "Maintenance User"
+  },
+  {
+   "role": "Sales User"
+  },
+  {
+   "role": "Project Coordinator"
+  },
+  {
+   "role": "BDM"
+  },
+  {
+   "role": "test"
+  },
+  {
+   "role": "Estimation Engineer"
+  }
+ ]
+}

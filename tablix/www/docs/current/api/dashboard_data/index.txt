@@ -1,0 +1,5 @@
+tablix.dashboard_data.quotation_dashboard
+tablix.dashboard_data.boq_dashboard
+tablix.dashboard_data.opportunity_dashboard
+tablix.dashboard_data.sales_order_dashboard
+tablix.dashboard_data

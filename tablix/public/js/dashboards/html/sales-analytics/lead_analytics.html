@@ -1,0 +1,151 @@
+<div class="row" style="background-color:white ;">
+	<h1 class="text-center"> 
+		{{ __("Leads Overview") }}
+		({{data.prev_label }} {{ data.sep }} {{data.cur_label }})
+	</h1>
+	<hr>
+	<div class="col-lg-3" style="height:250px;">
+		<div class="panel panel-default bootcards-media"> 
+			<div class="panel-heading"> 
+				<h3 class="text-center">{{ __("Total Leads") }}</h3>
+			</div>
+			<div class="panel-body">
+				<div style="float:right;font-size:30px">
+					<span style="font-size:30px">{{ data.cur_leads }}</span>
+					{% if(data.cur_leads >= data.prev_leads){ %}	
+						<i class="fa fa-arrow-circle-up" style="color:green"></i>
+					{% } %}
+					{% if(data.cur_leads < data.prev_leads){ %}	
+						<i class="fa fa-arrow-circle-down" style="color:red"></i>
+					{% } %}
+				</div>	
+			</div> 
+			<div class="panel-footer">
+				<p class="float-right">
+					<span data-toggle="tooltip" title="More Info" style="cursor:pointer" class="prev-month-data" data-month="{{ data.prev_label }}" data-doctype="Lead">
+						 {{ data.prev_label }} {{ data.sep }} {{data.prev_leads }}
+					</span>
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-lg-3" style="height:250px;">
+		<div class="panel panel-default bootcards-media"> 
+			<div class="panel-heading"> 
+				<h3 class="text-center">{{ __("Converted Leads Count") }}</h3>
+			</div>
+			<div class="panel-body">
+				<div style="float:right;font-size:30px">
+					<span style="font-size:30px">{{ data.cur_opp }}</span>
+					{% if(data.cur_opp >= data.prev_opp){ %}	
+						<i class="fa fa-arrow-circle-up" style="color:green"></i>
+					{% } %}
+					{% if(data.cur_opp < data.prev_opp){ %}	
+						<i class="fa fa-arrow-circle-down" style="color:red"></i>
+					{% } %}
+				</div>	
+			</div> 
+			<div class="panel-footer">
+				<p class="float-right">
+					{{ data.prev_label }} {{ data.sep }} {{data.prev_opp }}
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-lg-3" style="height:250px;">
+		<div class="panel panel-default bootcards-media"> 
+			<div class="panel-heading"> 
+				<h3 class="text-center">{{ __("Conversion Rate") }}</h3>
+			</div>
+			<div class="panel-body">
+				<div style="float:right;font-size:30px">
+					<span style="font-size:30px">{{ data.conversion }}</span>
+					{% if(data.cur_opp >= data.prev_opp){ %}	
+						<i class="fa fa-arrow-circle-up" style="color:green"></i>
+					{% } %}
+					{% if(data.cur_opp < data.prev_opp){ %}	
+						<i class="fa fa-arrow-circle-down" style="color:red"></i>
+					{% } %}
+				</div>	
+			</div> 
+			<div class="panel-footer">
+				<p class="float-right">
+					<span>{{ __("N/A") }}</span>
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-lg-3" style="height:250px;">
+		<div class="panel panel-default bootcards-media"> 
+			<div class="panel-heading"> 
+				<h3 class="text-center">{{ __("Won Leads Count") }}</h3>
+			</div>
+			<div class="panel-body">
+				<div style="float:right;font-size:30px">
+					<span style="font-size:30px">{{ data.cur_quotes }}</span>
+					{% if(data.cur_quotes >= data.prev_quotes){ %}	
+						<i class="fa fa-arrow-circle-up" style="color:green"></i>
+					{% } %}
+					{% if(data.cur_quotes < data.prev_quotes){ %}	
+						<i class="fa fa-arrow-circle-down" style="color:red"></i>
+					{% } %}
+				</div>	
+			</div> 
+			<div class="panel-footer">
+				<p class="float-right">
+					{{ data.prev_label }} {{ data.sep }} {{data.prev_quotes }}
+				</p>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-3" style="height:250px;">
+		<div class="panel panel-default bootcards-media"> 
+			<div class="panel-heading"> 
+				<h3 class="text-center">{{ __("Won Deals Count") }}</h3>
+			</div>
+			<div class="panel-body">
+				<div style="float:right;font-size:30px">
+					<span style="font-size:30px">{{ data.cur_so }}</span>
+					{% if(data.cur_so >= data.prev_so){ %}	
+						<i class="fa fa-arrow-circle-up" style="color:green"></i>
+					{% } %}
+					{% if(data.cur_so < data.prev_so){ %}	
+						<i class="fa fa-arrow-circle-down" style="color:red"></i>
+					{% } %}
+				</div>	
+			</div> 
+			<div class="panel-footer">
+				<p class="float-right">
+					{{ data.prev_label }} {{ data.sep }} {{data.prev_so }}
+				</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-lg-3" style="height:250px;">
+		<div class="panel panel-default bootcards-media"> 
+			<div class="panel-heading"> 
+				<h3 class="text-center">{{ __("Lost Deals Count") }}</h3>
+			</div>
+			<div class="panel-body">
+				<div style="float:right;font-size:30px">
+					<span style="font-size:30px">{{ data.cur_lost_deals }}</span>
+					{% if(data.cur_lost_deals <= data.prev_lost_deals){ %}	
+						<i class="fa fa-arrow-circle-up" style="color:green"></i>
+					{% } %}
+					{% if(data.cur_lost_deals > data.prev_lost_deals){ %}	
+						<i class="fa fa-arrow-circle-down" style="color:red"></i>
+					{% } %}
+				</div>	
+			</div> 
+			<div class="panel-footer">
+				<p class="float-right">
+					{{ data.prev_label }} {{ data.sep }} {{data.prev_lost_deals }}
+				</p>
+			</div>
+		</div>
+	</div>
+</div>

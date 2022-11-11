@@ -1,0 +1,109 @@
+# Copyright (c) 2013, Tablix and contributors
+# For license information, please see license.txt
+
+from __future__ import unicode_literals
+import frappe
+from frappe import _, _dict
+from frappe import msgprint
+
+def execute(filters=None):
+	columns, data = [], []
+	
+	if not filters: filters = {}
+	
+	columns = get_columns()	
+	quo_data = get_data(filters)	
+
+	for d in quo_data:
+		boq_data = get_boq_data(d.boq_profile)
+		data.append([d.name, d.total, d.status, d.customer_name, d.lead, d.boq_profile, boq_data[0].scope_of_work, boq_data[0].project_site_name, boq_data[0].project_type])
+
+	return columns, data
+
+
+def get_columns():
+	"Return columns based on filters"
+
+	columns = [
+		{
+			"label": _("Quotation ID"),
+			"fieldname": "quotation_id",
+			"fieldtype": "Link",
+			"options": "Quotation",
+			"width": 150
+		},
+		{
+			"label": _("Total"),
+			"fieldname": "total",
+			"fieldtype": "Data",
+			"width": 150
+		},
+		{
+			"label": _("Status"),
+			"fieldname": "status",
+			"fieldtype": "Data",
+			"width": 150
+		},
+		{
+			"label": _("Customer Name"),
+			"fieldname": "customer_name",
+			"fieldtype": "Data",
+			"width": 150
+		},
+		{
+			"label": _("Lead"),
+			"fieldname": "lead",
+			"fieldtype": "Link",
+			"options": "Lead",
+			"width": 150
+		},
+		{
+			"label": _("BOQ Profile"),
+			"fieldname": "boq_profile",
+			"fieldtype": "Link",
+			"options": "BOQ Profile",
+			"width": 150
+		},
+		{
+			"label": _("Scope of Work"),
+			"fieldname": "scope_fo_work",
+			"fieldtype": "Data",
+			"width": 150
+		},
+		{
+			"label": _("Project Site Name"),
+			"fieldname": "project_site_name",
+			"fieldtype": "Data",
+			"width": 150
+		},
+		{
+			"label": _("Solution"),
+			"fieldname": "solution",
+			"fieldtype": "Data",
+			"width": 150
+		},
+	]
+
+	return columns
+
+def get_condition(filters):
+	condition = ""
+	if filters.get("customer"): condition += "  AND customer = %(customer)s"
+	if filters.get("lead"): condition += " AND lead = %(lead)s"
+	
+	return condition
+
+
+def get_data(filters):
+	condition = get_condition(filters)
+	row = []
+	data = frappe.db.sql("""SELECT name, order_type, total, status, customer_name, lead, boq_profile
+			FROM `tabQuotation`
+			WHERE docstatus >= 0 %s """%condition, filters, as_dict=True)
+	
+	return data
+
+def get_boq_data(name):
+	boq_data = frappe.db.sql("""SELECT scope_of_work, project_site_name, project_type FROM `tabBOQ Profile` WHERE name = %s """,(name), as_dict=True)
+
+	return boq_data

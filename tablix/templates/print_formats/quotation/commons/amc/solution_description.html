@@ -1,0 +1,60 @@
+<div class="row">
+	<div class="col-xs-12">
+		<h3 class="sectionone sectionone-title"><b>Solution Description</b></h3><hr>
+		<div class="col-xs-12">
+			<h3 class="sectiontwo sectiontwo-title"><b>Requirement</b></h3>
+			<p>Maintenance & Support Contract - 
+				<b>Annual - {{boq_profile.get("amc_type")}}</b> 
+				for the following systems pertaining to the following Buildings:-
+			</p>
+			<p>{{doc.customer_name}}</p>
+			<h3 class="sectionthree sectionthree-title"><b>Annexure A</b></h3>
+			<table class="table table-bordered" style="border-collapse:collapse;">
+				<tbody>
+					<thead>
+						<tr>	
+							  <th class="text-center">Sr.</th>
+							  <th class="text-left">Description</th>
+							  <th class="text-right">Qty</th>
+
+						</tr>
+					</thead>
+					{%- for row in doc.amc_service_items-%}	
+						<tr>	
+							<td style="width: 5%; text-align: center;">{{row.idx}}</td>
+							<td style="width: 60%; text-align: left;">
+								<!-- <span style="float:left;">Model No:</span> -->
+								<span style=" margin-left:1%;">
+									<b>{{row.item_name}}</b>
+								</span>
+								{% if row.oem_no is defined and row.oem_no != None %}
+									<span style="display:inline-block;margin-left:3%;">Part No:</span>
+									<span style="display:inline-block;margin-left:1%;">
+										<b>{{row.oem_no}}</b>
+									</span>
+								{% endif %}
+								{% if row.brand is defined and row.brand != None %}
+									<span style="display:inline-block;margin-left:3%;"></span>
+									<span style="display:inline-block;margin-left:1%;">
+										<b>Brand:{{row.brand}}</b>
+									</span>
+								{% endif %}
+								<br>
+								{% if row.description %}
+									{{row.description}}
+								{% endif %}
+							</td>
+							<td style="width: 15%; text-align: right;">
+								<span style="font-size:10px;">{{row.stock_uom}}</span>
+								<span style="font-size:12px;">&nbsp;{{ row.qty|replace(".0", "") }}</span>
+							</td>
+				
+						</tr>
+
+					{%- endfor -%}
+				</tbody>
+			</table>
+			{% include "templates/print_formats/quotation/commons/amc/preventive_checklist.html" %}
+		</div>
+	</div>
+</div>

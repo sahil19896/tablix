@@ -1,0 +1,593 @@
+.app-icon:hover i, .app-icon:hover {
+	color: #000 !important;
+}
+
+.case-label {
+	color: #000000 !important;
+	text-shadow: 0px 0px 0px rgba(0, 0, 0, 0), 0px 0px 0px rgba(0, 0, 0, 0);
+}
+
+#page-desktop {
+	background-color: whitesmoke !important;
+	/*background: url("https://wallpaperbro.com/img/3432.jpg") center center;*/
+}
+
+/* Only if using nueoo logo or similar with same width */
+.app-logo {
+	width: 40px !important;
+	margin-top: -3px !important;
+}
+
+.app-icon {
+	border-radius: 0px !important;
+	box-shadow: 0px 2px 5px #ffcd00 !important;
+}
+
+.navbar-default {
+	background-color: #000 !important;
+	border-color: #ffcd00 !important;
+}
+
+#navbar-search {
+	background-color: #000;
+	border: 1px solid #ffcd00;
+	color: #ffcd00;
+	height: 35px;
+	font-weight: 900;
+}
+
+.input-sm {
+	height: 30px;
+	padding: 5px 10px;
+	font-size: 12px;
+	line-height: 1.5;
+	border-radius: 0px;
+}
+
+.navbar-default .navbar-nav > li > a, .navbar-default .navbar-brand {
+	color: #ffcd00 !important;
+	background-color: #000 !important;
+	font-weight: 900 !important;
+}
+
+.navbar-default .navbar-nav > li > a:hover {
+	color: #000;
+}
+
+.navbar-form .awesomplete {
+	width: 400px;
+}
+
+.navbar {
+	min-height: 46px;
+}
+
+.nav > li > a:hover, .nav > li > a:focus {
+	background-color: #000 !important;
+	border-radius: 0px !important;
+}
+
+.navbar-light{
+	background-color: #000 !important;
+}
+
+.navbar-light .navbar-nav .nav-link{
+	color: #ffffff;
+}
+
+.navbar-light .navbar-nav .nav-link:hover{
+	color:#c7c7c7
+}
+
+.navbar-light .navbar-nav .show > .nav-link, .navbar-light .navbar-nav .active > .nav-link, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .nav-link.active{
+	color: #ffffff;
+}
+
+.navbar .navbar-search-icon {
+	color: #ffffff;
+}
+
+.standard-image {
+	width: 100%;
+	height: 0;
+	padding: 50% 0;
+	display: inline-block;
+	text-align: center;
+	border-radius: 4px;
+	font-size: 14px;
+	line-height: 0px;
+	color: #000;
+	border: 1px solid #000;
+	font-weight: normal;
+	margin-top: -1px;
+	background-color: #ffcd00 !important;
+}
+
+.footer-powered{
+	font-size:90% !important
+}
+
+.form-footer, .form-footer a, .form-footer h6{
+	font-size:14px;font-weight:normal
+}
+
+a:hover, a:focus {
+	color: #ffcd00;
+}
+
+a.text-primary:hover {
+	color: #ffcd00;
+}
+
+.text-primary {
+	color: #ffcd00;
+}
+
+body {
+	background-color: #fff;
+}
+
+.section-box {
+	border: 1px solid #eaeaea;
+	border-radius:0px !important;
+	background-color:#ffffff;
+}
+
+.section-box h4 {
+	color:#ffcd00;
+}
+
+a {
+	color: #000;
+}
+
+h1, .h1 {
+	font-size: 20px;
+}
+
+.page-head {
+	border-bottom: 1px solid #eee;
+}
+
+@media (min-width: 768px) {
+	.navbar-nav {
+		padding-top: 3px;
+}}
+
+.module-box {
+        border-radius: 0px !important;
+	padding: 0px 50px
+}
+
+.module-box[data-v-330b3db8] {
+	padding: 0px 15px !important;
+	display: block;
+	background-color: #ffffff;
+}
+
+.module-box:hover{
+	border: 1px solid #000 !important
+}
+
+h6.uppercase, .h6.uppercase {
+	font-size: 12px;
+	letter-spacing: 0px;
+	color: #000;
+}
+
+.btn-primary {
+	background-color: #ffcd00;
+	border-color: #ffcd00;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary.focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary {
+	background-color: #ffcd00;
+	border-color: #ffcd00;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active, .show > .btn-primary.dropdown-toggle {
+	background-color: #ffcd00;
+	border-color: #ffcd00;
+}
+
+.btn-primary:focus, .btn-primary.focus {
+	box-shadow: 0 0 0 0.1rem rgba(74, 120, 247, 0.16);
+}
+
+.btn-login{
+	padding:8px;
+}
+
+.btn:hover{
+	color: #fff;
+	background-color: #000;
+}
+
+.btn-info {
+	color: #fff;
+	background-color: #fece2c;
+	border-color: #fece2c;
+}
+
+.octicon-chevron-down[data-v-330b3db8]:hover {
+	background: #ffcd00 !important;
+}
+
+.layout-side-section {
+	font-size: 14px;
+}
+
+.list-sidebar .list-sidebar-label {
+	color: #ffcd00;
+	font-size: 12px;
+}
+
+.layout-main-section {
+	border: 1px solid #efefef;
+}
+
+.active-tag-filters {
+	overflow: auto;
+}
+
+.filter-list .tag-filters-area {
+	border: none;
+	background-color: #ffffff;
+}
+
+.page-form {
+	border-bottom: 1px solid #efefef;
+}
+
+.list-row-head {
+	border-bottom: 1px solid #efefef !important;
+}
+
+.dropdown-menu > li > a {
+	color: #000;
+	font-weight: bold;
+}
+
+.navbar a {
+	font-size: 13px;
+}
+
+#navbar-breadcrumbs > li > a:before {
+	font-family: FontAwesome;
+	font-weight: normal;
+	font-style: normal;
+	text-decoration: inherit;
+	-webkit-font-smoothing: antialiased;
+	*margin-right: 0.3em;
+	display: inline-block;
+	speak: none;
+	font-size: 24px;
+	transition: 0.2s;
+	position: relative;
+	top: 3px !important;
+	content: "\f105";
+	margin-right: 10px;
+	color: #ffcd00;
+}
+
+.fa-check-square-o {
+	background: url(/assets/erpnext/images/erp-icon.svg)
+}
+
+.page-card {
+	height: 275px;
+	max-width: 500px !important;
+	padding: 25px !important;
+	border: 1px solid #ececec !important;
+	box-shadow: none !important;
+	border-radius:0px !important
+}
+
+.page-card .page-card-head {
+	border-bottom:none !important
+}
+
+.page-card .page-card-head .indicator {
+	color: #2b72e0 !important;
+	font-size: 15px !important;
+}
+
+@media (max-width: 991px){
+.navbar-desk {
+	width: 15% !important;}
+}
+
+.indicator.blue::before, .indicator-right.blue::after{
+	background:#397de6;
+}
+
+.indicator.orange::before, .indicator-right.orange::after{
+	background:#ffb65c;
+}
+
+.modal-content{
+	border-radius:0px !important;
+	box-shadow:none !important;
+	-webkit-box-shadow: none !important;
+	border: 1px solid #eaeaea;
+}
+
+.control-label, .grid-heading-row{
+	font-size:12px;
+}
+
+.btn-sm, .btn-group-sm > .btn {
+	font-size:12px;
+	padding: 5px 10px;
+	line-height: 1.5;
+	border-radius: 0px;
+	font-weight: bold;
+}
+
+.modal-backdrop {
+	background-color:#f8f8f8!important;
+}
+
+.form-signin .form-control {
+	padding:8px 6px !important;
+	margin:20px 0px 15px;
+	border-radius:0px;
+	border:1px solid #ececec;
+}
+
+.form-control:focus {
+	box-shadow: 0 0 0 0.05rem #ffcd00 !important;
+}
+
+.navbar-right .dropdown-help {
+	display:none
+}
+
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+	color: #ffcd00;
+	text-decoration: none;
+	background-color: #000 !important;
+}
+
+.dropdown-menu{
+	border: 1px solid #ffcd00 !important;
+	box-shadow: 0 6px 12px #ffcd00 !important;
+	border-radius: 0px 0px 0px 0px !important;
+}
+
+.border {
+	border: 1px solid #ffcd00;
+}
+
+.form-group-sm .form-control {
+	height: 30px;
+	padding: 5px 10px;
+	font-size: 12px;
+	line-height: 1.5;
+	border-radius: 0px;
+}
+
+#navbar-breadcrumbs > li > a:hover:before, #navbar-breadcrumbs > li > a:focus:before, #navbar-breadcrumbs > li > a:active:before{
+	color: #ffcd00;
+}
+
+#navbar-breadcrumbs > li > a {
+	padding: 5px 15px 10px 0px !important;
+}
+
+.btn-xs, .btn-group-xs > .btn {
+	padding: 1px 5px;
+	font-size: 12px;
+	line-height: 1.5;
+	border-radius: 0px;
+}
+
+.text-muted {
+	color: #000 !important;
+}
+
+.btn:hover {
+	color: #fff !important;
+	background-color: #000;
+}
+
+.active-tag-filters .btn-group .btn-default {
+	background-color: transparent;
+	border: 1px solid #d1d8dd;
+	color: #000000 !important;
+	float: none;
+}
+
+.kanban .kanban-card:hover, .kanban .new-card-area, .kanban .edit-card-area {
+	box-shadow: 0 2px 4px #ffcd00;
+}
+
+/*Icons for Desk*/
+.icon{
+	display: inline-block;
+	height: 50px;
+	width: 50px;
+	vertical-align: middle;
+	background-size: contain !important;
+	margin-right: 30px !important;
+}
+
+.form-control {
+	display: block;
+	width: 100%;
+	color: #000;
+	background-color: #fff;
+	background-image: none;
+	border: 1px solid #ffcd00;
+	border-radius: 0px;
+}
+
+.form-control:focus{
+	border-color: #ffcd00;	
+}
+
+.rounded {
+	border-radius: 0px;
+}
+
+.grid-footer {
+	background-color: #fff;
+}
+
+.form-grid {
+	border-radius: 0px;
+}
+
+.ql-toolbar.ql-snow, .ql-container.ql-snow {
+	border-color: #ffcd00;
+	border-radius: 0px;
+}
+
+.grid-heading-row {
+	background-color: #f7fafc;
+	font-weight: bold;
+}
+
+.grid-form-heading {
+	padding: 10px 15px;
+	font-size: 120%;
+	border-bottom: 1px solid #ffcd00;
+}
+
+.ql-bubble .ql-editor {
+	min-height: 100px;
+	max-height: 300px;
+	border: 1px solid #ffcd00;
+	border-radius: 0px;
+}
+
+.timeline-head {
+	background-color: white;
+	border: 1px solid #d1d8dd;
+	border-radius: 0px;
+	position: relative;
+	z-index: 1;
+}
+
+#alert-container .desk-alert {
+	box-shadow: 0 0px 5px rgba(0, 0, 0, 0.1);
+	max-width: 400px;
+	min-width: 200px;
+	max-height: 200px;
+	background-color: #ffcd00;
+	border: 1px solid #ffcd00;
+	overflow-y: auto;
+	position: relative;
+	transition: transform 300ms ease;
+	padding: 0px;
+}
+
+.alert {
+	margin-bottom: 20px;
+	border-radius: 0px;
+}
+
+.awesomplete > ul {
+	position: absolute;
+	left: 0;
+	min-width: 100%;
+	box-sizing: border-box;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	background: #fff;
+	transition: none;
+	background-color: #fff;
+	max-height: 200px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	border-radius: 0px 0px 0px 0px;
+	box-shadow: 0px 6px 12px #ffcd00 !important;
+	border: 1px solid #ffcd00;
+	z-index: 1041 !important;
+	text-shadow: none;
+}
+
+.start-nueoo{
+	background: url(/assets/nueoo_journey/images/start.svg)}
+
+.accounting-nueoo{
+	background: url(/assets/nueoo_journey/images/accounting.svg)}	
+
+.buying-nueoo{
+	background: url(/assets/nueoo_journey/images/buying.svg)}
+
+.selling-nueoo{
+	background: url(/assets/nueoo_journey/images/selling.svg)}
+
+.stock-nueoo{
+	background: url(/assets/nueoo_journey/images/stock.svg)}
+
+.assets-nueoo{
+	background: url(/assets/nueoo_journey/images/assets.svg)}
+
+.projects-nueoo{
+	background: url(/assets/nueoo_journey/images/projects.svg)}
+
+.crm-nueoo{
+	background: url(/assets/nueoo_journey/images/crm.svg)}
+
+.support-nueoo{
+	background: url(/assets/nueoo_journey/images/support.svg)}
+
+.hr-nueoo{
+	background: url(/assets/nueoo_journey/images/hr.svg)}
+
+.quality-nueoo{
+	background: url(/assets/nueoo_journey/images/quality.svg)}
+
+.website-nueoo{
+	background: url(/assets/nueoo_journey/images/website.svg)}
+
+.social-nueoo{
+	background: url(/assets/nueoo_journey/images/social.svg)}
+
+.dashboard-nueoo{
+	background: url(/assets/nueoo_journey/images/dashboard.svg)}
+
+.marketplace-nueoo{
+	background: url(/assets/nueoo_journey/images/marketplace.svg)}
+
+.tools-nueoo{
+	background: url(/assets/nueoo_journey/images/tools.svg)}
+
+.settings-nueoo{
+	background: url(/assets/nueoo_journey/images/settings.svg)}
+
+.users-nueoo{
+	background: url(/assets/nueoo_journey/images/users.svg)}
+
+.customize-nueoo{
+	background: url(/assets/nueoo_journey/images/customize.svg)}
+
+.integrate-nueoo{
+	background: url(/assets/nueoo_journey/images/integrate.svg)}
+
+.developer-nueoo{
+	background: url(/assets/nueoo_journey/images/developer.svg)}
+
+.learn-nueoo{
+	background: url(/assets/nueoo_journey/images/learn.svg)}
+
+.manufacture-nueoo{
+	background: url(/assets/nueoo_journey/images/manufacture.svg)}
+
+.retail-nueoo{
+	background: url(/assets/nueoo_journey/images/retail.svg)}
+
+.education-nueoo{
+	background: url(/assets/nueoo_journey/images/education.svg)}
+
+.healthcare-nueoo{
+	background: url(/assets/nueoo_journey/images/healthcare.svg)}
+
+.agriculture-nueoo{
+	background: url(/assets/nueoo_journey/images/agriculture.svg)}
+
+.non-profit-nueoo{
+	background: url(/assets/nueoo_journey/images/charity.svg)}

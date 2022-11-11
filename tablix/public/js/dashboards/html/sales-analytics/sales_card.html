@@ -1,0 +1,79 @@
+<div class="col-lg-4" style="height:450px;">
+	<div class="panel panel-default bootcards-media sales-card" data-prev="{{ prev_label }}" data-cur="{{cur_label}}" data-doctype="{%= doctype || "" %}" style="cursor: pointer;"> 
+		<div class="panel-heading" data-toggle="tooltip" title="{{cur_label}}"> 
+			<h3 class="text-center" style="font-size: 25px;">{{__(title)}}</h3>
+		</div>
+		{% var start = 0.0 %}
+		{% var end = 0.0 %}
+		{% if(target){ %}
+			{% start = target[0] %}
+			{% end = target[1] %}	
+		{% } %}	
+		{% var color = "orange" %}
+		{% var sep = "" %}
+		{% var arrow = "fa-arrow-circle-up" %}
+		<div class="panel-body">
+			<div style="float:right;font-size:50px" data-toggle="tooltip" title="{{ cur_label }}">
+				<span>{{ cur }}</span>
+				{% if(prev){ %}
+					{% sep = ": " %}
+					{% if(cur >= prev){ %}
+						<!-- Green !-->
+						{% arrow = "fa-arrow-circle-up" %}
+						{% color = "green" %}
+					{% } %}
+					{% if (cur < prev){ %}
+						<!-- Red !-->
+						{% arrow = "fa-arrow-circle-down" %}
+						{% color = "red" %}
+					{% } %}
+				{% } %}
+				<i class="fa {{ arrow }}" style="color:{{ color }}"></i>
+				
+				{% if(target){ %}
+				
+				<br>
+					<p class="float-right" style="font-size: 25px;">
+						{{ __("Target") }}: {{ format_currency(start) }}
+						{% if(cur > start){ %}
+							{% arrow = "fa-arrow-circle-up" %}
+							{% color = "green" %}
+						{% } %}
+						{% if(cur < start){ %}
+							{% arrow = "fa-arrow-circle-up" %}
+							{% color = "green" %}
+						{% } %}
+						<i class="fa {{ arrow }}" style="color:{{ color }}"></i>
+					</p>
+					
+				{% } %}
+
+			</div>	
+		</div> 
+		<div class="panel-footer" data-toggle="tooltip" title="{{ prev_label }}">
+			<p class="float-right" style="font-size: 25px;">
+				{% if(prev != undefined){ %}
+					{{ prev_label }} {{ sep }} {{prev }}
+				{% } %}
+					
+			</p>
+			{% if(target){ %}
+				<br>
+				<p class="float-right" style="font-size: 25px;">
+					{{ __("Target") }}: {{ format_currency(end) }}
+					
+					{% if(prev > end){ %}
+						{% arrow = "fa-arrow-circle-up" %}
+						{% color = "green" %}
+					{% } %}
+					{% if(prev < end){ %}
+						{% arrow = "fa-arrow-circle-up" %}
+						{% color = "green" %}
+					{% } %}
+					<i class="fa {{ arrow }}" style="color:{{ color }}"></i>
+				</p>
+			{% } %}
+		</div>
+	
+	</div>
+</div>

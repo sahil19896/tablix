@@ -1,0 +1,92 @@
+<!-- START OF FRONT PAGE !-->
+<style>
+	#a{
+		                width: 35%;
+					                display: inline-block;
+								        }
+
+	        #b{
+			                display: inline-block;
+						                width: 60%;
+									        }
+</style>
+
+<div class="row">
+	<div {% if doc.docstatus == 0 %} class="watermark" {% endif %}>
+		<div  style="height:300px;width:100%;">
+			<div class="col-xs-12">	
+				{%- if boq_profile.get("company_image") -%}
+					<p style="text-align:center;"><img src="{{boq_profile.company_image}}" style="height:100%;width:100%;margin-top:10%"></p>
+				{% else %}
+					<p class="text-center">
+						<img style="height:100%; width:100%;" 
+						src="/assets/tablix/images/proposals/invalid.png">
+					</p>
+				{% endif %}
+			</div>
+		</div>
+		<div style="height:150px;width:100%;margin-top:10%;"> 
+			<div class="col-xs-12">
+				<p class="text-uppercase" style="font-size:28px;text-align:center;">
+					<b>{{ proposal }}</b>
+				</p>
+				{% if flags.is_amc == False %}
+					<p class="text-uppercase" style="font-size:20px;text-align:center;">
+						<b>{{boq_profile.get("project_type")}}</b>
+					</p>
+				{% else %}
+					<p class="text-uppercase" style="font-size:20px;text-align:center;">
+						<b>MAINTENANCE & SUPPORT ({{ boq_profile.get("amc_type") }})</b>
+					</p>
+				{% endif %}
+				<p class="text-uppercase" style="font-size:20px;text-align:center;">
+					<b>{{boq_profile.get("system_type")}}</b>
+				</p>
+			</div>
+		</div>	
+		<div class="container" style="height:150px;">
+			<span id="a">
+				<br><br>
+				<p style="font-size:15px;">
+					Client:<b>{{doc.customer_name}}</b><br>
+				</p>
+				<p style="font-size:15px;">Prepared for: 
+					<b>Administration & Finance Division</b><br>
+				</p>
+			</span>
+			<span id="b">
+				{%- if boq_profile.get("company_logo") -%}
+					<p class="text-left">
+						<img src="{{ boq_profile.get("company_logo")}}" style="height:100%; width:50%;">
+					</p>
+				{% else %}
+					<p>
+						<img src="/assets/tablix/images/proposals/invalid.png" style="width:100%;height:50%;">
+					</p>
+				{% endif %}
+			</span>
+		</div>
+		<div class="">
+			<div class="col-xs-7">
+				<p style="font-size:16px;">Submitted on:
+					<b>{{frappe.utils.get_datetime(doc.transaction_date).strftime('%d-%b-%Y')}}</b>
+				</p>
+				<p style="font-size:16px;">Submitted by:<b>{{doc.get("bdm_name")}}</b></p>
+			</div>
+			<div class="col-xs-5">
+				<p style="font-size:15px;text-align:left;">Project Ref:
+					<b>{{boq_profile.get("boq_profile_name")}}</b>
+				</p>
+				<p style="font-size:15px;text-align:left;">Version: <b>V1.0</b></p>
+			</div>
+		</div>
+		<div style=" height:80px; width:100%;">
+			<div class="col-xs-12">
+				<p style="font-size:13px;">
+					<img src="/assets/tablix/images/proposals/titleheader.jpg" style="width:100%;height:100%;">
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- END OF FRONT PAGE !-->

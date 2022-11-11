@@ -1,0 +1,22 @@
+/*
+	Developer Sahil
+
+*/
+
+.tablix-page-header{
+  margin-left:5%;
+  margin-right:5%;
+}
+.tablix-background{
+  color: #0184A4 !important;
+}
+
+.tablix-border-color{
+ 
+}
+
+.tablix-page-title{
+  border-bottom: 2px solid #0184A4 !important;
+  font-size: 150%;
+  color: #0184A4;
+}

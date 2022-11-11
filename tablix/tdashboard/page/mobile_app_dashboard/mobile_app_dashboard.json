@@ -1,0 +1,23 @@
+{
+ "content": null, 
+ "creation": "2018-02-01 17:46:03.255717", 
+ "docstatus": 0, 
+ "doctype": "Page", 
+ "idx": 0, 
+ "modified": "2018-02-01 17:46:08.541913", 
+ "modified_by": "Administrator", 
+ "module": "TDashboard", 
+ "name": "mobile-app-dashboard", 
+ "owner": "Administrator", 
+ "page_name": "Mobile App Dashboard", 
+ "roles": [
+  {
+   "role": "System Manager"
+  }
+ ], 
+ "script": null, 
+ "standard": "Yes", 
+ "style": null, 
+ "system_page": 1, 
+ "title": "Mobile App Dashboard"
+}

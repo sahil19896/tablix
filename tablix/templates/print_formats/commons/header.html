@@ -1,0 +1,5 @@
+{% from "templates/print_formats/standard_macros.html" import add_header, render_field %}
+<div id="header-html" class="hidden-pdf"><br><br>
+     <b>{{ add_header(0,1,doc,letter_head, no_letterhead)|replace("DRAFT", "") }}</b>
+</div>
+

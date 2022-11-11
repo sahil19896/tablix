@@ -1,0 +1,132 @@
+<h3 class="sectiontwo sectiontwo-title"><b>Terms and Conditions</b></h3>
+<h3 class="sectionthree sectionthree-title"><b>Scope of Work</b></h3>
+<ul>
+	<li>Tablix shall provide ONLINE support as an immediate remedial, followed by personal visit if essential to diagnose and rectify the break down. 
+	</li>
+	<li>Tablix provides electrical cabling, If any directly associated with the equipment maintained under this agreement and as originally supplied by tablix, charges included in the proposal. 
+	</li>
+	<li>Provide preventive maintenance as per the “scope of agreement” during the principal period of maintenance at the times agreeable to both parties. Preventive maintenance to be performed separately from remedial maintenance.
+	</li>
+	{%- if boq_profile.get("amc_type") == "Comprehensive" -%}
+		<li>Provide all labor & SPARE PARTS as tablix deems necessary for maintaining the equipment in good operating condition.  Parts replaced will be standard parts or parts of an equal quality. 
+		</li>
+	{%- endif -%}
+	{%- if boq_profile.get("amc_type") == "Non Comprehensive" -%}
+		<li>Cost of spare parts replacement is not covered in Non Comprehensive AMC.</li>
+	{%- endif -%}
+	<li>Tablix shall submit service reports to the client in every quarter of the year. The reports shall detail the works performed of previous quarter by Tablix & its subcontractor.
+	</li>
+	<li>Tablix will maintain the Systems as per the Equipment List attached in the Contract. Tablix shall maintain the system in good operating condition (usual wear and tear excepted), furnish remedial maintenance during the principal period of maintenance, and be responsive to the maintenance needs of the CLIENT.
+	</li>
+	{%- if boq_profile.get("amc_type") == "Comprehensive" -%}
+		<li>Due to product obsolesce and life cycle migration, spare parts (at additional cost) & service support from manufacturers may cease to be available. In such situations where repairs will not be possible and whole assemblies or systems will have to be replaced are fully chargeable to the client.
+		</li>
+	{%- endif -%}
+<!--
+	<li>The proposal price includes 2 hour’s response time 24/7. During the holy month of Ramadan, working timings shall be changed accordingly. 
+	</li> -->
+	<li>This proposal clearly envisages work related to the attached sites as defined in this offer.  Any works related to travel outside this premises (such as Fronds) would be subject to conditions. All related arrangements like travel, food, accommodation, documentation cost and travel cost are born by the client.
+	</li>
+
+	{% if boq_profile.get("scope_of_work") %}
+		{% set list1 = boq_profile.scope_of_work.split('.') %}
+		{%- for data in list1 -%}
+			{% if data != '' %}
+				<li>{{data}}.</li>
+			{% endif %}
+		{%- endfor -%}
+	{% endif %}
+
+</ul>
+<h3 class="sectionthree sectionthree-title"><b>Price</b></h3>
+	<ul>
+		<li>Prices are quoted in {{doc.currency}}.</li>
+		<li>If the Quotation is not in AED, the validity is limited to 3 working days and billing exchange rate could vary.
+		</li>
+		<li>Prices specified herein are inclusive of Freight cost (based on ocean freight), transit insurance, cost for customs clearance and charges for the delivery of the equipment until customers site in Dubai.
+		</li>
+		<li>The prices will be excluding any taxes and levies imposed on the goods and/or services other than those explicitly specified herein.
+		</li>
+		<li>Prices mentioned are for the vendors specified in the BOQ.</li>
+		<li>Prices mentioned are excluding any form of bank charges like Advance Guarantee, Performance bond, Bid bond. Bank charges will be applied additional over & above the quoted final price. 
+		</li>
+	</ul>
+ <h3 class="sectionthree sectionthree-title"><b>Billing Terms</b></h3>
+	{% if doc.payment_schedule  %}
+		<ul>
+			{%- for row in doc.payment_schedule -%}
+				<li>{{row.invoice_portion}}% {{row.description}}</li>
+			{%- endfor -%}
+		</ul>
+	{% endif %}
+
+ <h3 class="sectionthree sectionthree-title"><b>Payment Terms</b></h3>
+<ul>
+	<li>All Advance payment are NET 0 day credit from date of invoice.</li>
+	<li>All payment milestone are NET {{doc.payment_days}} days credit from date of invoice.</li>
+</ul>
+<h3 class="sectionthree sectionthree-title"><b>Validity</b></h3>	
+<ul>
+	<li>All Invoices to be certified & confirmed within 2 working days. </li>
+	<li>All submitted project/work related documents to be certified within 3 working days. </li>
+</ul>
+<h3 class="sectionthree sectionthree-title"><b>Certification</b></h3>
+<ul>
+	<li> All Invoices to be certified & confirmed with 2 working days.</li>
+	<li>All submitted project/work related documents to be certified within 3 working days.</li>	
+</ul>
+<h3 class="sectionthree sectionthree-title"><b>Mobilization Period</b></h3>
+<ul>
+	<li>{{boq_profile.get("mobilization_period")}} days from the date of receipt of the LOA/Purchase Order/Contract signature which ever occur earlier.
+	</li>
+	<li> Mobilization is subject to site availability & conditions. 
+	</li>
+</ul>
+<h3 class="sectionthree sectionthree-title"><b>Material Delivery Period</b></h3>
+<ul>
+	<li>{{boq_profile.get("material_delivery_period")}} days from the date of receipt of the LOA/ Purchase Order/ Contract signature/ Consultant’s approval.
+	</li>
+	<li>In case of non-availability/shipment delay/vendor manufacturing delay of quoted brand/product/specification ; equivalent or higher specifications will be offered by Tablix to adhere the project timelines. 
+	</li>
+</ul>
+<h3 class="sectionthree sectionthree-title"><b>Completion Period</b></h3>
+<ul>
+	<li>Tablix will perform the scope of work in accordance with the Programme/ project plan agreed between the parties which will be dependent on the Responsibility Matrix specified here above.
+	</li>
+	<li>Tablix will not be responsible for any delays other than those solely attributable to Tablix. However, any delays occurred which are beyond the reasonable control of Tablix including Force Majeure will also be excluded.
+	</li>
+</ul>
+<h3 class="sectionthree sectionthree-title"><b>Delivery Location</b></h3>
+<ul>
+	<li>Customers Site or such other place in UAE specifically requested by the Client prior to the award of the Contract.
+	</li>
+</ul>
+<h3 class="sectionthree sectionthree-title"><b>Time and Risk</b></h3>
+<ul>
+	<li>The Risk of loss and/or damages to the Equipment, goods or materials delivered will be transferred to the Client/Customer upon the delivery of the same at the Customer/clients site or the facility advised by the Client.
+	</li>
+	<li>Notwithstanding the delivery of the Equipment/goods/ materials to the Client/Customer, the full and absolute ownership and Tile in the equipment/goods/materials supplied by Tablix will not be transferred until the payments are made in full and in cleared funds.
+	</li>
+</ul>
+<h3 class="sectionthree sectionthree-title"><b>Incoterm</b></h3>
+<ul>
+	<li>The System is provided DDP (Delivery Duty paid) Dubai according to Incoterm 2012.
+	</li>
+</ul>
+<h3 class="sectionthree sectionthree-title"><b>Other Conditions</b></h3>
+<ul>
+	<li>our proposal is subject to Tablix's standard terms and conditions of contract unless explicitly agreed in writing by the parties.
+	</li>
+</ul>
+<h3 class="sectionthree sectionthree-title"><b>Notes</b></h3>
+<ul>
+	{% if boq_profile.get("notes") %}
+		{% set note = boq_profile.notes.split('.') %}
+		{%- for data in note -%}
+			{% if data != '' %}
+				<li>{{data}}.</li>
+			{% endif %}
+		{%- endfor -%}
+	{% endif %}
+</ul>
+

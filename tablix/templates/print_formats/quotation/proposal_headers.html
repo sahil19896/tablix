@@ -1,0 +1,40 @@
+<!--Header Footer Content-->
+{%- from "templates/print_formats/standard_macros.html" import add_header, render_field -%}
+<div id="header-html" class="hidden-pdf" style="height:25px !important;">
+	<b>{{ add_header(0,1,doc,letter_head, no_letterhead)|replace("DRAFT", "") }}</b>
+</div>
+<div id="footer-html" class="visible-pdf" style="border-top:1px solid #d1d8dd !important;">
+	<div class="col-xs-8">
+		<p class="proposal-title"><b>{{doc.customer_name}}</b></p>
+		<p class="proposal-title">Signature & Stamp:</p>
+	</div>
+	<div class="col-xs-4">
+		<p class="proposal-title" style="text-align: right;"><b>Tablix Technology LLC</b></p>
+		<p class="proposal-title" style="text-align: right;">Signature & Stamp:</p>
+		{% if doc.print_with_stamp == 1 and doc.company == "Tablix Technologies Pvt. Ltd." %}
+			<div class="col-xs-12">
+				<img src = 'assets/tablix/images/gopu.png'>
+			</div>
+		{% endif %}
+		{% if doc.print_with_stamp == 1 and doc.company == "Tablix Technology LLC" %}
+			<div class="col-xs-12">
+				<img src = 'assets/tablix/images/karthik.png' style="margin-left: -140px;">
+				<img src="assets/tablix/images/dubai_stamp.png" style="position: absolute; width: 140px; height: 140px;">
+			</div>
+		{% endif %}
+	</div>
+	{% if not no_letterhead and footer %}
+		<div class="letter-head-footer">
+			{{ footer }}
+			{% if doc.get("docstatus") == 0 %}
+				<p style="color:red; font-size:12px;font-style:italic; font-weight:bold;" class="text-center">
+					Please submit the Quotation. Draft Quotation you cannot submit to client.
+				</p>
+			{% endif %}
+		</div>
+	{% endif %}
+	<p id="page" class="text-right small page-number visible-pdf">
+		{{ _("Page {0} of {1}").format('<span class="page"></span>', '<span class="topage"></span>') }}
+	</p>
+</div>
+<!--Header Footer Ends Here-->

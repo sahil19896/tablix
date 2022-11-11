@@ -1,0 +1,116 @@
+<style>
+	{% include "templates/print_formats/quotation/proposal.css" %}
+</style>
+<table class="table table-bordered" style="border-collapse:collapse;">
+	<tbody>
+		<thead><tr>
+
+			<th style="text-align:center;width:5%;"><b>Sr No.</b></th>
+			<th style="text-align:left;width:50%;"><b>Description</b></th>
+			<th style="text-align:right;width:15%;"><b>Qty</b></th>
+			{% if flags.with_price == True %}
+				<th style="text-align:right;width:15%;">
+					<b>Unit Price ({{doc.currency}})</b>
+				</th>
+				<th style="text-align:right;width:15%;">
+					<b>Total Price ({{doc.currency}})</b>
+				</th>
+			{% endif %}
+		</tr></thead>	
+		{%- for row in doc.items -%}
+			<tr>	
+				<td style="width: 5%; text-align: center;">{{row.idx}}</td>
+				<td style="width: 50%; text-align: justify;">
+					<span>
+						Model&nbsp;No:<b>{{row.item_code}}</b>&nbsp;&nbsp;
+						{% if row.brand %}Brand: <b>{{row.brand}}</b>{% endif %}
+						<br>{{row.description}}
+					</span>
+				</td>
+				<td style="width: 15%; text-align: right;">
+					<span>
+						{{row.stock_uom}}:&nbsp; {{ row.qty|replace(".0", "") }}
+					</span>
+				</td>
+				{% if flags.with_price == True %}
+					<td style="width: 15%; text-align: right;"> 
+						{{"{:,.2f}".format(row.rate)}}
+					</td>
+					<td style="width: 15%; text-align: right;"> 
+						{{"{:,.2f}".format(row.amount)}}
+					</td>
+				{% endif %}
+			</tr>
+		{% endfor %}
+		{% if flags.with_price == True %}
+			<tr>
+				{% if doc.taxes_and_charges_added %}
+					<td colspan="3" class="grand-total"><b>Sub Total</b></td>
+					<td  colspan="2" class="grand-total"><b>{{"{:,.2f}".format(doc.total)}}</b></td>
+				{% endif %}
+			</tr>
+			{% if doc.get("discount_amount") %}
+				<tr>
+					<td colspan="3"  class="grand-total"><b>(-) Discount</b></td>
+					<td  colspan="2" class="grand-total"><b>{{"{:,.2f}".format(doc.discount_amount)}}</b></td>
+				</tr>
+			{%  endif %}
+			{% if doc.get("duties") %}
+				<tr>
+					<td colspan="3" class="grand-total"><b>(+) Duties</b></td>
+					<td colspan="2" class="grand-total"><b>{{"{:,.2f}".format(doc.duties)}} </b></td>
+				</tr>
+			{% endif %}
+
+			<tr>
+				{% if doc.taxes_and_charges_added %}
+					<td colspan="3"  class="grand-total"><b>Total Amount Before TAX</b></td>
+					<td colspan="2" class="grand-total"><b> {{"{:,.2f}".format(doc.net_total)}}</b></b></td>
+				{% endif %}
+			</tr>
+
+			{% if doc.get("taxes_and_charges") == "IND GST - T-IND" %}
+				{%- for row in doc.taxes -%}
+					<tr>
+						<td colspan="3" class="grand-total"><b>(+) {{ row.description }}</b></td>
+						<td colspan="2" class="grand-total"><b>{{"{:,.2f}".format(row.tax_amount)}}</b></td>
+					</tr>
+				{% endfor %}
+			{% endif %}
+			
+			{% if doc.get("vat") %}
+				<tr>
+					<td colspan="3"  class="grand-total"><b>(+) VAT</b></td>
+					<td colspan="2" class="grand-total"><b> {{"{:,.2f}".format(doc.vat)}}</b></b></td>
+				</tr>
+			{% endif %}
+			{% if doc.get("total_advance") %}
+				<tr>
+					<td  colspan="3" class="grand-total"><b>(-) Advance Received</b></td>
+					<td colspan="2" class="grand-total"><b>{{"{:,.2f}".format(doc.total_advance)}}</b></td>
+				</tr>
+			{% endif %}
+			{% if doc.taxes_and_charges_added %}
+			<tr>
+				<td colspan="3" class="grand-total"><b>Total Amount After TAX</b></td>
+				<td colspan="2" class="grand-total"><b>{{"{:,.2f}".format(doc.grand_total)}}</b></td>
+			</tr>
+			{% else %}
+				<tr>
+					<td colspan="3" class="grand-total"><b>Total Amount</b></td>
+					<td colspan="2" class="grand-total"><b>{{"{:,.2f}".format(doc.grand_total)}}</b></td>
+				</tr>
+			{% endif %}
+			
+		{% endif %}
+	</tbody>
+</table>
+		<p style="font-size:11px;text-align:right;"><b>Amount in Words:&nbsp;{{ doc.in_words}}</b></p>
+{% if flags.include_terms == True %}
+	<div class="col-xs-12">
+		{% if doc.get("terms") %}
+			<p><u><b>Terms and Conditions:</b></u></p>
+			{{ doc.get("terms") }}
+		{% endif %}
+	</div>
+{% endif %}

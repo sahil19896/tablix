@@ -1,0 +1,2 @@
+erpnext.regional.france.setup
+erpnext.regional.france

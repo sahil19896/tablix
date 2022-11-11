@@ -1,0 +1,104 @@
+<div class="row">
+	<div class="col-xs-12">
+		<h3 class="sectionone sectionone-title"><b>Why Choose Tablix?</b></h3><hr>
+		<div class="col-xs-12">
+			<h3 class="sectiontwo sectiontwo-title"><b>Benefits of Our Proposed Plan</b></h3>
+			<p>When comparing our capabilities and proposed solution to that of competitors, the benefits of choosing Tablix are:
+			</p>	
+			<ul>
+				<li>Providing End-to-End Solution with future integration possibilities.</li>
+				<li>Tablix pool of expert resources who are trained and 
+					certified on proposed system and on other leading related systems.
+				</li>
+				<li>Tablix offers a lower cost of ownership system with high 
+					availability support and maintenance.
+				</li>
+			</ul>
+		</div>
+		<div class="col-xs-12">
+			<h3 class="sectiontwo sectiontwo-title"><b>Competitive Advantages</b></h3>
+			<p>The following are competitive advantages that differentiate Tablix from other providers:</p>
+			<ul>
+				<li><b>Company Recognition</b></li>
+				<ul>
+					<li>Tablix is a reputed and industry recognized SI for deployment of large projects, a reputation built over the trust and confidence gained through our continuous service offered to our esteemed large enterprise / corporate customers.
+					</li>
+					<li><b>Committed to Quality, Environmental and Safety Standards</b></li>
+					<li>Tablix has achieved international certification through JAS-ANZ.</p>
+					<li>Quality Management: ISO 9001:2015</li>
+					<li>Environmental Management: ISO 14001:2015</li>
+					<li>Occupational Health and Safety Assurance System: OHSAS 18001:2007</li><br>
+				</ul>
+				<li><b>Expertise & Stability</b></li>
+				<ul>
+					<li>Highly knowledgeable workforce</li>
+					<li>Skilled labor</li>
+					<li>Technological skills</li>
+					<li>Powerhouse solution</li>
+					<li>High-level of support standards</li>
+					<li>Stability & Trust</li>
+				</ul>
+				<li><b>Technology</b></li>
+				<ul>
+					<li>Performance</li>
+					<li>Flexibility</li>
+					<li>Scalability</li>
+					<li>Reliability</li>
+					<li>Features and functionality</li><br>
+				</ul>
+				<li><b>History of success</b></li>
+				<ul>
+					<li>Steady growth in sales</li>
+					<li>Successful track record</li>
+					<li>Adaptability</li>
+					<li>Loyal client base</li><br>
+				</ul>
+				<li><b>Customer Service</b></li>
+				<ul>
+					<li>First-class service</li>
+					<li>24/7 support</li>
+					<li>Client input</li>
+				</ul>
+			</ul>
+		</div>
+		<div class="col-xs-12">
+			<h3 class="sectiontwo sectiontwo-title"><b>Team Qualifications</b></h3><br>
+			<p><b>Key Team Members:</b></p><br>
+			<p>Tablix is professionally managed by 
+				<u><b>
+					{{ company_profile.get("ceo_salutation") }}. {{ company_profile.get("ceo_name") }}
+				</b></u>, 
+				who is the CEO a qualified Electronics, Electrical & Communications Engineer with MBA, having 18+ years of experience in the Telecommunication and IT / ELV Industry. 
+			</p>
+			{% if company_profile and company_profile.get("company_key_members") %} 
+				<p><b>Other Key Members:</b></p>
+				<table class="table table-bordered" style="border-collapse:collapse;">
+					<tbody>
+						<thead>
+							<tr>
+							      <th class="text-center"><b>Sr No.</b></th>
+								<th class="text-center"><b>Name</b></th>
+								<th class="text-center"><b>Title & Experience</b></th>
+							</tr>
+						 </thead>
+						{% for member in company_profile.get("company_key_members") %}
+							 <tr>
+								 <td style="width: 5%; text-align: center;">{{member.idx}}</td>
+								 <td style="width: 45%; text-align: center;"><b>{%- if member.salutation -%} {{ member.salutation}}. {%- endif -%} {{member.employee_name}}</b></td>
+								 <td style="width: 50%; text-align: center;">{%- if member.designation -%} {{member.designation}}, {%- endif -%} {{ member.description }}</td>
+							 </tr>
+						{% endfor %}
+					</tbody>
+				</table><br><br>
+			{% endif %}
+		</div>
+		<div class="col-xs-12">
+			<h3 class="sectiontwo sectiontwo-title"><b>Success Stories</b></h3><br>
+			<p>
+				Tablix has worked on similar projects in the past and has successfully implemented Integrated Technology. Most notable relevant experiences include MAFP, DU Telecom and many corporates and large enterprises.
+			</p>
+		</div>
+		{% include "templates/print_formats/commons/company_ref.html" %}
+	</div>
+</div>
+

@@ -1,0 +1,33 @@
+<h3 class="sectiontwo sectiontwo-title"><b>Service Level Agreement</b></h3>
+<p><u>Support Structure for Reactive Maintenance</u></p><br>
+<ul>
+	<li>Customer will contact Tablix through Email or Phone.</li>
+	<li>It will redirect to customer care executive.</li>
+	<li>An engineer will be notified to attend th call.</li>
+	<li>The enginer will try to understand the problem on the telephone and try to provide telephonic assistance for first level resolution.
+	</li>
+	<li>If onsite support is required, then Vendor Area Office will depute an engineer for technical assitance on site.</li>
+	<li>Any repair/replacement of field equipment will be identified and will be quoted along with delivery time information.</li>
+	<li>Ladders/high rise ladders should be provided by customer at site to carry out PMS/rectification works {{ doc.get("customer_name") }}.
+	</li>
+</ul><br>
+<table class="table table-bordered" style="border-collapse:collapse;">
+	<tbody>
+		<tr>	
+			<td style="width:30%;text-align:left;font-size:14px;"><b>Support Timings</b></td>
+			<td style="text-align:left; font-size:14px;"><b>{{ boq_profile.get("support_timings")}}</b></td>
+		</tr>
+		<tr>
+			<td style="width:30%;text-align:left;font-size:14px;"><b>Type of Support</b></td>
+			<td style="text-align:left; font-size:14px;">{{boq_profile.get("type_of_support")}}</td>
+		</tr>
+		<tr>
+			<td style="width:30%;text-align:left;font-size:14px;"><b>Response Commitment</b></td>
+			<td style="text-align:left;font-size:14px;">{{boq_profile.get("response_commitment")}}</td>
+		</tr>
+		<tr>
+			<td style="width:30%;text-align:left;font-size:14px;"><b>Resolution Commitment</b></td>
+			<td style="text-align:left;font-size:14px;">{{boq_profile.get("resolution_commitment")}}</td>
+		</tr>
+	</tbody>
+</table>

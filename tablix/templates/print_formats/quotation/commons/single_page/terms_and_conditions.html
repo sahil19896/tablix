@@ -1,0 +1,140 @@
+<div class="row">
+	<div class="col-xs-12">
+		<h3 class="sectionone-title">Terms and Conditions:</h3>
+		<div class="col-xs-12">
+			<h3 class="sectiontwo-title">1. Scope of work</h3>
+			<p> The scope of work specified in this offer will be fixed and any additions and/or revision to the scope will be considered only as variation and will be at additional cost.
+			</p>
+			<p>The proposal was prepared based on the requirements received/tender specification, so that any change in specification and/or drawings may respect in corresponding price variation or change order.
+			</p>
+			{% if boq_profile.get("scope_of_work") %}
+				<p>{{boq_profile.get("scope_of_work")}}</p>
+			{% endif %}<br>
+			<h3 class="sectiontwo-title">2. Price</h3>
+			<p> Prices are quoted in {{doc.currency}}.</p>
+			<p>If the Quotation is not in AED, the validity is permitted to <strong>3</strong> working days and biling exchange rate could vary.
+			</p>
+			
+			<p>Prices specified herein are inclusive of Freight cost (based on ocean freight), transit insurance, cost for customs clearance and charges for the delivery of the equipment until customers site in Dubai.
+			</p>
+			<p>Prices mentioned are for the vendors specified in the BOQ.</p>
+			<p>Prices mentioned are excluding any form of bank charges like Advance Guarantee, Performance bond, Bid bond. Bank charges will be applied additional over & above the quoted final price. 
+			</p><br>
+			{% if doc.payment_schedule  %}
+				<h3 class="sectiontwo-title">3. Billing Terms</h3>
+				{%- for row in doc.payment_schedule -%}
+					<p><b><b>{{"{:,.2f}".format(row.payment_amount)}}/-</b>&nbsp;{{ doc.get("currency")}}</b>({{row.invoice_portion|replace(".000", "") }}%) &nbsp; {{row.description}}</p>
+				{%- endfor -%}
+			{% endif %}<br>
+			<h3 class="sectiontwo-title">4. Payment Terms</h3>
+			<p>All Advance payment are NET 0 day credit from the date of invoice.</p>
+			<p>All payment milestone are NET {{doc.payment_days}} days credit from date of invoice.</p><br>
+			<h3 class="sectiontwo-title">5. Validity</h3>
+			<p>{{doc.validity_of_proposal}} days from date of tender closing. This offer is valid only if the offered scope is accepted/ordered in file, unless agreed otherwise by both parties.
+			</p>
+			<p>In the event of partial order, Tablix reserves the right to adjust the mentioned prices.</p><br>
+			<h3 class="sectiontwo-title">6. Certification</h3>
+			<p>All Invoices to be certified & confirmed within 2 working days.</p>
+			<p>All submitted project/work related documents to be certified within 3 working days.</p><br>
+			<h3 class="sectiontwo-title">7. Mobilization Period</h3>
+			<p>{{boq_profile.get("mobilization_period")}} days from the date of receipt of the LOA/Purchase Order/Contract signature which ever occur earlier.
+			</p>
+			<p> Mobilization is subject to site availability & conditions.</p><br>
+			<h3 class="sectiontwo-title">8. Material Delivery period</h3>
+			<p>{{boq_profile.get("material_delivery_period")}} days from the date of receipt of the LOA/ Purchase Order/ Contract signature/ Consultant's approval.
+			</p>
+			<p>In case of non-availability/shipment delay/vendor manufacturing delay of quoted brand/product/specification ; equivalent or higher specifications will be offered by Tablix to adhere the project timespan. 
+			</p><br>
+			<h3 class="sectiontwo-title">9. Completion Period</h3>
+			<p>Tablix will perform the scope of work in accordance with the Program/ project plan agreed between the parties which will be dependent on the Responsibility Matrix specified here above.
+			</p>
+			<p>Tablix will not be responsible for any delays other than those solely attributable to Tablix. However, any delays occurred which are beyond the reasonable control of Tablix including Force Majeure will also be excluded.
+			</p><br>
+			<h3 class="sectiontwo-title">10. Delivery Location</h3>
+			<p>Customers Site or such other place in UAE specifically requested by the Client prior to the award of the Contract.
+			</p><br>
+			<h3 class="sectiontwo-title">11. Title and Risk</h3>
+			<p>The Risk of loss and/or damages to the Equipment, goods or materials delivered will be transferred to the Client/Customer upon the delivery of the same at the Customer/clients site or the facility advised by the Client.
+			</p>
+			<p>Notwithstanding the delivery of the Equipment/goods/ materials to the Client/Customer, the full and absolute ownership and Title in the equipment/goods/materials supplied by Tablix will not be transferred until the payments are made in full and in cleared funds.
+			</p><br>
+			<h3 class="sectiontwo-title">12. Incoterm</h3>
+			<p>The System is provided DDP (Delivery Duty paid) Dubai according to Incoterm 2012.</p><br>
+			<h3 class="sectiontwo-title">13. Warranty</h3>
+			<p>Warranty of materials will start from the date of delivery to customer site.</p>
+			<p>Warranty will be in accordance with the specifications.</p>
+			<p>Warranty will cover against all defects/failures arising solely due to any design defect or fality material or caused due to defects in the workmanship which appear therein when used in proper manner as
+	specified in the operational manuals.
+			<p>Warranty coverage will not apply with respect to falts sustained by normal wear and tear, damages arising as a consequence of any negligence, improper handing and/or improper storage or due to operation other than for the intended purpose or any other cause beyond the range of normal usage for the Equipment.
+			</p>
+			<p>
+			Defects Liability Period (DLP) of {{boq_profile.get("dlp_period") }} months. The material delivered & work executed will be guaranteed for the performance, quality of material, workmanship for the period from the date of handing over.
+			</p><br>
+			<h3 class="sectiontwo-title">14. Ownership of the Software and documentation</h3>
+			<p> 
+				Ownership of the Software and Documentation provided as a part of the scope of work will always remain vested with us and/or the third party who authorized us to sublicense its software, regardless of whether it was or was not prepared specifically for the use of the Client/Customer.
+			</p>
+			<p>The Client/Customer will in no event reproduce, reverse engineer or modify the Software unless and to the extent permitted by mandatory law applicable to these General Condition of Sale.
+			</p>
+			<p>
+			The Client will use the software only for its own use and for the intended purpose and will not permit or make available the software in any form, to any third party without prior written consent.
+			</p><br>
+			<h3 class="sectiontwo-title">15. Other Conditions</h3>
+			<p> 
+				Our proposal is subject to Tablix's standard terms and conditions of contract unless explicitly agreed in writing by the parties.
+			{% if boq_profile.get("notes") %}
+				
+			{% endif %}
+			</p><br>
+			<h3 class="sectiontwo-title">16. Inclusions</h3>
+			{% if boq_profile.get("inclusion") %}
+				<p>{{ boq_profile.get("inclusion") }}</p>Mbr>
+			{% else %}
+				<p>None</p><br>
+			{% endif %}
+			<h3 class="sectiontwo-title">17. Notes</h3>
+			{% if boq_profile.get("notes") %}
+				<p>
+					{% set list1 = boq_profile.get("notes").split('.') %}
+					{%- for data in list1 -%}
+						{% if data != '' %}
+							<p>{{ data }}</p>
+						{% endif %}
+					{%- endfor -%}
+				</p>
+			{% else %}
+				<p><li>None</li></p>
+			{% endif %}<br>
+			<h3 class="sectiontwo-title">18. Exclusions, Our proposal DOES NOT include supply and services for the following:</h3>
+			<p>All site office with facilities for project team.</p>
+			<p> Store not in the scope.</p>
+			<p> Factory Acceptance Test are excluded from our offer. Only onsite POC knowledge transfer and hands on training are included in our offer.		
+			</p>
+			<p> 
+				Any upgrade might be required for the software of existing operational systems.		
+			</p>
+			<p>
+				Any additional equipment required after the detailed design stage will be considered as variation.
+			</p>
+			<p> 
+				Warranty/Maintenance of existing building elements, items, material, Equipment and operating systems.
+			</p>
+			<p> 
+				Facility existing condition durability, capacity, functionality, existing defects & deficiencies and any related implications are considered out of our responsibility.
+			</p>
+			<p>
+				Implications due to lack of availability of End of Life (EOL) Architectural/Interiors items & material.
+			</p>
+			<p>
+				Architectural/Interiors Design & Re-design.
+			</p>
+			<p>
+			Changes to existing construction: describe anticipated respts. Include changes to structural elements and operating components as well as changes in building's appearance and other significant visual elements.
+			</p>
+			{% if boq_profile.get("exclusion") %}
+				<p>{{ boq_profile.get("exclusion") }}</p>
+			{% endif %}
+		</div>
+	</div>
+</div>
+<br>

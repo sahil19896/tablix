@@ -1,0 +1,581 @@
+<style>
+	{% include "templates/print_formats/quotation/proposal.css" %}
+
+</style>
+{% set boq_profile = frappe.get_doc("BOQ Profile", doc.get("boq_profile")) %}
+{% set bdm = frappe.get_doc("BDM", doc.get("bdm")) %}
+{% set table_of_contents  = doc.get("amc_technical_index_items") %}
+{% set account_manager = frappe.get_doc("Account Manager", doc.get("account_manager")) %}
+{% set valid_days = boq_profile.get("validity_of_proposal") %}
+{% set valid = valid_days %}
+{% set valid_date = frappe.utils.add_days(doc.transaction_date, valid) %}
+
+<!--Header Footer Content-->
+{% include "templates/print_formats/quotation/proposal_headers.html" %}
+<!--Header Footer Ends Here-->
+
+<div class="row">
+	<div class="col-xs-12">
+		{%- if boq_profile.get("company_image") -%}
+			<p style="text-align:center;"><img src="{{doc.company_image}}" height="341" width="635"></p>
+		{%- endif -%}
+		<p style="font-size:26px;text-align:center;"><b>TECHNICAL PROPOSAL</b></p>
+		<p style="font-size:21px;text-align:center;"><b>MAINTENANCE & SUPPORT (
+			{%- if boq_profile.get("amc_type") == "Non Comprehensive" -%}
+				{{ "Non-Comprehensive" }}
+			{%- else -%}
+				{{ boq_profile.get("amc_type") }}
+			{%- endif -%}
+)</b></p>
+		<p style="font-size:24px;text-align:center;"><b>{{boq_profile.get("solution")}}</b></p>
+		<div class="col-xs-8"><br><br>
+			<p style="font-size:16px;text-align:left;">Client:<b>{{doc.customer_name}}</b></p>
+		</div>
+		<div class="col-xs-4"><br><br>
+			{%- if boq_profile.get("logo") -%}
+				<p style="text-align:left;"><img src="{{boq_profile.get("logo")}}" height="72" width="198"></b></p>
+			{% endif %}
+		</div>
+		<div class="col-xs-7"><br><br>
+			<p style="font-size:16px;text-align:left;">Submitted on:<b>{{frappe.utils.get_datetime(doc.transaction_date).strftime('%d-%b-%Y')}}</b></p>
+			<p style="font-size:16px;text-align:left;">Submitted by: <b>{{bdm.full_name}}</b></p><br>
+		</div>
+		<div class="col-xs-5"><br><br>
+			<p style="font-size:16px;text-align:left;">Project Ref:<b>{{boq_profile.get("project_site_name")}}</b></p>
+			<p style="font-size:16px;text-align:left;">Version: <b>V1.0</b></p><br>
+		</div>
+		<p style="font-size:13px;"><img src="/files/titleheader.jpg" height="65" width="100%"></p>
+	</div>
+</div>
+
+<p style="page-break-after: always;"></p>
+<!-- Table of Contents !-->
+{% include "templates/print_formats/quotation/commons/table_of_contents.html" %}
+<!-- Table of Contents !-->
+
+<p style="page-break-after: always;"></p>
+<div class= "indented" id="content">
+<div class="row">
+	<div class="col-xs-12">
+		<p id="toc" style="font-size:18px;text-align:left;"><b>INTRODUCTION</b></p><hr>
+		<p style="font-size:14px;text-align:justify;">Thank you for the opportunity provided to Tablix Technology LLC. In this proposal, we will describe the features and benefits of our {{boq_profile.get("solution") }} service solutions and how they have been tailored to meet your specific business needs.
+		</p><br>
+		<p style="font-size:14px;text-align:justify;">Our service has been recognized by industry experts as being one of the most dependable and professional in the ever growing Design and Engineering based solution provider segment. This is a result of our Industry experience that ensures all new and proven technological developments and market trends are fully understood and exploited by our engineering team.
+		</p><br>
+		<p style="font-size:14px;text-align:justify;">If you have any questions as you review this proposal, please contact us. We look forward to working with you.
+		</p><br>
+		<p style="font-size:14px;text-align:left;">Sincerely,</p><br>
+		<p style="font-size:14px;text-align:left"><b>{{doc.bdm_name}}</b></p><br>
+		<p style="text-align:left;">
+			<b><img src="/files/mobile_vector.svg" width="15" height="15"> &nbsp;&nbsp;{{bdm.phone_number}}
+		</b></p>
+		<p style="text-align:left;">
+			<b><img src="/files/email_vector.svg" width="12" height="12"> &nbsp;&nbsp;{{bdm.name}}</b>
+		</p>
+	</div>
+</div>
+
+<p style="page-break-after: always;"></p>
+	<div class="row">
+		<div class="col-xs-12">
+			<p id="toc" style="font-size:18px;text-align:left;"><b>1. SOLUTION DESCRIPTION</b></p><hr>
+			<p id="toc" style="font-size:15px;"><b>1.1 Requirement</b></p><br>
+			<p style="font-size:14px;">Maintenance & Support Contract - <b>Annual - {{boq_profile.get("amc_type")}}</b> for the following systems pertaining to the following Buildings:-</p><br>
+			<p style="font-size:14px;">"{{doc.customer_name}}"</p><br>
+			<p id="toc" style="font-size:14px;text-indent: 1em"><b>1.1.1 Annexure A</b></p>
+			<table class="table table-bordered" style="border-collapse:collapse;">
+				<tbody>
+	   				<thead>
+						<tr>	
+							  <th class="text-center">Sr.</th>
+							  <th class="text-left">Description</th>
+							  <th class="text-right">Qty</th>
+
+						</tr>
+	      				</thead>
+	   			{%- for row in doc.amc_items-%}	
+					<tr>	
+						<td style="width: 5%; text-align: center;">{{row.idx}}</td>
+            					<td style="width: 60%; text-align: left;">
+							<span style="float:left;">Item Name:</span>
+							<span style="display:inline-block; margin-left:1%;">
+								<b>{{row.item_name}}</b>
+							</span>
+							{% if row.oem_no is defined and row.oem_no != None %}
+								<span style="display:inline-block;margin-left:3%;">Part No:</span>
+								<span style="display:inline-block;margin-left:1%;">
+									<b>{{row.oem_no}}</b>
+								</span>
+							{% endif %}
+							{% if row.brand is defined and row.brand != None %}
+								<span style="display:inline-block;margin-left:3%;"></span>
+								<span style="display:inline-block;margin-left:1%;">
+									<b>Brand:{{row.brand}}</b>
+								</span>
+							{% endif %}
+							<br>
+							{{row.description}}
+						</td>
+						<td style="width: 15%; text-align: right;">
+							<span style="float:left;font-size:10px;">{{row.stock_uom}}</span>
+							<span style="font-size:12px;">{{ row.qty|replace(".0", "") }}</span>
+						</td>
+			
+        				</tr>
+
+	    			{%- endfor -%}
+			</tbody>
+		</table>
+	</div>
+</div>
+<p style="page-break-after: always;"></p>
+
+<div class="row">
+	<div class="col-xs-12">
+		<p id="toc" style="font-size:15px;text-align:left;"><b>1.2 The Solution</b></p><br>
+		<p id="toc" style="font-size:14px;text-align:left;text-indent: 1em"><b>1.2.1 Annexure B</b></p><br>
+		<p style="font-size:14px;text-align:left;"><u>Checklist for {{ boq_profile.get("amc_duration")}} Maintenance (PPM)</u></p><br>
+		<ul style="font-size:14px;">
+			{%- for row in boq_profile.get("preventive_checklist") -%} 
+				{%- if row.check == 1 -%}
+					<li style="line-height:0.8em; text-align:justify;text-justify:inter-word;">
+						{{row.topic}}
+					</li><br>
+				{%- endif -%}
+			{%- endfor -%}
+		</ul>
+	</div>
+</div>
+
+<p style="page-break-after: always;"></p>
+<div class="row">
+	<div class="col-xs-12">
+		<p id="toc" style="font-size:18px;text-align:left;"><b>2. PRICING AND TERMS</b></p><hr>
+		<p id="toc" style="font-size:15px;text-align:left"><b>2.1 Pricing Summary</b></p><br><br>
+		<table class="table table-bordered" style="border-collapse:collapse;">
+			<tbody>
+	   			<thead>
+					<tr>			
+	    					<th class="text-center"><b>Sr No.</b></th>
+						<th class="text-center"></b>Item Code</b></th>
+            					<th class="text-center"><b>Description</b></th>
+					</tr>
+	      			</thead>
+				{% set idx = 1 %}
+				{%- for item in doc.items -%}
+					{%- if item.is_amc_item -%}
+						<tr>
+							<td style="width: 5%; text-align: center;">{{idx}}</td>
+							<td style="width: 75%; text-align: left;">
+								{{ item.item_code }}
+							</td>
+							<td style="width: 20%; text-align: right;">
+								{{ item.description }}
+							</td>
+						</tr>
+					{% endif %}
+				{% endfor %}
+			</tbody>
+		</table><br><br>
+		{%- if boq_profile.get("amc_type") == "Non Comprehensive" and doc.get("spare_parts_items") -%}
+			<p style="font-size:14px;text-align:left"><b>Recommended List of Spare Parts Table:</b></p>
+			<table class="table table-bordered" style="border-collapse:collapse;">
+				<tbody>
+					<thead>
+						<tr>			
+	    						<th class="text-center"><b>Sr No.</b></th>
+							<th class="text-center"><b>Description</b></th>
+						</tr>
+		      			</thead>	
+	      				{%- for row in doc.spare_parts_items -%}	
+						<tr>
+							<td style="width: 5%; text-align: center;">{{row.idx}}</td>
+							<td style="width: 60%; text-align: left;">
+								<span style="float:left;">Model&nbsp;No:</span>
+								<span style="display:inline-block; margin-left:1%;">
+									<b>{{row.item_code}}</b>
+								</span>
+								{% if row.brand is defined and row.brand != None %}
+									<span style="display:inline-block;margin-left:3%;">
+										Brand:
+									</span>
+									<span style="display:inline-block;margin-left:1%;">
+										<b>{{row.brand}}</b>
+									</span>
+								{% endif %}
+								<br>{{row.description}}
+							</td>
+						</tr>
+	      				{%- endfor -%}
+				</tbody>
+			</table>
+		{%- endif -%}
+	</div>
+</div>
+
+<p style="page-break-after: always;"></p>
+<p>.</p>
+<div class="row">
+	<div class="col-xs-12">
+		<p id="toc" style="font-size:15px;text-align:left;"><b>2.2 Terms and Conditions</b></p>
+		<table class="table table-bordered">
+			<tbody>
+				<tr>
+					<td style="width: 35%;font-size:13px;">Scope of work</td>
+					<td style="width: 65%;font-size:13px;text-align:justify;">
+						<ul>
+							<li>Tablix shall provide ONLINE support as an immediate remedial, followed by personal visit if essential to diagnose and rectify the break down. 
+							</li>
+							<li>Tablix provides electrical cabling, If any directly associated with the equipment maintained under this agreement and as originally supplied by tablix, charges included in the proposal. 
+							</li>
+							<li>Provide preventive maintenance as per the “scope of agreement” during the principal period of maintenance at the times agreeable to both parties. Preventive maintenance to be performed separately from remedial maintenance.
+							</li>
+							{%- if boq_profile.get("amc_type") == "Comprehensive" -%}
+								<li>Provide all labor & SPARE PARTS as tablix deems necessary for maintaining the equipment in good operating condition.  Parts replaced will be standard parts or parts of an equal quality. 
+								</li>
+							{%- endif -%}
+							{%- if boq_profile.get("amc_type") == "Non Comprehensive" -%}
+								<li>Cost of spare parts replacement is not covered in Non Comprehensive AMC.</li>
+							{%- endif -%}
+							<li>Tablix shall submit service reports to the client in every quarter of the year. The reports shall detail the works performed of previous quarter by Tablix & its subcontractor.
+							</li>
+							<li>Tablix will maintain the Systems as per the Equipment List attached in the Contract. Tablix shall maintain the system in good operating condition (usual wear and tear excepted), furnish remedial maintenance during the principal period of maintenance, and be responsive to the maintenance needs of the CLIENT.
+							</li>
+							{%- if boq_profile.get("amc_type") == "Comprehensive" -%}
+								<li>Due to product obsolesce and life cycle migration, spare parts (at additional cost) & service support from manufacturers may cease to be available. In such situations where repairs will not be possible and whole assemblies or systems will have to be replaced are fully chargeable to the client.
+								</li>
+							{%- endif -%}<!--
+							<li>The proposal price includes 2 hour’s response time 24/7. During the holy month of Ramadan, working timings shall be changed accordingly. 
+							</li> -->
+							<li>This proposal clearly envisages work related to the attached sites as defined in this offer.  Any works related to travel outside this premises (such as Fronds) would be subject to conditions. All related arrangements like travel, food, accommodation, documentation cost and travel cost are born by the client.
+							</li>
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<td style="width: 35%;font-size:13px;">Price</td>
+					<td style="width: 65%;font-size:13px;text-align:justify;">
+						<ul>
+							<li>Prices are quoted in {{doc.currency}}.</li>
+							<li>If the Quotation is not in AED, the validity is limited to 3 working days and billing exchange rate could vary.
+							</li>
+							<li>Prices specified herein are inclusive of Freight cost (based on ocean freight), transit insurance, cost for customs clearance and charges for the delivery of the equipment until customers site in Dubai.
+							</li>
+							<li>The prices will be excluding any taxes and levies imposed on the goods and/or services other than those explicitly specified herein.
+							</li>
+							<li>Prices mentioned are for the vendors specified in the BOQ.</li>
+							<li>Prices mentioned are excluding any form of bank charges like Advance Guarantee, Performance bond, Bid bond. Bank charges will be applied additional over & above the quoted final price. 
+							</li>
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<td style="width: 35%;font-size:13px;">Billing Terms</td>
+					<td style="width: 65%;font-size:13px;text-align:justify;">
+						{% if doc.payment_schedule  %}
+							<ul style="font-size:13px;">
+								{%- for row in doc.payment_schedule -%}
+									<li>{{row.invoice_portion}}% {{row.description}}</li>
+								{%- endfor -%}
+							</ul>
+						{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<td style="width: 35%;font-size:13px;">Payment Terms</td>
+					<td style="width: 65%;font-size:13px;text-align:justify;">
+						<ul>
+							<li>All Advance payment are NET 0 day credit from date of invoice.</li>
+							<li>All payment milestone are NET {{doc.payment_days}} days credit from date of invoice.</li>
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<td style="width: 35%;font-size:13px;">Validity</td>
+					<td style="width: 65%;font-size:13px;text-align:justify;">
+						<ul>
+							<li>{{boq_profile.get("validity_of_proposal")}} days from date of tender closing. This offer is valid only if the offered scope is accepted/ordered in full, unless agreed otherwise by both parties.
+							</li>
+							<li>In the event of partial order, Tablix reserves the right to adjust the mentioned prices.
+							</li>
+						</ul>
+					</td>
+				</tr>
+     			</tbody>
+		</table>
+	</div>
+</div>
+<p style="page-break-after: always;"></p>
+<div class="row">
+	<div class="col-xs-12">
+		<p>.</p>
+		<table class="table table-bordered">
+			<tbody>
+				<tr>
+					<td style="width:35%;font-size:13px;">Certification</td>
+					<td style="width:65%;font-size:13px;text-align:justify;">
+						<ul>
+						    <li>All Invoices to be certified & confirmed within 2 working days. </li>
+						    <li>All submitted project/work related documents to be certified within 3 working days. </li>
+						</ul>
+					</td>
+				</tr>
+
+				<tr>
+					<td style="width:35%;font-size:13px;">Mobilization Period</td>
+					<td style="width:65%;font-size:13px;text-align:justify;">
+						<ul>
+							<li>{{boq_profile.get("mobilization_period")}} days from the date of receipt of the LOA/Purchase Order/Contract signature which ever occur earlier.
+							</li>
+							<li> Mobilization is subject to site availability & conditions. 
+							</li>
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<td style="width:35%;font-size:13px;">Material Delivery period</td>
+					<td style="width:65%;font-size:13px;text-align:justify;">
+						<ul>
+							<li>{{doc.material_delivery_period}} days from the date of receipt of the LOA/ Purchase Order/ Contract signature/ Consultant’s approval.
+							</li>
+							<li>In case of non-availability/shipment delay/vendor manufacturing delay of quoted brand/product/specification ; equivalent or higher specifications will be offered by Tablix to adhere the project timelines. 
+							</li>
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<td style="width:35%;font-size:13px;">Completion Period</td>
+						<td style="width:65%;font-size:13px;text-align:justify;">
+							<ul>
+								<li>Tablix will perform the scope of work in accordance with the Programme/ project plan agreed between the parties which will be dependent on the Responsibility Matrix specified here above.
+								</li>
+								<li>Tablix will not be responsible for any delays other than those solely attributable to Tablix. However, any delays occurred which are beyond the reasonable control of Tablix including Force Majeure will also be excluded.
+								</li>
+							</ul>
+						</td>
+				</tr>
+				<tr>
+					<td style="width:35%;font-size:13px;">Delivery Location</td>
+					<td style="width:65%;font-size:13px;text-align:justify;">
+						<ul>
+							<li>Customers Site or such other place in UAE specifically requested by the Client prior to the award of the Contract.
+							</li>
+						</ul>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<p style="page-break-after: always;"></p>
+<div class="row">
+	<div class="col-xs-12">
+		<p>.</p>
+		<table class="table table-bordered">
+			<tbody>	
+				<tr>
+					<td style="width:35%;font-size:13px;">Title and Risk</td>
+					<td style="width:65%;font-size:13px;text-align:justify;">
+			    			<ul>
+							<li>The Risk of loss and/or damages to the Equipment, goods or materials delivered will be transferred to the Client/Customer upon the delivery of the same at the Customer/clients site or the facility advised by the Client.
+							</li>
+							<li>Notwithstanding the delivery of the Equipment/goods/ materials to the Client/Customer, the full and absolute ownership and Tile in the equipment/goods/materials supplied by Tablix will not be transferred until the payments are made in full and in cleared funds.
+							</li>
+			   			</ul>
+					</td>
+				</tr>
+				<tr>
+					<td style="width:35%;font-size:13px;">Incoterm</td>
+					<td style="width:65%;font-size:13px;text-align:justify;">
+			    			<ul>
+							<li>The System is provided DDP (Delivery Duty paid) Dubai according to Incoterm 2012.
+							</li>
+			   			</ul>
+					</td>
+				</tr>	
+				<tr>
+					<td style="width:35%;font-size:13px;">Ownership of the Software and documentation</td>
+					<td style="width:65%;font-size:13px;text-align:justify;">
+						<ul>
+							<li>
+							Ownership of the Software and Documentation provided as a part of the scope of work will always remain vested with us and/or the third party who authorized us to sublicense its software, regardless of whether it was or was not prepared specifically for the use of the Client/Customer.
+							</li>
+							<li>
+							The Client/Customer will in no event reproduce, reverse engineer or modify the Software unless and to the extent permitted by mandatory law applicable to these General Condition of Sale.
+							</li>
+							<li>
+							The Client will use the software only for its own use and for the intended purpose and will not permit or make available the software in any form, to any third party without prior written consent.
+							</li>
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<td style="width:35%;font-size:13px;">Other Conditions</td>
+					<td style="width:65%;font-size:13px;text-align:justify;">
+						<ul>
+							<li>our proposal is subject to Tablix's standard terms and conditions of contract unless explicitly agreed in writing by the parties.
+							</li>
+						</ul>
+					</td>
+				</tr>
+				{%- if boq_profile.get("notes") != ""  -%}
+					<tr>
+						<td style="width:35%;font-size:13px;">Notes</td>
+						<td style="width:65%;font-size:13px;text-align:justify;">
+							<ul>
+								<li>
+									{{ boq_profile.get("notes") }}
+								</li>
+							</ul>
+						</td>
+					</tr>
+				{%- endif -%}
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<p style="page-break-after: always;"></p>
+<div class="row">
+	<div class="col-xs-12">
+		<p id="toc" style="font-size:15px;text-align:left;text-indent: 1em"><b>2.3 Service Level Agreement</b></p><br>
+		<p style="font-size:14px;text-align:left;"><u>Support Structure for Reactive Maintenance</u></p><br>
+		<ul style="font-size:14px;">
+			{%- for row in boq_profile.get("reactive_checklist")-%} 
+				{%- if row.check == 1 -%}
+					<li style="text-align:justify">{{row.topic}}</li>
+				{%- endif -%}
+			{%- endfor -%}
+		</ul><br><br>
+		<table class="table table-bordered" style="border-collapse:collapse;">
+			<tbody>
+				<tr>	
+					<td style="width:30%;text-align:left;font-size:14px;"><b>Support Timings</b></td>
+					<td style="text-align:left;"><b>{{ boq_profile.get("support_timings")}}</b></td>
+				</tr>
+				<tr>
+					<td style="width:30%;text-align:left;font-size:14px;"><b>Type of Support</b></td>
+					<td style="text-align:left;">{{boq_profile.get("type_of_support")}}</td>
+				</tr>
+				<tr>
+					<td style="width:30%;text-align:left;font-size:14px;"><b>Response Commitment</b></td>
+					<td style="text-align:left;">{{boq_profile.get("response_commitment")}}</td>
+				</tr>
+				<tr>
+					<td style="width:30%;text-align:left;font-size:14px;"><b>Resolution Commitment</b></td>
+					<td style="text-align:left;">{{boq_profile.get("doc.resolution_commitment")}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<p style="page-break-after: always;"></p>
+<div class="row">
+	<div class="col-xs-12">
+		<p id="toc" style="font-size:18px;text-align:left;"><b>3. PRICE INCLUSIONS & EXCLUSIONS</b></p><hr>
+		{% if boq_profile.get("inclusions") %}
+			<p id="toc" style="font-size:15px;text-align:left;"><b>3.1 Solution Inclusions</b></p>
+			{{boq_profile.get("inclusions")}}<br><br>
+		{% endif %}
+		<p id="toc" style="font-size:15px;text-align:left;"><b>3.2 Solution Exclusions</b></p>
+		<ul style="font-size:13px;">
+			<li>Tablix's obligation to provide maintenance service here under is contingent upon the proper use of all equipment and does not cover equipment which has been modified without CONTRACTOR's approval or which has been subjected to unusual physical or electrical stress.
+			</li>
+			<li>Tablix  shall not be obligated to furnish maintenance service, under this proposal in the following conditions:
+			</li>
+			<li>If adjustment, repair or parts replacement is required because of accident, neglect, misuse, transportation or cause other than normal working use. If the equipment is maintained, modified or repaired, or if attempts to repair or service the equipment are made, by other than tablix's personnel, without the prior approval of tablix.
+			</li>
+			<li>If the equipment is either removed from its initial installation location or is reinstalled without the prior approval of tablix.
+			</li>
+			<li>All Kinds of Software & Hardware Updates/Upgrades</li>
+			<li>If the service is required as a result of the causes stated above, such repair would be made at a mutually agreed rate depending upon the time and nature of services to be provided.
+			</li>
+			<li>Tablix's obligation to provide software upgrades (if not provided free from the existing system manufacturer/Product supplier). Either the client need to have a support contract with the manufacturer, which can authorize contractor to extract support and free upgrades from the equipment manufacturer.
+			</li>
+			<li>Existing conditions information, As built, operation manuals, and specification. (To be provided by Client).
+			</li>
+			<li>Implications due to lack of availability of End of Life (EOL) Architectural/Interiors items & material.
+			</li>
+			<li>Architectural/Interiors Design & Re-design.</li>
+			<li>Changes to existing construction: describe anticipated results. Include changes to structural elements and operating components as well as changes in building's appearance and other significant visual elements.
+			</li>
+		</ul>
+		{{boq_profile.get("exclusions")}}<br>
+	</div>
+</div>
+<p style="page-break-after: always;"></p>
+
+
+<div class="row">
+	<div class="col-xs-12">
+		<p id="toc" style="font-size:18px;text-align:left;"><b>4. PROPOSAL ACCEPTANCE</b></p><hr>
+		<p style="font-size:13px;text-align:justify;">Tablix Technology LLC services, products, and deliverables offered are pursuant to the terms contained herein and in accordance with the Tablix technology LLC standard terms and conditions.
+		</p><br>
+		<p style="font-size:13px;text-align:justify;">Upon signature, client acknowledges, accepts, and agrees to order Tablix technology LLC products and services as described herein at the offered pricing.  In addition, Customer acknowledges acceptance of all assumptions and exclusions described in this proposal.
+		</p><br><br><br><br>
+		<table style="width:100%;border-color:#DCDCDC;">
+			<tbody>
+				<tr>
+					<td style="text-align:left;border-top-style:none;border-right:1px solid #DCDCDC;border-bottom-style:none;border-left-style:none;font-size:13px;width:50%">SIGNED by
+					</td>
+					<td style="text-align:left;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:13px;width:50%">SIGNED by</td>
+				</tr>
+				<tr>
+					<td style="text-align:left;border-top-style:none;border-right:1px solid #DCDCDC;border-bottom-style:none;border-left-style:none;font-size:13px;width:50%">Duly authorized for and on behalf of
+					</td>
+					<td style="text-align:left;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:13px;width:50%">Duly authorized for and on behalf of
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align:left;border-top-style:none;border-right:1px solid #DCDCDC;border-bottom-style:none;border-left-style:none;font-size:13px;width:50%"><b>{{doc.customer_name}}</b>
+					</td>
+					<td style="text-align:left;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:13px;width:50%"><b>Tablix Technology LLC</b>
+					</td>
+				</tr>
+				<tr>
+					<td style="text-align:left;border-top-style:none;border-right:1px solid #DCDCDC;border-bottom-style:none;border-left-style:none;font-size:13px;width:50%">Name:
+					</td>
+					<td style="text-align:left;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:13px;width:50%">Name:
+					</td>
+				</tr>
+				<tr></tr>
+				<tr>
+					<td style="text-align:left;border-top-style:none;border-right:1px solid #DCDCDC;border-bottom-style:none;border-left-style:none;font-size:13px;width:50%">Signature:......................
+					</td>
+					<td style="text-align:left;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:13px;width:50%">Signature:......................
+					</td>
+				</tr>
+				<tr></tr>
+				<tr>
+					<td style="text-align:left;border-top-style:none;border-right:1px solid #DCDCDC;border-bottom-style:none;border-left-style:none;font-size:13px;width:50%">Stamp:.................
+					</td>
+					<td style="text-align:left;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:13px;width:50%">Stamp:.................
+					</td>
+				</tr>
+    			</tbody>
+		</table>
+	</div>
+</div>
+<!-- </div> !-->
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+jQuery.fn.toggleNext = function() {
+  this.toggleClass('arrow-down')
+    .next().slideToggle('fast');
+
+};
+$(document).ready(function() {
+ $('#content #toc').each(function(index) {
+    var $chapterTitle = $(this);
+    var chapterId = 'chapter-' + (index + 1);
+    $chapterTitle.attr('id', chapterId);
+    $('#a'+index).attr('href','#' + chapterId);
+   
+ });
+});
+</script>

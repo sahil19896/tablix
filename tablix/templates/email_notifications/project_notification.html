@@ -1,0 +1,19 @@
+<div>
+	 <h1 class="tablix-color"><b>Hi Team,</b><h1>
+	 {%-  for reference, msg in items.iteritems() -%}
+		 <h3 class="tablix-color"><b>Reference:</b><span class="blue-color">{{ reference }}</span></h3>
+		 <h5 class="tablix-color" style="margin-left:5%;">{{ msg }}</h5>
+	{%- endfor -%}
+
+	{%- include  "templates/email_notification/footer.html" -%}	
+</div>
+<style>
+.tablix-color{
+
+  color:#0184a7 !important;
+
+}
+.blue-color{
+  color: blue !important;
+}
+</style>

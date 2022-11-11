@@ -1,0 +1,42 @@
+{% if doc.appendix_items %}
+	<div class="row">
+		<div class="col-xs-12">
+			<h2 id="toc" class="toc" class="sectionone"><b>Appendix A</b></h2><hr>
+			<ul class="appendix">
+				{%- for data in doc.appendix_items -%}
+					{% if data.check == 1 %}
+						<li>{{data.topic}}</li>
+					{% endif %}
+				{%- endfor -%}
+			</ul>
+				<p style="font-size:13px;"><i>Refer attached next sheet</i></p><br>
+		</div>
+	</div>
+
+<p style="page-break-after: always;"></p>
+
+	<div class="row">
+		<div class="col-xs-12">
+			<h2 id="toc" style="font-size:18px;text-align:left;" class="sectionone"><b>Appendix B</b></h2><hr>
+			<p style="font-size:13px;"><i>Refer attached next sheet</i></p><br>
+		</div>
+	</div>
+
+<p style="page-break-after: always;"></p>
+
+	<div class="row">
+		<div class="col-xs-12">
+			<h2 id="toc" style="font-size:18px;text-align:left;" class="sectionone"><b>Appendix C</b></h2><hr>
+			<p style="font-size:13px;"><i>Refer attached next sheet</i></p><br>
+		</div>
+	</div>
+
+<p style="page-break-after: always;"></p>
+
+	<div class="row">
+		<div class="col-xs-12">
+			<h2 id="toc" style="font-size:18px;text-align:left;" class="sectionone"><b>Appendix D</b></h2><hr>
+			<p style="font-size:13px;"><i>Refer attached next sheet</i></p><br>
+		</div>
+	</div>
+{% endif %}

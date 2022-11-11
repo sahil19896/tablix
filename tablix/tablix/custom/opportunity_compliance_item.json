@@ -1,0 +1,32 @@
+{
+ "custom_fields": [],
+ "custom_perms": [],
+ "doctype": "Opportunity Compliance Item",
+ "property_setters": [
+  {
+   "_assign": null,
+   "_comments": null,
+   "_liked_by": null,
+   "_user_tags": null,
+   "creation": "2018-10-08 12:37:07.221454",
+   "default_value": null,
+   "doc_type": "Opportunity Compliance Item",
+   "docstatus": 0,
+   "doctype_or_field": "DocField",
+   "field_name": "user_requirements",
+   "idx": 0,
+   "modified": "2018-10-08 12:37:07.221454",
+   "modified_by": "remriz.estella@tablix.ae",
+   "name": "Opportunity Compliance Item-user_requirements-width",
+   "owner": "remriz.estella@tablix.ae",
+   "parent": null,
+   "parentfield": null,
+   "parenttype": null,
+   "property": "width",
+   "property_type": null,
+   "row_name": null,
+   "value": "253"
+  }
+ ],
+ "sync_on_migrate": 1
+}

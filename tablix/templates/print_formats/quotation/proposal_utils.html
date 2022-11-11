@@ -1,0 +1,37 @@
+{% macro  add_index(title, ele) %}
+	{% set ele = "" %}
+	<script>
+		var _class = "";
+		{% if ele=="h1" %}
+			_class = "one";
+		{% endif %}
+		{% if ele=="h2" %}
+			_class = "two";
+		{% endif %}
+		{% if ele=="h3" %}
+			_class="three";
+		{% endif %}
+		var content = document.createElement("p");
+		content.setAttribute("class", _class);
+		content.setAttribute("style", "font-size:14px;text-align:left;");
+		document.getElementById("table-of-contents").append(content);
+		var index = document.createElement("p");
+		content.setAttribute("class", _class);
+		content.setAttribute("style", "font-size:14px;text-align:left;");
+		var span = document.createElement("span");
+		span.setAttribute("class", "page");
+		index.append(span);	
+		$("<p id='page' class='text-right small page-number visible-pdf'><span class='page'</span>', '<span class='topage'></span></p>").appendTo("#indexs-of-table");
+		document.getElementById("indexs-of-table").append(index);
+	</script>	
+{% endmacro %}
+
+{% macro join_systems(boq_profile, flags) %}
+	{% system_type = "" %}
+	{% if boq_profile.get("system_items") %}
+		{% for system in boq_profile.get("system_items") %}
+			{% system_type = system_type+system.get("abbreviation_of_system")|replace(None, "") %}	
+		{% endfor %}
+	{% endif %}	
+
+{% endmacro %}

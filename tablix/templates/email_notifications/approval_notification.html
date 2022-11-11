@@ -1,0 +1,77 @@
+<div style="'Lucida Console', Monaco, monospace">
+	<div>
+		
+		<h4><strong>New Message</strong></h4>
+		<div class="message even" style="margin-left:15px;">
+			<p>You have new message from: <strong>{{ user }}.</strong></p>
+			<p><strong>{{ doc.get("doctype") }} - {{ doc.get("name") }}</strong> is in <strong>{{ doc.get("tablix_status") or doc.get("status") }}</strong> stage.</p>
+			<p><strong> Kindly verify the document & check whether it requires your approval or not. </strong></p>
+		</div>
+
+
+		<div class="message odd" style="margin-left:15px;">
+			<h4> More Info:</h4>
+		</div>
+		<div style="margin-left:30px;">
+			<div class="message odd" style="margin-left:15px;">
+		
+				<p>	
+					{% if msg %}
+						<strong>Message:{{ " " }}</strong>{{ msg }}<br>
+					{% else %}
+						<strong>Status:</strong>{{ " " }}{{ doc.get("tablix_status") or doc.get("status")  }}
+					{% endif %}
+					{% if reason %}
+						,<strong> Reason:{{ " " }}</strong>{{ reason }}
+					{% endif %}
+				</p>
+			</div>
+			<div class="message even" style="margin-left:15px;">
+				<p>
+					{% if project %}
+					
+						<strong>Project Name: {{ " " }}</strong>{{ project }}
+					{% endif %}
+					
+				</p>
+			</div>
+			<div class="message even" style="margin-left:15px;">
+				{% if doctype in ['Purchase Order', 'Purchase Receipt', 'Purchase Invoice']  %}
+					<p>
+						<strong>Supplier: {{" " }}</strong>{{ doc.get("supplier") }}, 
+					</p>
+				{% endif %}
+			</div>
+			<div class="message even" style="margin-left: 15px;">
+				{% if doctype in ['Sales Order', 'Quotation', 'Sales Order', 'Delivery Note'] %}
+					
+					<p>
+						<strong>Customer: {{ " " }}</strong>{{ doc.get("customer") }},
+					</p>
+				{% endif %}
+			</div>
+			
+		</div>
+			<div class="message odd" style="margin-left:15px;">
+					<p><strong>Links:</strong></p>
+					<p class="msg-content">{{ "Please click on link  "}} {{ frappe.utils.get_link_to_form(doc.get("doctype"), doc.get("name")) }} {{ " to view this document in browser" }}</p>
+			</div>
+		<hr>
+		<div class="footer">
+			<p>
+				This email is sent to the intended recipient(s) and may contain confidential information.</br>
+				Please ignore if you are not the addressed recipient(s).
+			</p>
+		</div>
+	</div>
+</div>
+
+<style>
+.msg-content{
+	margin-left: 20px;
+}
+.even{
+}
+.odd{
+}
+</style>

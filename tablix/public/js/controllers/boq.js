@@ -1,0 +1,19 @@
+cur_frm.add_fetch("opportunity", "boq_converted_date", "boq_requested_date");
+cur_frm.add_fetch("opportunity", "account_manager", "account_manager");
+cur_frm.add_fetch("opportunity", "bdm", "bdm");
+cur_frm.add_fetch("opportunity", "project_name", "project_site_name");
+cur_frm.add_fetch("opportunity", "expected_date", "expected_date");
+cur_frm.add_fetch("opportunity", "solution", "solution");
+cur_frm.add_fetch("opportunity", "boq", "boq");
+cur_frm.add_fetch("opportunity", "is_amc", "is_amc");
+cur_frm.add_fetch("opportunity", "is_proposal", "is_proposal");
+cur_frm.add_fetch("opportunity", "is_proposal", "expected_date");
+cur_frm.add_fetch("opportunity", "customer_name", "customer_name");
+cur_frm.add_fetch("opportunity", "owner", "opp_owner");
+cur_frm.add_fetch("item_code", "item_group", "item_group");
+cur_frm.add_fetch("system_type", "system_overview", "system_overview");
+cur_frm.add_fetch("payment_term", "payment_term_description", "payment_term_description");
+cur_frm.add_fetch("lead", "company_name", "customer_name");
+cur_frm.add_fetch("customer", "customer_name", "customer_name");
+cur_frm.get_docfield("items").allow_bulk_edit = 1;
+

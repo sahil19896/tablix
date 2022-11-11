@@ -1,0 +1,126 @@
+<style>
+	{% include "templates/print_formats/quotation/proposal.css" %}
+</style>
+<table class="table table-bordered" style="border-collapse:collapse;">
+	<tbody>
+		<thead><tr>
+
+			<th style="text-align:center;width:5%;"><b>Sr No.</b></th>
+			<th style="text-align:left;width:40%;"><b>Description</b></th>
+			<th style="text-align:left;width:10%;"><b>HSN</b></th>
+			<th style="text-align:left;width:10%;"><b>GST Rate</b></th>
+			<th style="text-align:right;width:15%;"><b>Qty</b></th>
+			{% if flags.with_price == True %}
+				<th style="text-align:right;width:15%;">
+					<b>Unit Price ({{doc.currency}})</b>
+				</th>
+				<th style="text-align:right;width:15%;">
+					<b>Total Price ({{doc.currency}})</b>
+				</th>
+			{% endif %}
+		</tr></thead>	
+		{%- for row in doc.items -%}
+			<tr>	
+				<td style="width: 5%; text-align: center;">{{row.idx}}</td>
+				<td style="width: 40%; text-align: justify;">
+					<span>
+						Model&nbsp;No:<b>{{row.item_code}}</b>
+						<br>{{row.description}}
+					</span>
+				</td>
+				<td style="width: 5%; text-align: center;">{{row.gst_hsn_code}}</td>
+				<td style="width: 5%; text-align: center;">
+					{% if doc.taxes_and_charges == "IND GST - T-IND" and row.item_tax_rate == "{}" %}
+						18%
+					{% endif %}
+				</td>
+				<td style="width: 15%; text-align: right;">
+					<span>
+						{{row.stock_uom}}:&nbsp; {{ row.qty|replace(".0", "") }}
+					</span>
+				</td>
+				{% if flags.with_price == True %}
+					<td style="width: 15%; text-align: right;"> 
+						{{"{:,.2f}".format(row.rate)}}
+					</td>
+					<td style="width: 15%; text-align: right;"> 
+						{{"{:,.2f}".format(row.amount)}}
+					</td>
+				{% endif %}
+			</tr>
+		{% endfor %}
+		
+		{% if doc.get("discount_amount") %}
+			<tr>
+				<td colspan="3" class="grand-total"><b>(-) Discount</b></td>
+				<td  colspan="4" class="grand-total"><b>{{"{:,.2f}".format(doc.discount_amount)}}</b></td>
+			</tr>
+			<tr>
+				<td colspan="3"  class="grand-total"><b>Total Amount Before TAX</b></td>
+				<td colspan="4" class="grand-total"><b> {{"{:,.2f}".format(doc.net_total)}}</b></b></td>
+			</tr>
+		{%  endif %}
+		<tr>
+			<td colspan="3" class="grand-total">
+				{% if doc.taxes_and_charges == "IND GST - T-IND" %}
+					<b>CGST @ 9% <br/>
+					SGST @ 9%</b>
+				{% endif %}
+			</td>
+			<td colspan="3" class="grand-total">
+				{% if doc.taxes_and_charges == "IND GST - T-IND" %}
+					<b>9% <br/>
+					9%</b>
+				{% endif %}
+			</td>
+			<td colspan="1" class="grand-total">
+				{% if doc.taxes_and_charges == "IND GST - T-IND" %}
+					<b>{{doc.other_charges}}<br/>
+					{{doc.other_charges}}</b>
+				{% endif %}
+			</td>
+		<tr>
+			<td colspan="3" class="grand-total"><b>Total</b></td>
+			<td colspan="2" class="grand-total"><b>{{doc.total_qty}}</b></td>
+			<td colspan="4" class="grand-total"><b>₹ {{"{:,.2f}".format(doc.grand_total)}}</b></td>
+		</tr>
+		<tr>
+			<td colspan="7" class="grand-total" style="text-align: left;">Amount in Words:<br><b>{{ doc.in_words}}</b></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td colspan="0" class="grand-total"><b>Taxable Value</b></td>
+			<td colspan="2" class="grand-total"><b>Central Tax</b></td>
+			<td colspan="2" class="grand-total"><b>State Tax</b></td>
+			<td colspan="2" class="grand-total"><b>Total</b></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td colspan="0" class="grand-total"></td>
+			<td colspan="1" class="grand-total"><b>Rate</b></td>
+			<td colspan="1" class="grand-total"><b>Amount</b></td>
+			<td colspan="1" class="grand-total"><b>Rate</b></td>
+			<td colspan="1" class="grand-total"><b>Amount</b></td>
+			<td colspan="1" class="grand-total"><b>Tax Total</b></td>
+		</tr>
+		<tr>
+			{%- for row in doc.items -%}
+				<td></td>
+				<td style="text-align: right;">{{"{:,.2f}".format(row.amount)}}</td>
+				<td style="text-align: right;">9%</td>
+				<td style="text-align: right;">{{"{:,.2f}".format(row.amount*9/100)}}</td>
+				<td style="text-align: right;">9%</td>
+				<td style="text-align: right;">{{"{:,.2f}".format(row.amount*9/100)}}</td>
+				<td style="text-align: right;">{{"{:,.2f}".format(row.amount*18/100)}}</td>
+			{% endfor %}
+		</tr>
+	</tbody>
+</table>
+{% if flags.include_terms == True %}
+	<div class="col-xs-12">
+		{% if doc.get("terms") %}
+			<p><u><b>Terms and Conditions:</b></u></p>
+			{{ doc.get("terms") }}
+		{% endif %}
+	</div>
+{% endif %}

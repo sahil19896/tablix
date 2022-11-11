@@ -1,0 +1,26 @@
+<div class="table-of-contents">
+	<div class="row indented">
+		<div class="row">
+			<div class="col-xs-8">
+				<h3 class="text-center" style="font-size:18px;">{{ _("TABLE OF CONTENTS") }}</h3>
+			</div>
+			<div class="col-xs-4" >
+				<h3 class="text-center" style="font-size:18px;">{{ _("INDEX") }}</h3>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-10">
+				{% for index in  table_of_contents %}
+					{{ frappe.render_template(index.get("contents"), {"boq_profile": boq_profile, "doc":doc}) }}
+				{% endfor %}
+			</div>
+			<div class="col-xs-2">
+				{% for index in table_of_contents  %}
+					<p style="font-size:14px; text-align: left;" class="text-center">
+						<a style="font-size:14px;">{{ index.get("page_number")|replace("None", "") }}</a>
+					</p>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>

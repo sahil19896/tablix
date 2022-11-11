@@ -1,0 +1,10 @@
+erpnext.domains.non_profit
+erpnext.domains.hospitality
+erpnext.domains.agriculture
+erpnext.domains.manufacturing
+erpnext.domains.services
+erpnext.domains.distribution
+erpnext.domains
+erpnext.domains.healthcare
+erpnext.domains.retail
+erpnext.domains.education

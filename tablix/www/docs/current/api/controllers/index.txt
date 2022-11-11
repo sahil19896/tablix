@@ -1,0 +1,16 @@
+tablix.controllers.account_controller
+tablix.controllers.hr_controller
+tablix.controllers.base_controller
+tablix.controllers.mapped_doc
+tablix.controllers.margin_updater
+tablix.controllers.time_and_attendance
+tablix.controllers
+tablix.controllers.stock_controller
+tablix.controllers.project_controller
+tablix.controllers.taxes_and_charges
+tablix.controllers.geolocations
+tablix.controllers.support_contorller
+tablix.controllers.selling_controller
+tablix.controllers.master_controller
+tablix.controllers.crm_controller
+tablix.controllers.buying_controller

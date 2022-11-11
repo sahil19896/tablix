@@ -1,0 +1,236 @@
+{% set emp = frappe.get_doc("Employee", {'name': doc.employee}) %}
+
+<style>
+        {% include "templates/print_formats/quotation/proposal.css" %}
+</style>
+
+{%- from "templates/print_formats/standard_macros.html" import add_header, render_field -%}
+
+<div style="border: 1px solid #d1d8dd">
+
+<div id="header-html" class="hidden-pdf"><br><br>
+	<b>{{ add_header(0,1,doc,letter_head, no_letterhead)|replace("DRAFT", "") }}</b>
+	{% if doc.get("docstatus") == 0 %}
+		<p style="color:red; font-size:12px;font-style:italic; font-weight:bold;" class="text-center"></p>
+	{% endif %}
+	
+</div>
+
+<div id="footer-html" class="visible-pdf">
+	{% if not no_letterhead and footer %}
+		<div class="letter-head-footer">
+			{{ footer }}
+		</div>
+	{% endif %}
+	<p class="text-right small page-number visible-pdf">
+		{{ _("Page {0} of {1}").format('<span class="page"></span>', '<span class="topage"></span>') }}
+	</p>
+</div>
+
+<div class="row">
+	<div class="single-page-info">
+		<div class="col-xs-6">
+			<div class="col-xs-5">
+				<p><b>Employee:</b></p>
+			</div>
+			<div class="col-xs-7">
+				<p>{{doc.employee}}</p>
+			</div>
+			<div class="col-xs-5">
+				<p><b>Name:</b></p>
+			</div>
+			<div class="col-xs-7">
+				<p>{{doc.employee_name}}</p>
+			</div>
+			<div class="col-xs-5">
+				<p><b>Company:</b></p>
+			</div>
+			<div class="col-xs-7">
+				<p>{{doc.company}}</p>
+			</div>
+			<div class="col-xs-5">
+				<p><b>Branch:</b></p>
+			</div>
+			<div class="col-xs-7">
+				<p>{{doc.branch}}</p>
+			</div>
+			<div class="col-xs-5">
+				<p><b>Designation:</b></p>
+			</div>
+			<div class="col-xs-7">
+				<p>{{doc.designation}}</p>
+			</div>
+			<div class="col-xs-5">
+				<p><b>Bank A/C No.:</b></p>
+			</div>
+			<div class="col-xs-7">
+				<p>{{emp.bank_ac_no}}</p>
+			</div>
+		</div>
+		<div class="col-xs-6">
+			<div class="col-xs-7">
+				<p><b>Start Date:</b></p>
+			</div>
+			<div class="col-xs-5">
+				<p>{{doc.start_date}}</p>
+			</div>
+			<div class="col-xs-7">
+				<p><b>End date:</b></p>
+			</div>
+			<div class="col-xs-5">
+				<p>{{doc.end_date}}</p>
+			</div>
+			<div class="col-xs-7">
+				<p><b>Working Days:</b></p>
+			</div>
+			<div class="col-xs-5">
+				<p>{{doc.total_working_days}}</p>
+			</div>
+			<div class="col-xs-7">
+				<p><b>Leave Without Pay:</b></p>
+			</div>
+			<div class="col-xs-5">
+				<p>{{doc.leave_without_pay}}</p>
+			</div>
+			<div class="col-xs-7">
+				<p><b>Payment Days:</b></p>
+			</div>
+			<div class="col-xs-5">
+				<p>{{doc.payment_days}}</p>
+			</div>
+			<div class="col-xs-7">
+				<p><b>PAN No.:</b></p>
+			</div>
+			<div class="col-xs-5">
+				<p>{{emp.pan_no}}</p>
+			</div>
+		</div>
+	</div>
+</div><br>
+
+<div class="row">
+	<div class="single-page-info">
+		<div class="col-xs-12">
+			<table class="table table-bordered single-page">
+				<tbody>
+					<thead>
+						<tr>
+							<th style"width:5%;text-align:center;">
+								<b>Sr No.</b>
+							</th>
+							<th style="width:10%;text-align:center;">
+								<b>Earnings</b>
+							</th>
+							<th style="width:10%;text-align:center;">
+								<b>Amount</b>
+							</th>
+							<th style="width:10%;text-align:center;">
+								<b>Deductions</b>
+							</th>
+							<th style="width:10%;text-align:center;">
+								<b>Amount</b>
+							</th>
+						</tr>
+					</thead>
+					{% set flags.idx = 1 %}
+					{% set deductions = doc.deductions %}
+					{%- for row in doc.earnings -%}
+					<tr>
+						<td style="width: 5%; text-align: center;">{{flags.idx}}</td>
+						<td style="width: 10%; text-align: center;">{{row.salary_component}}</td>
+						<td style="width: 10%; text-align: center;">{{row.get_formatted("amount")}}</td>
+						
+						{% if deductions[flags.idx|int] %}
+							<td style="width: 10%; text-align: center;">{{deductions[flags.idx - 1].salary_component}}</td>
+							<td style="width: 10%; text-align: center;">{{deductions[flags.idx - 1].get_formatted("amount")}}</td>
+					
+						{% elif deductions|length == flags.idx|int %}
+							<td style="width: 10%; text-align: center;">{{deductions[flags.idx - 1].salary_component}}</td>
+							<td style="width: 10%; text-align: center;">{{deductions[flags.idx - 1].get_formatted("amount")}}</td>
+						{% else %}
+							<td style="width: 10%; text-align: center;"></td>
+							<td style="width: 10%; text-align: center;"></td>
+						{% endif %}
+						{% set flags.idx = flags.idx + 1 %}
+					{% endfor %}
+					</tr>
+					<tr>
+						<td style="width: 5%; text-align: center;"><b>Total</b></td>
+						<td style="width: 10%; text-align: center;"><b>Earnings</b></td>
+						<td style="width: 10%; text-align: center;">{{doc.get_formatted("gross_pay")}}</td>
+						<td style="width: 10%; text-align: center;"><b>Deductions</b></td>
+						<td style="width: 10%; text-align: center;">{{doc.get_formatted("total_deduction")}}</td>	
+					</tr>					
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<div calss="row">
+	<table class="table table-bordered">
+		<tbody>
+			<thead>
+				<tr>
+					<th  style="width:60%;" class="text-center">
+						<b>Description</b>
+					</th>
+					<th style="width:40%;" class="text-center">
+						<b>Amount</b>
+					</th>
+				</tr>
+			</thead>
+			<tr>
+				<td style="width:60%;"  class="text-center">
+					<b>Gross Pay</b>
+				</td>
+				<td style="width:40%;"  class="text-center">
+					<b>{{doc.get_formatted("gross_pay")}}</b>
+				</td>
+			</tr>
+			<tr>
+				<td style="width:60%;"  class="text-center">
+					<b>Total Deduction</b>
+				</td>
+				<td style="width:40%;"  class="text-center">
+					<b>{{doc.get_formatted("total_deduction")}}</b>
+				</td>
+			</tr>
+			<tr>
+				<td style="width:60%;"  class="text-center">
+					<b>Net Pay</b>
+				</td>
+				<td style="width:40%;"  class="text-center">
+					<b>{{doc.get_formatted("net_pay")}}</b>
+				</td>
+			</tr>
+			<tr>
+				<td style="width:60%;"  class="text-center">
+					<b>In Words</b>
+				</td>
+				<td style="width:40%;"  class="text-center">
+					<b>{{doc.get_formatted("total_in_words")}}</b>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<hr>
+<div style="text-align:center;">
+	<font size="1px"><b>THIS IS A COMPUTER GENERATED DOCUMENT & REQUIRE NO SIGNATURE</b></font>
+	{% if doc.get("company") == "Tablix Technologies Pvt. Ltd." %}
+        	<div class="letter-head-footer">
+			<p style="text-align:center;"><b>Tablix Technologies Private Limited</b></p>
+			<p style="text-align:center;">E-107, 8th A Cross, Manyata Residency, Rachenahalli, Bengaluru, Karnataka - 560045</p>
+			<p style="text-align:center;">www.tablix.in</p>
+		</div>
+	{% else %}
+		<div class="letter-head-footer">
+			<p style="text-align:center;"><b>Tablix Technology LLC</b></p>
+			<p style="text-align:center;">907, Le Solarium, Dubai Silicon Oasis, P.O. Box,116199, Dubai, UAE, Phone: +971 4 3208450  Fax: +971 4 3208451</p>
+			<p style="text-align:center;">www.tablix.ae</p>
+		</div>
+	{% endif %}
+</div>
+</div>

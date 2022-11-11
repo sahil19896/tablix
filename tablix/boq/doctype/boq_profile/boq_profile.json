@@ -1,0 +1,603 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "autoname": "naming_series:",
+ "creation": "2018-05-07 15:21:47.417201",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "source_information_sb",
+  "enquiry_from",
+  "opportunity",
+  "source_information_cb",
+  "customer",
+  "lead",
+  "user_information_sb",
+  "account_manager",
+  "account_manager_name",
+  "user_info_cb",
+  "bdm",
+  "bdm_name",
+  "project_team_sb",
+  "project_team",
+  "information_sb",
+  "is_project",
+  "boq_profile_name",
+  "column_break_2",
+  "is_amc",
+  "project__detail_sb",
+  "project_type",
+  "project_site_name",
+  "project_detail_cb",
+  "system_type",
+  "amc_detail_sb",
+  "is_reactive",
+  "amc_duration_years",
+  "amc_type",
+  "amc_ppm",
+  "amc_detail_cb",
+  "is_preventive",
+  "amc_duration_months",
+  "total_amc_months",
+  "validation_detail_sb",
+  "project_implementation_time",
+  "material_delivery_period",
+  "proposed_project_completion_time",
+  "mobilization_period",
+  "validation_detail_cb",
+  "dlp_period",
+  "maintenance_support_period",
+  "reactive_maintenance_detail_sb",
+  "support_timings",
+  "type_of_support",
+  "reactive_maintenance_detail_cb",
+  "response_commitment",
+  "resolution_commitment",
+  "document_sb",
+  "compliance_statement",
+  "document_cb",
+  "technical_docs",
+  "naming_series",
+  "system_type_information_sb",
+  "system_items",
+  "scope_of_work",
+  "notes",
+  "inclusion",
+  "exclusion",
+  "proposal_information_sb",
+  "deliverable_items_sb",
+  "deliverable_items",
+  "product_overview_sb",
+  "product_overview_items",
+  "req_vs_solution_items_sb",
+  "req_vs_solution_items",
+  "images_sb",
+  "site_image",
+  "company_image",
+  "images_cb",
+  "company_logo",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "source_information_sb",
+   "fieldtype": "Section Break",
+   "label": "Source Information"
+  },
+  {
+   "bold": 1,
+   "fieldname": "enquiry_from",
+   "fieldtype": "Select",
+   "label": "Enquiry From",
+   "options": "\nLead\nCustomer",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "opportunity",
+   "fieldtype": "Link",
+   "label": "Opportunity",
+   "options": "Opportunity",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fieldname": "source_information_cb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.enquiry_from===\"Customer\"",
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Customer",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.enquiry_from===\"Lead\"",
+   "fieldname": "lead",
+   "fieldtype": "Link",
+   "label": "Lead",
+   "options": "Lead",
+   "read_only": 1
+  },
+  {
+   "fieldname": "user_information_sb",
+   "fieldtype": "Section Break",
+   "label": "User Information"
+  },
+  {
+   "fieldname": "account_manager",
+   "fieldtype": "Link",
+   "label": "Account Manager",
+   "options": "Account Manager",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fetch_from": "account_manager.full_name",
+   "fieldname": "account_manager_name",
+   "fieldtype": "Read Only",
+   "label": "Account Manager Name"
+  },
+  {
+   "fieldname": "user_info_cb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "bdm",
+   "fieldtype": "Link",
+   "label": "BDM",
+   "options": "BDM",
+   "read_only": 1,
+   "reqd": 1
+  },
+  {
+   "fetch_from": "bdm.full_name",
+   "fieldname": "bdm_name",
+   "fieldtype": "Read Only",
+   "label": "BDM Name"
+  },
+  {
+   "fieldname": "project_team_sb",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "project_team",
+   "fieldtype": "Link",
+   "label": "Project Team",
+   "options": "Project Team",
+   "read_only": 1
+  },
+  {
+   "fieldname": "information_sb",
+   "fieldtype": "Section Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_project",
+   "fieldtype": "Check",
+   "label": "Is BOQ"
+  },
+  {
+   "fieldname": "boq_profile_name",
+   "fieldtype": "Data",
+   "label": "BOQ Profile Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_amc",
+   "fieldtype": "Check",
+   "label": "Is AMC"
+  },
+  {
+   "bold": 1,
+   "collapsible": 1,
+   "fieldname": "project__detail_sb",
+   "fieldtype": "Section Break",
+   "label": "Project  Detail"
+  },
+  {
+   "depends_on": "eval:doc.is_project===1",
+   "fieldname": "project_type",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Project Type",
+   "options": "\nDesign, Supply & Install\nSupply & Install\nSupply\nServices"
+  },
+  {
+   "fieldname": "project_site_name",
+   "fieldtype": "Data",
+   "label": "Project Site Name"
+  },
+  {
+   "fieldname": "project_detail_cb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "system_type",
+   "fieldtype": "Small Text",
+   "label": "System Type",
+   "read_only": 1
+  },
+  {
+   "bold": 1,
+   "collapsible": 1,
+   "fieldname": "amc_detail_sb",
+   "fieldtype": "Section Break",
+   "label": "AMC Detail"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.is_amc===1",
+   "fieldname": "is_reactive",
+   "fieldtype": "Check",
+   "label": "Is Reactive"
+  },
+  {
+   "depends_on": "eval:doc.is_amc===1",
+   "fieldname": "amc_duration_years",
+   "fieldtype": "Select",
+   "label": "AMC Duration(Years)",
+   "options": "\n0\n1\n2\n3\n4\n5"
+  },
+  {
+   "depends_on": "eval:doc.is_amc===1",
+   "fieldname": "amc_type",
+   "fieldtype": "Select",
+   "label": "AMC Type",
+   "options": "\nComprehensive\nNon-Comprehensive"
+  },
+  {
+   "default": "Quarterly",
+   "fieldname": "amc_ppm",
+   "fieldtype": "Select",
+   "label": "AMC PPM",
+   "options": "\nDaily\nWeekly\nMonthly\nQuarterly\nYearly"
+  },
+  {
+   "fieldname": "amc_detail_cb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.is_amc===1",
+   "fieldname": "is_preventive",
+   "fieldtype": "Check",
+   "label": "Is Preventive"
+  },
+  {
+   "depends_on": "eval:doc.is_amc===1",
+   "fieldname": "amc_duration_months",
+   "fieldtype": "Select",
+   "label": "AMC Duration(Months)",
+   "options": "\n0\n1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12"
+  },
+  {
+   "fieldname": "total_amc_months",
+   "fieldtype": "Int",
+   "label": "Total AMC Months",
+   "read_only": 1
+  },
+  {
+   "bold": 1,
+   "collapsible": 1,
+   "collapsible_depends_on": "eval:doc.is_project===1",
+   "fieldname": "validation_detail_sb",
+   "fieldtype": "Section Break",
+   "label": "Validation Detail"
+  },
+  {
+   "fieldname": "project_implementation_time",
+   "fieldtype": "Int",
+   "label": "Project Implementation Time(Days)"
+  },
+  {
+   "fieldname": "material_delivery_period",
+   "fieldtype": "Int",
+   "label": "Material Delivery Period(Days)"
+  },
+  {
+   "default": "0",
+   "fieldname": "proposed_project_completion_time",
+   "fieldtype": "Int",
+   "label": "Proposed Project Completion Time(Days)",
+   "read_only": 1
+  },
+  {
+   "default": "14",
+   "fieldname": "mobilization_period",
+   "fieldtype": "Int",
+   "label": "Mobilization Period(Days)"
+  },
+  {
+   "fieldname": "validation_detail_cb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "12",
+   "fieldname": "dlp_period",
+   "fieldtype": "Int",
+   "label": "DLP Period(Months)",
+   "read_only": 1
+  },
+  {
+   "default": "12",
+   "fieldname": "maintenance_support_period",
+   "fieldtype": "Int",
+   "label": "Maintenance Support Period",
+   "read_only": 1
+  },
+  {
+   "bold": 1,
+   "collapsible": 1,
+   "collapsible_depends_on": "eval:doc.is_reactive===1",
+   "fieldname": "reactive_maintenance_detail_sb",
+   "fieldtype": "Section Break",
+   "label": "Reactive Maintenance Detail"
+  },
+  {
+   "default": "From Saturday to Thursday (exclude Public Holidays) Timings :9.00a.m to 6:00pm (Standard UAE Local Time)",
+   "depends_on": "eval:doc.is_amc===1",
+   "fieldname": "support_timings",
+   "fieldtype": "Small Text",
+   "label": "Support Timings"
+  },
+  {
+   "default": "Telephonic assistance at the time of logging the call. In case the problem, resolution necessitates an onsite visit, an Engineer will attend the call onsite.  ",
+   "depends_on": "eval:doc.is_amc===1",
+   "fieldname": "type_of_support",
+   "fieldtype": "Small Text",
+   "label": "Type of Support"
+  },
+  {
+   "fieldname": "reactive_maintenance_detail_cb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "Engineer/Coordinator will respond within 4 working hrs for call report before 14:00 hrs. For calls logged after 14:00 hrs On-site support will be provided Next Business Day.  ",
+   "depends_on": "eval:doc.is_amc===1",
+   "fieldname": "response_commitment",
+   "fieldtype": "Small Text",
+   "label": "Response Commitment"
+  },
+  {
+   "default": "Within 4 working days ",
+   "depends_on": "eval:doc.is_amc===1",
+   "fieldname": "resolution_commitment",
+   "fieldtype": "Small Text",
+   "label": "Resolution Commitment"
+  },
+  {
+   "bold": 1,
+   "collapsible": 1,
+   "fieldname": "document_sb",
+   "fieldtype": "Section Break",
+   "label": "Documents"
+  },
+  {
+   "default": "0",
+   "fieldname": "compliance_statement",
+   "fieldtype": "Check",
+   "label": "Compliance Statement"
+  },
+  {
+   "fieldname": "document_cb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "technical_docs",
+   "fieldtype": "Check",
+   "label": "Technical Docs"
+  },
+  {
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Naming Series",
+   "options": "\nBOQPro-",
+   "read_only": 1
+  },
+  {
+   "fieldname": "system_type_information_sb",
+   "fieldtype": "Section Break",
+   "label": "System Type Information"
+  },
+  {
+   "fieldname": "system_items",
+   "fieldtype": "Table",
+   "label": "BOQ Profile System Type Items",
+   "options": "BOQ Profile System Type Item"
+  },
+  {
+   "fieldname": "scope_of_work",
+   "fieldtype": "Text",
+   "label": "Scope of Work"
+  },
+  {
+   "fieldname": "notes",
+   "fieldtype": "Text",
+   "label": "Notes"
+  },
+  {
+   "fieldname": "inclusion",
+   "fieldtype": "Text",
+   "label": "Inclusion"
+  },
+  {
+   "fieldname": "exclusion",
+   "fieldtype": "Text",
+   "label": "Exclusion"
+  },
+  {
+   "fieldname": "proposal_information_sb",
+   "fieldtype": "Section Break",
+   "label": "Proposal Information SB"
+  },
+  {
+   "fieldname": "deliverable_items_sb",
+   "fieldtype": "Section Break",
+   "label": "Deliverable Items"
+  },
+  {
+   "fieldname": "deliverable_items",
+   "fieldtype": "Table",
+   "label": "Deliverable Items",
+   "options": "BOQ Profile Deliverable Item"
+  },
+  {
+   "fieldname": "product_overview_sb",
+   "fieldtype": "Section Break",
+   "label": "Product Overview Items"
+  },
+  {
+   "fieldname": "product_overview_items",
+   "fieldtype": "Table",
+   "label": "Product Overview Items",
+   "options": "BOQ Profile Product Overview Item"
+  },
+  {
+   "fieldname": "req_vs_solution_items_sb",
+   "fieldtype": "Section Break",
+   "label": "Req vs Solution Items"
+  },
+  {
+   "fieldname": "req_vs_solution_items",
+   "fieldtype": "Table",
+   "label": "Req vs Solution Items",
+   "options": "BOQ Profile Req vs Solution Item"
+  },
+  {
+   "fieldname": "images_sb",
+   "fieldtype": "Section Break",
+   "label": "Images"
+  },
+  {
+   "fieldname": "site_image",
+   "fieldtype": "Attach Image",
+   "label": "Site Image"
+  },
+  {
+   "fieldname": "company_image",
+   "fieldtype": "Attach Image",
+   "label": "Company Image"
+  },
+  {
+   "fieldname": "images_cb",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company_logo",
+   "fieldtype": "Attach Image",
+   "label": "Company Logo"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "BOQ Profile",
+   "print_hide": 1,
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "max_attachments": 7,
+ "modified": "2020-12-21 16:30:15.280733",
+ "modified_by": "Administrator",
+ "module": "Boq",
+ "name": "BOQ Profile",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Pre-Sales User",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Pre Sales Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Estimation Engineer",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "BDM",
+   "share": 1,
+   "write": 1
+  },
+  {
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Accounts Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "quick_entry": 1,
+ "route": "boq-profile",
+ "search_fields": "system_type, boq_profile_name",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "title_field": "boq_profile_name",
+ "track_changes": 1,
+ "track_seen": 1
+}

@@ -1,0 +1,105 @@
+<style>
+	{% include "templates/print_formats/quotation/proposal.css" %}
+
+	#a{
+		width: 100%;
+	}
+</style>
+
+<!--Header Footer Content-->
+{% include "templates/print_formats/commons/header.html" %}
+{% include "templates/print_formats/commons/footer.html" %}
+<!--Header Footer Ends Here-->
+<div class="row">
+	<div class="col-md-12" style="display: contents;">
+		<div class="col-xs-2 column-break" style="width:20%;float: left;">
+			<div id="container">
+				<span id="a"><p><b>Customer:</b></p></span>
+	  			{% if doc.customer | length <= 23 %}
+	  			
+	  			{% else %}
+					<br>
+				{% endif %}
+				
+				<span id="a"><p><b>Contact:</b></p></span>
+				<span id="a"><p><b>TRN:</b></p></span>
+				<span id="a"><p><b>Shipping Address:</b></p></span>
+				{% if doc.shipping_address %}
+	  				{% if doc.shipping_address | length <= 25 %}
+
+	  				{% else %}
+						<br><br>
+					{% endif %}
+				{% endif %}
+				<span id="a"><p><b>Customer Order:</b></p></span>
+			</div>
+		</div>
+		
+		<div class="col-xs-4 column-break" style="width:30%;float: left;">
+			<div id="container">
+				<span id="a"><p><b>{{doc.customer}}</b></p></span>
+				<span id="a"><p>{{doc.contact_display}}</p></span>
+				<span id="a"><p>{{doc.tax_id}}</p></span>
+				<span id="a"><p><b>{{doc.shipping_address}}</b></p></span>
+				{% if doc.shipping_address %}
+
+				{% else %}
+					<br>
+				{% endif %}
+				<span id="a"><p>{{doc.po_no}}</p></span>
+			</div>
+		</div>
+		
+		<div class="col-xs-2 column-break" style="width:20%;float: left;">
+			<div id="container">
+				<span id="a"><p><b>Date:</b></p></span>
+				<span id="a"><p><b>Contact No:</b></p></span>
+				<span id="a"><p><b>Billing Address:</b></p></span>
+				<br>
+				<span id="a"><p><b>Delivery Terms:</b></p></span>
+			</div>
+		</div>
+		
+		<div class="col-xs-4 column-break" style="width:30%;float: left;">
+			<div id="container">
+				<span id="a"><p>{{doc.posting_date}}</p></span>
+				<span id="a"><p>{{doc.contact_mobile}}</p></span>
+				{% if doc.contact_mobile or doc.contact_mobile == None %}
+
+				{% else %}
+					<br>
+				{% endif %}
+				<span id="a"><p>{{doc.address_display}}</p></span>
+				{% if doc.address_display %}
+				
+				{% else %}
+					<br>
+				{% endif %}
+				<span id="a"><p>{{doc.delivery_terms}}</p></span>
+			</div>
+		</div>
+	</div>
+</div><br><br>
+
+
+{% include "templates/print_formats/commons/delivery_note.html" %}
+
+<div style="text-align:center; margin-top:10px;">
+     	Thank You for your business!<br>
+	Any futher enquiries relating to this Delivery Note <br>
+	Please Contact: <b>{{doc.tablix_rep_name}}</b>
+	&nbsp;&nbsp;Contact No:<b>{{doc.tablix_rep_phone}}</b>
+	&nbsp;&nbsp;E-Mail: <b>{{doc.tablix_rep}}</b><hr>
+	<span style="line-height: 9px;">THIS IS A COMPUTER GENERATED DOCUMENT & REQUIRE NO SIGNATURE</span>
+</div>
+
+<div id="footer-html" class="visible-pdf">
+	{% if not no_letterhead and footer %}
+		<div class="letter-head-footer">
+			{{ footer }}
+		</div>
+	{% endif %}
+	<p class="text-right small page-number visible-pdf">
+		{{ _("Page {0} of {1}").format('<span class="page"></span>', '<span class="topage"></span>') }}
+	</p>
+</div>

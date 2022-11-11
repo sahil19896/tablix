@@ -1,0 +1,23 @@
+<div class="row">
+	<div class="col-xs-12">
+		<h3 class="sectionone sectionone-title"><b>Conclusion</b></h3><hr>
+		<div class="col-xs-12">
+			<p>Tablix is confident that our proposed&nbsp;{{boq_profile.get("system_type")}}&nbsp;solution will meet&nbsp;{{doc.customer_name}}&nbsp;operational requirements. We sincerely hope that&nbsp;{{doc.customer_name}}&nbsp;will consider us as a long-term partner and allow us to enter into a mutually beneficial relationship.&nbsp;We are available to answer any questions you may have and look forward to discussing this opportunity further.</p><br>
+			<p>After reviewing this document, the following steps should be performed in order to come to a final agreement. </p><br>
+			<p>- Submission of questions/suggestions</p>
+			<p>- Counter proposal or approval by {{doc.customer_name}}</p>
+			<p>- Negotiation of fees, terms, clauses and conditions</p><br>
+			<p>We declare this offer to be binding and free of errors or omissions. Due diligence has been performed in order to ensure compliance with your requirements and particular situation. We agree to hold our proposal open for acceptance until <b>{{frappe.utils.get_datetime(valid_date).strftime('%d-%b-%Y')}}</b>.</p><br>
+			<p>Thank you for your interest</p><br><br>
+			<p>Sincerely,</p><br>
+			<p><b>{{bdm.full_name}}</b></p>
+			<p><b>
+				<i class="fa fa-phone" aria-hidden="true"></i>&nbsp;&nbsp;{{bdm.phone_number}}
+			</b></p>
+			<p><b>
+				<i class="fa fa-envelope-o" aria-hidden="true"></i> &nbsp;&nbsp;{{bdm.name}}
+			</b></p>
+		</div>
+	</div>
+</div>
+

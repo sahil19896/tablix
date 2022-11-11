@@ -1,0 +1,309 @@
+frappe.pages['sales-analytics-'].on_page_load = function(wrapper) {
+	var page = frappe.ui.make_app_page({
+		parent: wrapper,
+		title: 'Sales Analytics',
+		single_column: true
+	});
+	var week = [];
+	for(var i=1;i<55;i++){
+		week.push(i);
+	}
+	var filters = [
+		{fieldname: "fiscal_year", fieldtype: "Link", options:"Fiscal Year", "reqd":1, 
+			label:__("Fiscal Year"), default: frappe.sys_defaults.fiscal_year},
+		{fieldname: "frequency", fieldtype: "Select", options:["Weekly", "Monthly", "Quarterly"], default:"Monthly",  label: __("Frequency")},
+		{fieldname: "month", fieldtype: "Select", label: __("Select Month"),
+			options:["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]},
+		{fieldname: "quarter", fieldtype: "Select", options:[1, 2, 3, 4], label: __("Select Quarter")},
+		{fieldname: "week", fieldtype: "Select", options:week, label: __("Select Week")},
+		{fieldname: "bdm", fieldtype: "Link", options:"User", label:__("BDM")},
+		{fieldname: "account_manager", fieldtype: "Link", options: "User", label: __("Account Manager")}
+	];
+		
+	var args = {
+		wrapper: page,
+		filters: filters,
+		template: "sales_analytics",
+		method: "tablix.tdashboard.pages.sales_analytics_.sales_analytics_",
+	};
+	new cpm.sales_analytics.SalesAnalytics(args);	
+}
+
+frappe.provide("cpm.sales_analytics");
+cpm.sales_analytics.SalesAnalytics = tablix.dashboard.Dashboard.extend({
+	init: function(args){
+		this._super(args);
+	},
+	make: function(){
+		this._super();
+	},
+	handle_response: function(res, filters){
+		var me = this;
+		console.log(res);
+		$(".sales-analytics").empty();
+		google.charts.setOnLoadCallback(function(){
+			me.display_rating_data(res, filters);
+			me.display_lead_data(res, filters);
+			me.display_order_data(res, filters);
+			me.display_invoice_data(res, filters);
+			me.display_opportunities_data(res, filters);
+		});
+	},
+	
+	display_opportunities_data: function(res, filters){
+		if(!res.results.opportunities) return false;
+		var me = this;
+		var frequency = filters.frequency;
+		var labels = [frequency];
+		var accs_labels = [frequency];
+		var bdms_labels = [frequency];
+		var options = {
+			isStacked: true,
+			height: "500",
+			bars: "vertical"
+		};
+		$.each(res.results.opp_status, function(key, val){
+			labels.push(key);
+		});
+		$.each(res.results.bdms, function(key, val){
+			bdms_labels.push(key);
+		});
+		$.each(res.results.account_managers, function(key, val){
+			accs_labels.push(key);
+		});
+
+		var data = [labels];
+		var accs_booking_data = [accs_labels];
+		var bdms_booking_data = [bdms_labels];
+		var accs_forcasting_data = [accs_labels];
+		var bdms_forcasting_data = [bdms_labels];
+		
+		$.each(res.results.opportunities, function(key, val){
+			var temp=[key],jtemp=[key],ktemp=[key],ltemp=[key],mtemp= [key];
+			console.log(key);
+			$.each(val, function(ikey, ival){
+				if(!in_list(["total", "total_booking", "total_forcasting"], ikey)){
+					temp.push(ival);
+				}
+				else{
+					me.update_booking(ikey, ival, jtemp, ktemp, bdms_booking_data, accs_booking_data);
+					me.update_forcasting(ikey, ival, ltemp, mtemp, bdms_forcasting_data, accs_forcasting_data);
+				}
+			});
+			data.push(temp);
+		});
+	
+		var ele = this.create_and_get_element("div", "col-lg-12", "500px");
+		$(ele).appendTo(".sales-analytics");
+		options.title = __("States of OPP");
+		ele = document.getElementById(ele.id);
+		data = google.visualization.arrayToDataTable(data)
+		var chart = new google.visualization.ColumnChart(ele);
+		chart.draw(data, options);
+		this.render_booking_data(bdms_booking_data, accs_booking_data, options);
+		this.render_forcasting_data(bdms_forcasting_data, accs_forcasting_data, options)	
+	},
+	render_booking_data(bdm_data, acc_data, options){
+		var ele = this.create_and_get_element("div", "col-lg-12", "500px");
+		$(ele).appendTo(".sales-analytics");
+		var bdm_ele = document.getElementById(ele.id);
+		ele = this.create_and_get_element("div", "col-lg-12", "500px");
+		$(ele).appendTo(".sales-analytics");
+		var acc_ele = document.getElementById(ele.id);
+
+		var chart_bdm = new google.visualization.ColumnChart(bdm_ele);
+		var chart_acc = new google.visualization.ColumnChart(acc_ele);
+		console.log(bdm_data)
+		var bdata = google.visualization.arrayToDataTable(bdm_data)
+		var adata = google.visualization.arrayToDataTable(acc_data)
+		options.title = __("BDM wise booking(Sales Order)");
+		chart_bdm.draw(bdata, options);
+		options.title = __("Account Manager wise booking(Sales Order)");
+		chart_acc.draw(adata, options);	
+		
+	},
+	render_forcasting_data(bdm_data, acc_data, options){
+		var ele = this.create_and_get_element("div", "col-lg-12", "500px");
+		$(ele).appendTo(".sales-analytics");
+		var bdm_ele = document.getElementById(ele.id);
+		ele = this.create_and_get_element("div", "col-lg-12", "500px");
+		$(ele).appendTo(".sales-analytics");
+		var acc_ele = document.getElementById(ele.id);
+
+		var chart_bdm = new google.visualization.ColumnChart(bdm_ele);
+		var chart_acc= new google.visualization.ColumnChart(acc_ele);
+
+		var bdata = google.visualization.arrayToDataTable(bdm_data)
+		var adata = google.visualization.arrayToDataTable(acc_data)
+		options.title = __("BDM wise forcasting(Pending Quotation)");
+		chart_bdm.draw(bdata, options);	
+		options.title = __("Account Manager wise forcasting(Pending Quotation)");
+		chart_acc.draw(adata, options);	
+
+	},
+	update_booking: function(key, val, bdm_arr, acc_arr, bdms_data, accs_data){
+		if(key == "total_booking"){
+			$.each(val, function(ikey, ival){
+				if(ikey == "bdms"){
+					$.each(ival, function(jkey, jval){
+						bdm_arr.push(jval);		
+					});
+				}
+				else if(ikey=="managers"){
+					$.each(ival, function(jkey, jval){
+						acc_arr.push(jval);
+					});
+				}
+			});
+			if(bdm_arr.length > 1) bdms_data.push(bdm_arr);
+			if(acc_arr.length > 1) accs_data.push(acc_arr);
+		}
+		
+	},
+	update_forcasting: function(key, val, bdm_arr, acc_arr, bdms_data, accs_data){
+		if(key == "total_forcasting"){
+			$.each(val, function(ikey, ival){
+				if(ikey == "bdms"){
+					$.each(ival, function(jkey, jval){
+						bdm_arr.push(jval);		
+					});
+				}
+				else if(ikey=="managers"){
+					$.each(ival, function(jkey, jval){
+						acc_arr.push(jval);
+					});
+				}
+			});
+			if(bdm_arr.length > 1) bdms_data.push(bdm_arr);
+			if(acc_arr.length > 1) accs_data.push(acc_arr);
+		}
+	},
+	display_invoice_data: function(res, filters){
+		if(!res.results.sales_invoices) return false;
+		var labels = ["ID", "Amount"];
+		var data = [labels]
+		$.each(res.results.sales_invoices, function(key, val){
+			data.push([key, val.total]);
+				
+		});
+		var data = google.visualization.arrayToDataTable(data);
+		var ele = this.create_and_get_element("div", "col-lg-12", "500px");
+		$(ele).appendTo(".sales-analytics");
+		var ele = document.getElementById(ele.id);
+		var chart = new google.visualization.AreaChart(ele);
+		chart.draw(data, {title: __('Sales Invoice')})	
+	},
+	display_order_data: function(res, filters){
+		if(!res.results.sales_orders) return false;
+		var labels = ["ID", "Amount"];
+		var data = [labels]
+		$.each(res.results.sales_orders, function(key, val){
+			data.push([key, val.total]);
+				
+		});
+		var data = google.visualization.arrayToDataTable(data);
+		var ele = this.create_and_get_element("div", "col-lg-12", "500px");
+		$(ele).appendTo(".sales-analytics");
+		var ele = document.getElementById(ele.id);
+		var chart = new google.visualization.AreaChart(ele);
+		chart.draw(data, {title: __('Sales Order')})	
+
+	},
+	display_lead_data: function(res, filters){
+		if(!res.results.leads) return false;
+		var labels =	[filters.frequency, "Total", "Opportunity", "Quotation"];
+		var data = [labels];
+		$.each(res.results.leads, function(key, val){
+			data.push([key, val.total, val['Opportunity'], val['Quotation']])
+				
+		});
+		var data = google.visualization.arrayToDataTable(data);
+		var ele = this.create_and_get_element("div", "col-lg-12", "500px");
+		$(ele).appendTo(".sales-analytics");
+		var ele = document.getElementById(ele.id);
+		var chart = new google.visualization.ComboChart(ele);
+		chart.draw(data, {title: __('Leads')})	
+
+	},
+	display_rating_data: function(res, filters){
+		var me = this;
+		$(".analytics-cards").empty();
+		if(!res.results.con_rate) return false;
+		var currency = frappe.sys_defaults.currency;
+		$.each(res.results.con_rate, function(key, val){
+
+			if(key == "lead"){
+				me.display_lead_rating(val);
+			}
+			else if(key == "opp"){
+				me.display_opp_rating(val);		
+			}
+			else if(key == "order"){
+				me.render_rating_data(format_number(flt(val.deals, 2)), "Total Deal(Sales Order)", null);	
+				me.render_rating_data(flt(val.total, 2), "Total Booking", currency);	
+					
+			}
+			else if(key == "invoice"){
+				me.render_rating_data(format_number(flt(val.total, 2)), "Total Invoice", currency);	
+			}
+
+		});	
+	},
+	display_lead_rating: function(val){
+		var leads = val.total||0;
+		var opp = val.total_opp||0;
+		var qt = val.total_quotation||0;
+		var opp_percent = flt(opp/leads*100, 1);
+		var qt_percent = flt(qt/leads*100, 1);
+		var ele = this.create_and_get_element("div", "col-lg-12", "400px");
+		var data = google.visualization.arrayToDataTable([
+			['Label', 'Value'],
+			['Lead:' + cstr(leads), 100],
+			['Opp:'+cstr(opp), opp_percent],
+			['Quote:'+cstr(qt), qt_percent]
+		]);
+		var options = this.get_gauge_options("Leads", [0,30], [30,60]);
+		$(ele).appendTo(".analytics-cards");
+		ele = document.getElementById(ele.id);
+		var chart = new google.visualization.Gauge(ele);
+		chart.draw(data, options);				
+		
+				
+	},
+	display_opp_rating: function(val){
+		var opp = val.total||0;
+		var so = val.total_so||0;
+		var qt = val.total_quotation||0;
+		var so_percent = flt(so/opp*100, 1);
+		var qt_percent = flt(qt/opp*100, 1);
+		var ele = this.create_and_get_element("div", "col-lg-12", "400px");
+		var data = google.visualization.arrayToDataTable([
+			['Label', 'Value'],
+			['Opp:' + cstr(opp), 100],
+			['Quote:'+cstr(qt), qt_percent],
+			['SO:'+cstr(so), so_percent]
+		]);
+		var options = this.get_gauge_options("Opportunities", [0,30], [30,60]);
+		$(ele).appendTo(".analytics-cards");
+		ele = document.getElementById(ele.id);
+		var chart = new google.visualization.Gauge(ele);
+		chart.draw(data, options);				
+		
+
+	},
+	display_invoice_rating: function(val){
+
+	},
+	display_order_rating: function(val){
+
+	},
+	render_rating_data: function(val, title, sign){
+
+		if(sign) val = format("{0} {1}", [val, sign]);
+		$(frappe.render_template("sales_analytics_card", {
+			"title": __(title), 
+			"data": val
+		})).appendTo(".analytics-cards");
+	},
+	
+});

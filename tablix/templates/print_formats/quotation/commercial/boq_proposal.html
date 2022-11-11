@@ -1,0 +1,86 @@
+<style>
+	{% include "templates/print_formats/quotation/proposal.css" %}
+</style>
+{% set flags = namespace() %}
+{% set flags.proposal_type = proposal_type %}
+{% set flags.is_amc = False %}
+{% set company_profile = frappe.get_doc("Company Profile", doc.get("company")).as_dict() %}
+{% set boq_profile = frappe.get_doc("BOQ Profile", doc.get("boq_profile")).as_dict() %}
+{% set bdm = frappe.get_doc("BDM", doc.get("bdm")) %}
+{% set account_manager = frappe.get_doc("Account Manager", doc.get("account_manager")) %}
+
+{% if proposal_type == "Commercial" %}
+	{% set table_of_contents = doc.get("boq_commercial_index_items") %}
+{% else %}
+	{% set table_of_contents = doc.get("quotation_index_items") %}
+{% endif %}
+
+{% set valid_days = doc.get("validity_of_proposal") %}
+{% set valid = valid_days %}
+{% set valid_date = frappe.utils.add_days(doc.transaction_date, valid) %}
+{% set i = 1 %}
+{% set total_val = [] %}
+{% set j = 0 %}
+
+<!--Header Footer Content-->
+{% include "templates/print_formats/quotation/proposal_headers.html" %}
+<!--Header Footer Ends Here-->
+
+<!-- START OF FRONT PAGE !-->
+	{% include "templates/print_formats/quotation/commons/front_page.html" %}
+<!-- END OF FRONT PAGE !-->
+
+<div class="indented">
+	<p style="page-break-after: always;"></p>
+	<!-- START OF TABLE OF CONTENTS  ALREADY INDENTED!-->
+		{% include "templates/print_formats/quotation/commons/table_of_contents.html" %}
+	<!-- END OF TABLE OF CONTENTS !-->
+	<p style="page-break-after: always;"></p>
+</div>
+
+<div class="indented reset-section" id="content">
+	<!--
+		START COMMONS
+	!-->
+
+		<!--  START COMPANY INFORMATION HERE --!>
+			{% include "templates/print_formats/quotation/commons/boq/company_profile.html" %}
+		<!-- END COMPANY INFORMATION HERE --!>
+		<p style="page-break-after: always;"></p>
+			<!--  START NEED OF IDENTIFICATION !-->
+				{% include "templates/print_formats/quotation/commons/boq/need_identifications.html" %}
+			<!-- END NEED OF IDENTIFICATION !-->
+
+		<p style="page-break-after: always;"></p>
+			<!-- START WHY TABLIX !-->
+				{% include "templates/print_formats/quotation/commons/boq/why_tablix.html" %}
+			<!-- START WHY TABLIX !-->
+
+		<p style="page-break-after: always;"></p>
+			<!-- START IMPLEMENTATION PLAN !-->
+				{% include "templates/print_formats/quotation/commons/boq/implementation_plan.html" %}
+			<!-- END IMPLEMENTATION PLAN !-->
+
+		<p style="page-break-after: always;"></p>
+			<!-- START TECHNICAL/COMMERCIAL PROPOSAL BREAKDOWN  WITH TERMS!-->
+				{% include "templates/print_formats/quotation/commons/boq/boq_item_breakdown.html" %}	
+			<!-- END TECHNICAL PROPOSAL BREAKDOWN !-->
+
+		<p style=""></p>
+			<!-- START OF CONCLUSION !-->
+				{% include "templates/print_formats/quotation/commons/boq/conclusion.html" %}
+			<!-- END OF CONCLUSION !-->
+		<p style="page-break-after: always;"></p>
+			<!-- START OF PROPOSAL ACCEPTANCE !-->
+				{% include "templates/print_formats/quotation/commons/proposal_acceptance.html" %}
+			<!-- END OF PROPOSAL ACCEPTANCE !-->
+		<p style="page-break-after: always;"></p>
+
+			<!-- START OF APPENDIX !-->
+				{% include "templates/print_formats/quotation/commons/boq/appendix.html" %}	
+			<!-- END OF APPENDIX !-->
+	<!-- 
+		END OF COMMONS !
+	-->
+
+</div>

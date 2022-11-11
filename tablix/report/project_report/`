@@ -1,0 +1,190 @@
+# Copyright (c) 2013, Tablix and contributors
+# For license information, please see license.txt
+
+'''
+    Added by Sahil
+    Email sahil.saini@tablix.ae
+'''
+
+from __future__ import unicode_literals
+import frappe
+from frappe.utils import nowdate, datetime, flt, cint, cstr
+from frappe import _, msgprint, throw
+from tablix.utils import get_date, get_datetime, format_datetime, format_date
+
+DATE_FORMAT = "%Y-%m-%d"
+
+def execute(filters=None):
+	columns, data = [], []
+	temp_filters, condition = get_so_filters_and_condition(filters)
+        validate_filters(filters)
+        columns = get_columns()
+        try:
+                results = get_data(temp_filters, condition)
+                for key, val in results.items():
+                        data.append([key[2], 
+                                    "", key[0],  
+                                    key[1],"", 
+                                    "", "",
+                                    val.get("selling_cost"),
+                                    val.get("buying_cost"), ""])
+
+        except Exception as e:
+                frappe.msgprint("{0}".format(frappe.get_traceback()))
+
+	return columns, data
+
+
+def get_columns():
+
+    return [
+            _("SO No.") + ":Link/Sales Order:200",
+            _("Date Of MR") + ":Date/Project:200", _("MR No.") + ":Link/Material Request:200",
+            _("PO No") + ":Link/Purchase Order:200", _("Supplier Name")+ ":Link/Supplier Name:100",
+            _("PO Date") + ":Date:100", _("DN No.") + ":Link/Delivery Note:100",
+            _("MR-ETA") + ":Date:100", _("Selling Price(BOQ)") + ":Float:200",
+            _("Cost Price(PO)") + ":Float:200", _("Cost Diff") + ":Float:200"
+            ]
+
+def validate_filters(filters):
+	now_date = get_date(nowdate(), DATE_FORMAT, is_date=True)
+        if filters.get("to_date") and filters.get("from_date"):
+                    from_date = get_date(filters.get("from_date"), DATE_FORMAT, is_date=True)
+                    to_date = get_date(filters.get("to_date"), DATE_FORMAT, is_date=True)
+                    if from_date > now_date:
+                            throw(_("<b>From Date</b> Can't be greater than <b>Today Date</b>"))
+                    if from_date > to_date:
+                            throw(_("<b>From Date</b> Can't be greater than <b> To Date</b>"))
+
+        elif  filters.get("from_date") and not filters.get("to_date"):
+                from_date = get_date(filters.get("from_date"), DATE_FORMAT, is_date=True)
+                if from_date > now_date:
+                        throw(_("<b> From Date </b> can't be greater than to date"))
+        
+        elif filters.get("to_date") and not filters.get("from_date"):
+                to_date = get_date(filters.get("to_date"), DATE_FORMAT, is_date=True)
+
+
+def get_so_filters_and_condition(filters):
+        condition = ""
+        temp = {}
+        if filters.get("sales_order"):
+                temp["sales_order"]  = filters.get("sales_order")
+                condition += " AND SO.name = %(sales_order)s "
+        if filters.get("boq"):
+                temp["boq_ref"] = filters.get("boq")
+                condition += " AND SO.boq_ref=%(boq_ref)s "
+
+        if filters.get("opportunity"):
+                temp["opp_ref"] = filters.get("boq")
+                condition += " AND SO.opp_ref = %(opp_ref)s "
+        
+        if filters.get("from_date"):
+                temp["from_date"] = filters.get("from_date")
+                condition += " AND SO.creation > %(from_date)s"
+
+        if filters.get("to_date"):
+                temp["to_date"] = filters.get("to_date")
+                condition += " AND SO.creation < %(to_date)s "
+        return temp, condition
+
+def get_data(filters, condition):
+
+        selling_items = frappe.db.sql("""SELECT SO.name AS sales_order, SOI.item_code, SOI.parent,\
+                        SOI.item_name, SOI.base_net_amount, SOI.qty, SOI.delivery_date, SOI.prevdoc_docname \
+                        AS quotation, SOI.idx, SOI.boq_ref AS boq, SOI.opp_ref AS opportunity, SOI.rate, \
+                        SOI.warehouse FROM `tabSales Order` SO INNER JOIN `tabSales Order Item` SOI ON \
+                        SO.name=SOI.parent WHERE SOI.docstatus=1 AND SO.docstatus=1  %s """%(condition),\
+                        filters, as_dict=True)
+
+        buying_data_map = frappe._dict()
+        selling_data_map = frappe._dict()
+        for selling_item in selling_items:
+                buying_items = get_buying_items(selling_item)
+                update_buying_prices(selling_item, buying_items, buying_data_map)
+                update_selling_prices(selling_item, selling_data_map)
+
+
+      #for key, val in buying_data_map.iteritems():
+    
+        return buying_data_map
+
+
+def get_buying_items(data):
+       
+        items = []
+        filters = {
+                "so":data.get("sales_order"),
+                "item_code": data.get("item_code")
+        }
+        buying_items_details = frappe.db.sql("""SELECT MRI.parent AS mr_parent, POI.parent AS po_parent,\
+                POI.item_code AS po_item_code, MRI.item_code AS mr_item_code, MRI.substitute_item, \
+                POI.base_net_amount, MRI.eta_date FROM \
+                `tabMaterial Request Item` MRI INNER JOIN `tabPurchase Order Item` POI ON MRI.parent=\
+                POI.material_request AND MRI.item_code=POI.item_code WHERE MRI.docstatus=1 AND \
+                POI.docstatus=1 AND MRI.sales_order=%(so)s AND MRI.item_code=%(item_code)s AND \
+                MRI.substitute_item IS NULL""", filters, as_dict=True)
+        substitute_items_details = frappe.db.sql("""SELECT MRI.parent AS mr_parent, POI.parent AS po_parent,\
+                POI.item_code AS po_item_code, MRI.substitute_item, POI.base_net_amount, \
+                MRI.item_code AS mr_item_code, MRI.eta_date FROM \
+                `tabMaterial Request Item` MRI INNER JOIN `tabPurchase Order Item` POI ON MRI.parent=\
+                POI.material_request AND MRI.substitute_item=POI.item_code WHERE MRI.docstatus=1 AND \
+                POI.docstatus=1 AND MRI.sales_order=%(so)s AND MRI.item_code=%(item_code)s AND \
+                MRI.substitute_item IS NOT NULL""", \
+                filters, as_dict=True)
+        
+        items = buying_items_details + substitute_items_details
+        return items
+
+
+        
+def update_buying_prices(selling_item, buying_items, buying_data_map):
+   
+        items = []
+        for buying_item in buying_items:
+                key  = tuple([buying_item.get("mr_parent"), 
+                            buying_item.get("po_parent"),  
+                            selling_item.get("sales_order")])
+                if not buying_data_map.has_key(key):
+                        buying_data_map[key] = frappe._dict({"purchase_order": buying_item.get("po_parent"),
+                                  "material_request": buying_item.get("mr_parent"),
+                                  "sales_order": selling_item.get("sales_order"),
+                                  "quotation": selling_item.get("quotation"),
+                                  "boq": selling_item.get("boq"),
+                                  "eta_date": buying_item.get("eta_date"),
+                                  "selling_cost": 0.0,
+                                  "buying_cost":  0.0,
+                                  "buying_discount": 0.0,
+                                  "buying_other_charges": 0.0,
+                                  "supplier_name": buying_item.get("supplier_name")
+                                })
+
+                buying_price = buying_data_map.get(key)
+                update_buying_price(buying_price, buying_item)
+
+def update_selling_prices(selling_item, selling_data_map):
+
+        if selling_item:
+                key = tuple([selling_item.get("sales_order")])
+                if not  selling_data_map.has_key(key):
+                        selling_data_map[key] = frappe._dict({
+                                    "sales_order": selling_item.get("sales_order"),
+                                    "opportunity": selling_item.get("opportunity"),
+                                    "boq": selling_item.get("boq"),
+                                    "quotation": selling_item.get("quotation"),
+                                    "grand_total": 0.0,
+                                    "selling_discount": 0.0,
+                                    "selling_other_charges": 0.0,
+                                })
+                sales_order = selling_data_map.get(key)
+                update_selling_price(selling_item, sales_order)
+
+
+def update_buying_price(item, buying_item): 
+        item.buying_cost += buying_item.get("base_net_amount")
+
+def update_selling_price(item, sales_order):
+        sales_order.grand_total += item.get("base_net_amount") or 0.0
+        
+
+

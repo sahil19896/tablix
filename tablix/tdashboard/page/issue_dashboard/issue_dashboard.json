@@ -1,0 +1,19 @@
+{
+ "content": null, 
+ "creation": "2018-04-04 14:46:53.330611", 
+ "docstatus": 0, 
+ "doctype": "Page", 
+ "idx": 0, 
+ "modified": "2018-04-04 14:46:53.330611", 
+ "modified_by": "Administrator", 
+ "module": "TDashboard", 
+ "name": "issue-dashboard", 
+ "owner": "Administrator", 
+ "page_name": "Issue Dashboard", 
+ "roles": [], 
+ "script": null, 
+ "standard": "Yes", 
+ "style": null, 
+ "system_page": 0, 
+ "title": "Issue Dashboard"
+}

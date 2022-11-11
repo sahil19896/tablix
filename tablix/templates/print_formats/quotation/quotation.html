@@ -1,0 +1,679 @@
+<style>
+	{% include "templates/print_formats/quotation/proposal.css" %}
+
+	#a{
+		width: 35%;
+		display: inline-block;
+	}
+	
+	#b{
+		display: inline-block;
+		width: 60%;
+	}
+</style>
+
+{% set boq_profile = frappe.get_doc("BOQ Profile", doc.get("boq_profile")) %}
+{% set flags = namespace() %}
+{% set bdm = frappe.get_doc("BDM", boq_profile.get("bdm")) %}
+{% set account_manager = frappe.get_doc("Account Manager", boq_profile.get("account_manager")) %}
+{% set valid_days = doc.get("validity_of_proposal") %}
+{% set valid = valid_days %}
+{% set valid_date = frappe.utils.add_days(doc.transaction_date, valid) %}
+
+<!--Header Footer Content-->
+{%- from "templates/print_formats/standard_macros.html" import add_header, render_field -%}
+  
+<div id="header-html" class="hidden-pdf"><br><br>	
+	<b>{{ add_header(0,1,doc,letter_head, no_letterhead)|replace("DRAFT", "") }}</b>	
+	{% if doc.get("docstatus") == 0 %}
+		<p style="color:red; font-size:12px;font-style:italic; font-weight:bold;" class="text-center">
+			Please submit the Quotation. Draft Quotation you cannot submit to client.
+		</p>
+	{% endif %}
+
+</div>
+<div id="footer-html" class="visible-pdf">
+	<div class="col-xs-6"></div>
+	<div class="col-xs-3"></div>
+	{% if doc.print_with_stamp == 1 and doc.company == "Tablix Technologies Pvt. Ltd." %}
+		<div class="col-xs-3" style="position: absolute;margin-top: -175px; margin-left: 500px;">
+			<img src = 'assets/tablix/images/gopu.png'>
+			<img src = 'assets/tablix/images/india_stamp.png'>
+		<div>
+	{% endif %}
+	{% if doc.print_with_stamp == 1 and doc.company == "Tablix Technology LLC" %}
+		<div class="col-xs-3" style="display: inline-grid;">
+			<img src = 'assets/tablix/images/karthik.png' style="position: absolute; margin-left: -170px; margin-top: -20px;">
+			<img src = 'assets/tablix/images/dubai_stamp.png'>
+		</div>
+	{% endif %}
+
+	<div class="col-xs-12" style="display: inline-grid;">
+		{% if not no_letterhead and footer %}
+			<div class="letter-head-footer">
+				{{ footer }}
+			</div>
+		{% endif %}
+	</div>
+	<p class="text-right small page-number visible-pdf">
+		{{ _("Page {0} of {1}").format('<span class="page"></span>', '<span class="topage"></span>') }}
+	</p>
+</div>
+
+<!--Header Footer Ends Here-->
+<div class="row">
+	<div class="col-md-12 single-page-info" style="display: contents;">
+		<div class="col-xs-6 column-break" style="width:50%;float: left;">
+			<div id="container" style="display: flex;">	
+				<span id="a"><p><b>Customer:</b></p></span>
+				<span id="b"><p><b>{{doc.customer_name}}</b></p></span>
+			</div>
+			
+			<div id="container" style="display: flex;">
+				<span id="a"><p><b>Contact:</b></p></span>
+				<span id="b"><p>{{doc.contact_person}}</p></span>
+			</div>
+			
+			<div id="container" style="display: flex;">
+				<span id="a"><p><p><b>Contact No:</b></p></span>
+				<span id="b"><p><p>{%if doc.contact_mobile %}{{doc.contact_mobile}} {% else %} {{ _("Null")}} {% endif %}</p></span>
+			</div>
+			
+			<div id="container" style="display: flex;">
+				<span id="a"><p><b>Email ID:</b></p></span>
+				<span id="b"><p>{{doc.contact_email}}</p></span>
+			</div>
+		</div>
+		<div class="col-xs-6" style="width:50%;float: left;">
+			<div id="container" style="display: flex;">
+				<span id="a"><p><b>Date:</b></p></span>
+				<span id="b"><p>{{frappe.utils.get_datetime(doc.transaction_date).strftime('%d-%b-%Y')}}</p></span>
+			</div>
+			
+			<div id="container" style="display: flex;">
+				<span id="a"><p><b>Sales Person:</b></p></span>
+				<span id="b"><p>{{bdm.full_name}}</p></span>
+			</div>
+			
+			<div id="container" style="display: flex;">
+				<span id="a"><p><b>Project Ref:</b></p></span>
+				<span id="b"><p>{{boq_profile.get("project_site_name") }}</p></span>
+			</div>
+			
+			<div id="container" style="display: flex;">
+				<span id="a"><p><b>Solution:</b></p></span>
+				<span id="b"><p>{{boq_profile.get("system_type")}}</p></span>
+			</div>
+		</div>	
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-xs-12 column-break">
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br><br></p>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-12 column-break">
+		{% if boq_profile.is_project == 1 %}
+			{% set flags.site_total  = 0.0 %}
+			<p style="font-size:12px;"><u><b>BOQ Costing</b></u></p>      
+			<table class="table table-bordered single-page">
+				<tbody>
+					<thead>
+						<tr>
+							<th style"width:5%;text-align:center;">
+								<b>Sr No.</b>
+							</th>
+							<th style="width:50%;text-align:left">
+								<b>Description</b>
+							</th>
+							<th style="width:15%; text-align:right;">
+								<b>Qty</b>
+							</th>
+							{% if doc.get("print_without_price") %}
+								<th style="width:15%; text-align: right;">
+									<b>{{doc.currency}}</b>
+								</th>
+								<th style="width:15%;text-align: right;">
+									<b>{{doc.currency}}</b>
+								</th>
+							{% else %}
+								<th style="width:15%;text-align: right;">
+									<b>Unit Price ({{doc.currency}})</b>
+								</th>
+								<th style="width:15%; text-align: right;">
+									<b>Total Price ({{doc.currency}})</b>
+								</th>
+							{% endif %}
+
+						</tr>
+					</thead>
+					{% set flags.is_spare_parts = False %}
+					{% for  site in doc.site_costing_items %}
+						{% set flags.idx  = 1 %}
+						{% set flags.site_total = 0 %}
+						{%- for row in doc.items -%}
+							{% if row.site == site.site  and not row.is_spare_part_item and not 
+								row.is_amc_item %}
+								<tr>	
+									<td style="width: 5%; text-align: center;">{{flags.idx}}</td>
+									<td style="width: 50%;text-align:left">
+										<span>
+										{% if not doc.get("print_without_model") %}
+											Model&nbsp;No:&nbsp; 
+											<b>{{ row.item_code }}</b>
+											{% if row.get("oem_no") %}
+												,&nbsp;Part&nbsp;No:&nbsp;
+												<b>{{row.oem_no}}</b>
+											{% endif %}
+										{% endif %}
+										{% if row.get("sub_title") %}
+											,&nbsp;Title:
+											<b>{{row.sub_title}}</b>
+										{% endif %}
+										{% if row.get("brand") %}
+											,&nbsp;Brand:
+											<b>{{row.brand}}</b>
+										{% endif %}<br>
+										{{row.description}}<br>
+										{% if row.get("more_info") %}
+											{{ row.info }}
+										{% endif %}
+										</span>
+									</td>
+									<td style="width:15%;text-align:right;">
+										<span>
+											{{row.uom}}:&nbsp;
+											<b> {{row.qty|replace(".0", "") }}</b>
+										</span>
+									</td>
+									{% if doc.get("print_without_price") %}
+										<td style="width: 15%; text-align: right;"> 
+											-
+										</td>
+										<td style="width: 15%; text-align: right;"> 
+											-
+										</td>	
+									{% else %}
+										<td style="width: 15%; text-align: right;"> 
+											{{"{:,.2f}".format(row.rate)}}
+										</td>
+										<td style="width: 15%; text-align: right;"> 
+											{{"{:,.2f}".format(row.amount)}}
+										</td>	
+						
+									{% endif %}
+								</tr>
+								{% set flags.idx = flags.idx +1 %}
+								{% set flags.site_total  = flags.site_total+ row.get("amount") %}
+							{% endif %}
+						{% endfor %}
+						<tr>
+							<td colspan="4" class="grand-total">
+								<b>Site Total({{ site.site}})</b>
+							</td>
+							<td class="grand-total">
+								<b>{{"{:,.2f}".format(flags.site_total)}}</b>
+							</td>
+						</tr>	
+					{% endfor %}
+				</tbody>
+			</table>
+		{% endif %}
+		{% if boq_profile.get("is_amc") == 1 %}
+			{% set flags.site_total = 0.0 %}
+			<p><u><b>AMC Costing</b></u></p>
+			<table class="table table-bordered">
+				<tbody>
+					<thead>
+						<tr>
+							<th style="width:5%; text-align:center;">
+								<b>Sr No.</b>
+							</th>
+							<th style="width:50%;text-align:left;">
+								<b>Description</b>
+							</th>
+							<th style="width:15%; text-align:right;">
+								<b>Qty</b>
+							</th>
+							{% if doc.get("print_without_price") %}
+								<th style="width:15%;text-align:right;">
+									<b>{{doc.currency}}</b>
+								</th>
+								<th style="width:15%; text-align:right;">
+									<b>{{doc.currency}}</b>
+								</th>
+							{% else %}
+								<th style="width:15%;text-align:right;">
+									<b>Unit Price ({{doc.currency}})</b>
+								</th>
+								<th style="width:15%; text-align:right;">
+									<b>Total Price ({{doc.currency}})</b>
+								</th>
+							{% endif %}
+
+						</tr>
+					</thead>
+					{% for  site in doc.site_costing_items %}
+						{% set flags.idx  = 1 %}
+						{% set flags.site_total = 0 %}
+						{%- for row in doc.items -%}
+							{% if row.site == site.site and row.is_amc_item and not 
+						row.is_spare_part_item %}
+								<tr>	
+									<td style="width:5%;text-align:center;">
+										{{flags.idx}}
+									</td>
+									<td style="width:50%;text-align:justify;">
+										<span>
+										{% if not doc.get("print_without_model") %}
+											Model&nbsp;No: &nbsp;
+											<b>{{row.item_code}}</b>
+											{% if row.get("oem_no") %}
+												,&nbsp;
+												Part&nbsp;No:
+												<b>{{row.oem_no}}</b>
+											{% endif %}
+										{% endif %}
+										{% if row.get("sub_title") %}
+											,&nbsp;Title:
+											<b>{{row.sub_title}}</b>
+										{% endif %}
+										{% if row.get("brand") %}
+											,&nbsp;Brand:
+											</span>
+											<b>{{row.brand}}</b>
+										{% endif %}<br>
+										{{row.description}}<br>
+										{% if row.get("more_info") %}
+											{{ row.info }}
+										{% endif %}
+										</span>
+									</td>
+									<td style="text-align:right;width:15%;">
+										<span>
+											{{row.uom}}:&nbsp;
+											{{ row.qty|replace(".0", "") }}
+										</span>
+									</td>
+									{% if doc.get("print_without_price") %}
+										<td style="width:15%;text-align: right;"> 
+											-
+										</td>
+										<td style="width:15%;text-align: right;"> 
+											-
+										</td>	
+									{% else %}
+										<td style="width:15%;text-align: right;"> 
+											{{"{:,.2f}".format(row.rate)}}
+										</td>
+										<td style="width:15%;text-align: right;"> 
+											{{"{:,.2f}".format(row.amount)}}
+										</td>	
+						
+									{% endif %}
+								</tr>
+								{% set flags.idx = flags.idx +1 %}
+								{% set flags.site_total  = flags.site_total+ row.get("amount") %}
+							{% elif row.site == site.site and row.is_service_item and not row.is_spare_part_item %}
+									</tr>
+										<td style="width:5%;text-align:center;">
+											{{flags.idx}}
+										</td>
+										<td style="width:50%;text-align:justify;"><span>
+											{% if not doc.get("print_without_model") %}
+												Model&nbsp;No: &nbsp;
+												<b>{{row.item_code}}</b>
+												{% if row.get("oem_no") %}
+													,&nbsp;
+													Part&nbsp;No:
+													<b>{{row.oem_no}}</b>
+												{% endif %}
+											{% endif %}
+											{% if row.get("sub_title") %}
+												,&nbsp;Title:
+												<b>{{row.sub_title}}</b>
+											{% endif %}
+                	                                                                {% if row.get("brand") %}
+                	                                                                        ,&nbsp;Brand:
+                	                                                                        </span>
+                	                                                                        <b>{{row.brand}}</b>
+                	                                                                {% endif %}<br>
+                	                                                                {{row.description}}<br>
+											{% if row.get("more_info") %}
+												{{ row.info }}
+											{% endif %}
+                	                                                                </span>
+                	                                                        </td>
+                	                                                        <td style="text-align:right;width:15%;">
+                	                                                                <span>
+                	                                                                        {{row.uom}}:&nbsp;
+                	                                                                        {{ row.qty|replace(".0", "") }}
+                	                                                                </span>
+                	                                                        </td>
+                	                                                        {% if doc.get("print_without_price") %}
+               	                                                                 <td style="width:15%;text-align: right;">
+                	                                                                        -
+                	                                                                </td>
+                        	                                                        <td style="width:15%;text-align: right;">
+                        	                                                                -
+                        	                                                        </td>
+                        	                                                {% else %}
+                        	                                                        <td style="width:15%;text-align: right;">
+                        	                                                                {{"{:,.2f}".format(row.rate)}}
+                        	                                                        </td>
+                        		                                                        <td style="width:15%;text-align: right;">
+                               	        	                                                 {{"{:,.2f}".format(row.amount)}}
+                               		                                                 </td>
+										{% endif %}
+									</tr>
+								{% set flags.idx = flags.idx +1 %}
+								{% set flags.site_total  = flags.site_total+ row.get("amount") %}
+							{% endif %}
+						{% endfor %}
+						<tr>
+							<td colspan="4" class="grand-total">
+								<b>Site Total({{ site.site}})</b>
+							</td>
+							<td class="grand-total">
+								<b>{{"{:,.2f}".format(flags.site_total)}}</b>
+							</td>
+						</tr>	
+					{% endfor %}
+					<!-- Closing Site !-->
+				</tbody>
+			</table>
+		{% endif %}
+		<!-- Ending Project costing !-->
+		{% if doc.get("is_spare_part_included") %}
+			{% set flags.count = 1 %}
+			<u><p><b>Spare Parts Cost</b></p></u>
+			<table class="table table-bordered">
+				<tbody>
+					<thead>
+						<tr>
+							<th style="width:5%; text-align:center;">
+								<b>Sr No.</b>
+							</th>
+							<th style="width:50%; text-align:left;">
+								<b>Description</b>
+							</th>
+							<th style="width:15%; text-align:right;">
+								<b>Qty</b>
+							</th>
+							{% if doc.get("print_without_price") %}
+								<th style="width:15%; text-align:right;">
+									<b>{{doc.currency}}</b>
+								</th>
+								<th style="width:15%;text-align:right;">
+									<b>{{doc.currency}}</b>
+								</th>
+							{% else %}
+								<th style="width:15%;text-align:right;" >
+									<b>Unit Price ({{doc.currency}})</b>
+								</th>
+								<th style="width:15%;text-align:right;">
+									<b>Total Price ({{doc.currency}})</b>
+								</th>
+							{% endif %}
+						</tr>
+					</thead>
+					{%- for row in doc.items -%}
+						{% if row.is_spare_part_item %}
+							<tr>	
+								<td style="width:5%;text-align:center;">
+									{{flags.count}}
+								</td>
+								<td style="width:50%;text-align:justify;">
+								<span>
+									Model&nbsp;No:
+									<b>{{row.item_code}}</b>
+									{% if row.get("oem_no") %}
+										,&nbsp; Part&nbsp;No:
+										<b>{{row.oem_no}}</b>
+									{% endif %}
+									{% if row.get("sub_title") %}
+										,&nbsp;Title:
+										<b>{{row.sub_title}}</b>
+									{% endif %}
+									{% if row.get("brand") %}
+										, &nbsp;Brand:
+										<b>{{row.brand}}</b>
+									{% endif %}<br>
+									{{row.description}}<br>
+									{% if row.get("more_info") %}
+										{{ row.info }}
+									{% endif %}
+								</span>
+								</td>
+								<td style="width:15%;text-align:right;">
+									<span>
+										{{row.uom}}:&nbsp;
+										{{row.qty|replace(".0", "")}}
+									</span>
+								</td>
+								<td style="width:15%; text-align: right;"> 
+									{{"{:,.2f}".format(row.rate)}}
+								</td>
+								<td style="width:15%; text-align: right;"> 
+									{{"{:,.2f}".format(row.amount)}}
+								</td>
+							</tr>
+							{% set flags.count = flags.count +1 %}
+						{% endif %}
+					{% endfor %}
+					<tr>
+						<td colspan="4" class="grand-total">
+							<b>Spare Parts Cost</b>
+						</td>
+						<td class="grand-total">
+							<b>{{"{:,.2f}".format(doc.spare_part_selling_amount)}}</b>
+						</td>
+					</tr>	
+				</tbody>
+			</table>
+		{% endif %}
+		<p><u><b>Total Price</b></u><p>
+		<table class="table table-bordered">
+			<tbody>
+				<thead>
+					<tr>
+						<th  style="width:60%;" class="text-center">
+							<b>Description</b>
+						</th>
+						<th style="width:40%;" class="text-center">
+							<b>Total Price</b>
+						</th>
+					</tr>
+				</thead>
+				<tr>
+					<td style="width:60%;"  class="grand-total">
+						<b>Total Price</b>
+					</td>
+					<td style="width:40%;"  class="grand-total">
+						<b>{{"{:,.2f}".format(doc.total)}}</b>
+					</td>
+				</tr>
+				<!-- Total Prices of all the items !-->
+				{% if doc.discount_amount|abs > 0 %}
+					<tr>
+						<td style="width:60%;"  class="grand-total">
+							<b>(less) Discount</b>
+						</td>
+						<td style="width:40%;"  class="grand-total">
+							<b>{{"{:,.2f}".format(doc.discount_amount|abs)}}</b>
+						</td>
+					</tr>
+					<tr>
+						<td style="width:60%;"  class="grand-total">
+							<b>After Discount Amount</b>
+						</td>
+						<td style="width:40%;"  class="grand-total">
+							<b>{{"{:,.2f}".format(doc.net_total)}}</b>
+						</td>
+					</tr>
+				{% endif %}
+				<!-- Total Discount on items total only !-->
+				{% if doc.total_taxes_and_charges > 0 %}
+					<tr>
+						<td style="width:60%;"  class="grand-total">
+							<b>(add) VAT</b>
+						</td>
+						<td style="width:40%;"  class="grand-total">
+							<b>{{"{:,.2f}".format(doc.total_taxes_and_charges)}}
+							</b>
+						</td>
+					</tr>
+				{% endif %}
+				<!-- Taxes Charges only !-->
+				{% if doc.duties > 0 %}
+					<tr>
+						<td  style="width:60%;"  class="grand-total">
+							<b>(add) Duties</b>
+						</td>
+						<td style="width:40%;" class="grand-total">
+							<b>{{"{:,.2f}".format(doc.duties)}}</b>
+						</td>
+					</tr>
+				{% endif %}
+				<!-- Duties charges only !-->
+				{% if doc.other_charges > 0 %}
+					<tr>
+						<td style="width:60%;"  class="grand-total">
+							<b>(add) Other Charges</b>
+						</td>
+						<td style="width:40%;"  class="grand-total">
+							<b>{{"{:,.2f}".format(doc.other_charges)}}</b>
+						</td>
+					</tr>
+				{% endif %}
+				<!--  Other Charges only !-->
+				<tr>
+					<td style="width:60%;"  class="grand-total">
+						<b>Grand Total</b>
+					</td>
+					<td style="width:40%;"  class="grand-total">
+						<b>{{"{:,.2f}".format(doc.grand_total)}}</b>
+					</td>
+				</tr>
+				<tr>
+					<td style="width:60%;"  class="grand-total">
+						<b>Amount in Words</b>
+					</td>
+					<td style="width:40%;"  class="grand-total">
+						<b>Amount in Words:&nbsp;{{doc.in_words|replace(".", "")|replace(",", "")}}</b>
+					</td>
+				</tr>
+				<!-- Total Charges after grand total !-->
+			</tbody>
+		</table>
+	</div>
+</div><br><br>
+
+{% if doc.optional_items %}
+	<div class="row">
+		<div class="col-xs-12">
+			<p style="font-size:12px;"><u><b>Optional Items</b></u></p>
+			<table class="table table-bordered single-page">
+				<tbody>
+					<thead>
+						<tr>
+							<th style"width:5%;text-align:center;">
+								<b>Sr No.</b>
+							</th>
+							<th style="width:50%;text-align:left;">
+								<b>Description</b>
+							</th>
+							<th style="width:15%; text-align:right;">
+								<b>Qty</b>
+							</th>
+							{% if doc.get("print_without_price") %}
+								<th style="width:15%; text-align: right;">
+									<b>{{doc.currency}}</b>
+								</th>
+								<th style="width:15%;text-align: right;">
+									<b>{{doc.currency}}</b>
+								</th>
+							{% else %}
+								<th style="width:15%;text-align: right;">
+									<b>Unit Price ({{doc.currency}})</b>
+								</th>
+								<th style="width:15%; text-align: right;">
+									<b>Total Price ({{doc.currency}})</b>
+								</th>
+							{% endif %}
+						</tr>
+					</thead>
+					{%- for data in doc.optional_items -%}
+						<tr>
+							<td style="width: 5%; text-align: center;">{{data.idx}}</td>
+							<td style="width: 50%;text-align:left">
+								<span>
+									{% if not doc.get("print_without_model") %}
+										Model&nbsp;No:&nbsp;
+										<b>{{ data.item_code }}</b>
+									{% endif %}
+									{% if data.get("item_name") %}
+										,&nbsp;Title:
+										<b>{{data.item_name}}</b>
+									{% endif %}
+									{% if data.get("brand") %}
+										,&nbsp;Brand:
+										<b>{{data.brand}}</b>
+									{% endif %}<br>
+									{{data.description}}
+								</span>
+							</td>
+							<td style="width:15%;text-align:right;">
+								<span>
+									{{data.stock_uom}}:&nbsp;
+									<b> {{data.qty|replace(".0", "") }}</b>
+								</span>
+							</td>
+							<td style="width: 15%; text-align: right;">
+								{{"{:,.2f}".format(data.selling_amount)}}
+							</td>
+							<td style="width: 15%; text-align: right;">
+								{{"{:,.2f}".format(data.total_selling_amount)}}
+							</td>
+						</tr>
+					{% endfor %}
+					<tr>
+						<td colspan="4" class="grand-total">Total Price</td>
+						<td class="grand-total">{{"{:,.2f}".format(doc.get("optional_item_selling_amount"))}}</td></tr>
+<!--
+						<td colspan="4" class="grand-total">Discount</td>
+						<td class="grand-total">{{"{:,.2f}".format(12856.80)}}</td>
+						</tr><tr>
+						<td colspan="4" class="grand-total">After Discount Amount</td>
+						<td class="grand-total">{{"{:,.2f}".format(32303.20)}}</td>
+						</tr> -->
+				</tbody>
+			</table>
+		</div>
+	</div>
+{% endif %}
+<!-- 
+	<p id="toc" style="font-size:12px;text-align:left;"><b>Notes:</b></p><br>
+	{% if boq_profile.get("notes") %}
+		<p style="font-size:11px;text-align:left;font-family: Helvetica Bold;">
+			{{ boq_profile.get("notes") }}
+	{% else %}
+		None
+	{% endif %}
+<!-->
+{% include "templates/print_formats/quotation/commons/single_page/terms_and_conditions.html" %}
+<div style="text-align:center;"><br><br>Thank You for your business!<br>Your Sales Contact: 
+	<b>{{bdm.full_name}}</b>&nbsp;&nbsp;Contact No: 
+	<b>{{bdm.phone_number}}</b>&nbsp;&nbsp;E-Mail:
+	<b>{{bdm.name}}</b><hr>
+	{% if doc.print_with_stamp == 0 %}
+		<span style="line-height: 9px;">THIS IS A COMPUTER GENERATED DOCUMENT & REQUIRE NO SIGNATURE</span>
+	{% endif %}
+</div>
+<script>
+        {% include "templates/print_formats/quotation/proposal.js" %}
+</script>
+

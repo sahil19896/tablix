@@ -1,0 +1,21 @@
+<div id="footer-html" class="visible-pdf">
+	{% if not no_letterhead and footer %}
+	<div class="letter-head-footer">
+		<p style="text-align:center;"><b>Tablix Technologies Private Limited</b></p>
+		<p style="text-align:center;">E-107, 8th A Cross, Manyata Residency, Manyata Tech Park, Rachenahalli, Thanisandra</p>
+		<p style="text-align:center;"> Bengaluru,&nbsp;&nbsp; Karnataka - 560045.&nbsp;&nbsp; Phone No.: 080 42182986.&nbsp;&nbsp; www.tablix.in</p>
+		<p style="text-align:center;">GSTIN: 29AAGCT1796F1ZY,&nbsp;&nbsp;&nbsp;PAN NO.: AAGCT1796F</p>
+	</div><br/>
+	{% endif %}
+	<p style="text-align:center;">
+		<span style="line-height: 9px;">
+			{% if flags.disclaimer %}
+				<b>{{ flags.disclaimer }}</b>
+			{% endif %}
+        	</span>
+	</p>
+	<p class="text-right small page-number visible-pdf">
+		{{ _("Page {0} of {1}").format('<span class="page"></span>', '<span class="topage"></span>') }}
+	</p>
+</div>
+

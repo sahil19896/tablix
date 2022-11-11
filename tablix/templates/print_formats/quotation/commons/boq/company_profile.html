@@ -1,0 +1,126 @@
+<!-- Statement of confidentiality  !-->
+{% if company_profile.get("statement_of_confidentiality") %}
+	<div class="row">
+		<div class="col-xs-12">
+			<h3 class="sectionone sectionone-title">
+				<b>Statement of Confidentiality &amp; Non-Disclosure</b>
+			</h3><hr>
+			<div class="col-xs-12"> 
+				{{ frappe.render_template(company_profile.get("statement_of_confidentiality"), 
+					{"doc":doc, "flags": flags}) }}
+			</div>
+		</div>
+	</div>
+	<p style="page-break-after: always;"></p>
+{% endif %}
+<!-- Executive Summary !-->
+{% if company_profile.get("executive_summary") %}
+	<div class="row">
+		<div class="col-xs-12">
+			<h3 class="sectionone sectionone-title"><b>Executive Summary</b></h3><hr>
+			<div class="col-xs-12">
+				{{ frappe.render_template(company_profile.get("executive_summary"),
+					{"doc": doc, "boq_profile": boq_profile, "flags": flags})  }}
+			</div>
+		</div>
+	</div>
+{% endif %}
+
+<div class="row">
+	<!-- Company Background !-->
+	<div class="col-xs-12">
+		{% if company_profile.get("company_background") %}
+			<h3 class="sectionone sectionone-title"><b>Company Background</b></h3><hr>
+			<div class="col-xs-12">
+				 {{ frappe.render_template(company_profile.get("company_background"),
+					{"doc": doc, "boq_profile": boq_profile, "flags": flags})  }}
+			</div>
+		{% endif %}
+		<!-- Mission statement !-->
+		{% if company_profile.get("mission_statement") %}
+			<div class="col-xs-12">
+				<h3 class="sectiontwo sectiontwo-title"><b>Mission Statement</b></h3>
+				{{ frappe.render_template(company_profile.get("mission_statement"),
+					{"doc": doc, "boq_profile": boq_profile, "flags": flags})  }}
+			</div>
+		{% endif %}
+		<!-- Company Services !-->
+		{% if company_profile.get("company_services") %}
+			<div class="col-xs-12">
+				<h3 class="sectiontwo sectiontwo-title"><b>Services Provided:</b></h3>
+				<ul>
+					{% for service in company_profile.get("company_services") %}
+						<li>{{ service.get("domain") }}</li>
+					{% endfor %}
+				</ul>
+			</div>
+		{% endif %}
+		<!-- Solutions Items !-->
+		{% if company_profile.get("solutions_items") %}
+			<div class="col-xs-12">
+				<h3 class="sectiontwo sectiontwo-title"><b>Solutions Provided:</b></h3>
+				<ul>
+					{% for solution in company_profile.get("solutions_items") %}
+						<li>
+							{{ solution.get("system_type") }}
+							{% if solution.get("description") %}
+								({{ solution.get("description") }})
+							{% endif %}
+						</li>	
+					{% endfor %}
+				</ul>
+			</div>
+		{% endif %}
+		<!-- Company Office Locations !-->
+		{% if company_profile.get("company_office_locations") %}
+			<div class="col-xs-12">
+				<h3 class="sectiontwo sectiontwo-title"><b>Office Locations:</b></h3>
+				<ul>
+					{% for loc in company_profile.get("company_office_locations") %}
+						<li> {{ loc.get("country") }}, {{ loc.get("branch")|replace("None", "") }}</li>
+					{% endfor %}
+				</ul>
+			</div>
+		{% endif %}
+		<!-- Board of Directors !-->
+		{% if company_profile.get("board_of_directors") %}
+			<div class="col-xs-12">
+				<h3 style="font-size:15px;" class="sectiontwo sectiontwo-title"><b>Board of Directors:</b></h3>
+				<ul>
+					{% for member in company_profile.get("board_of_directors") %}
+						<li>{{ member.get("salutation") }}. {{ member.get("employee_name")}}</li>
+					{% endfor %}
+				</ul>
+			</div>
+		{% endif %}
+		<!-- Shareholders of Company !-->
+		{% if company_profile.get("principal_shareholders") %}	
+			<div class="col-xs-12">
+				<h3 class="sectiontwo sectiontwo-title"><b>Principal Shareholders:</b></h3>
+				<ul>
+					{% for member in company_profile.get("principal_shareholders") %}
+						<li>{{ member.get("salutation") }}. {{ member.get("employee_name")}} 
+							<b>{{ member.get("nationality") }}-{{ member.get("share") }} %</b>
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		{% endif %}
+		<!-- Legal Structure information !-->
+		{% if company_profile.get("legal_structure") %}
+			<div class="col-xs-12">
+				<h3 class="sectiontwo sectiontwo-title"><b>Legal Strucuture:</b></h3>
+				{{ frappe.render_template(company_profile.get("legal_structure"),
+					{"doc": doc, "boq_profile": boq_profile, "flags": flags})  }}
+			</div>
+		{% endif %}
+		<!-- Organization Structure !-->
+			<div class="col-xs-12">
+				<h3 class="sectiontwo sectiontwo-title"><b>Ogranization Chart:</b></h3>
+				<p><img src="assets/tablix/images/proposals/org-chart.png"></p><br>
+				<p>Tablix currently employs 110 members, 85% of staff is Technical and 15% are from the functional and operational team.
+				</p>
+				<p>For a detailed look at key employees please see section 6.3 "Team Qualifications".</p>
+			</div>
+	</div>
+</div>

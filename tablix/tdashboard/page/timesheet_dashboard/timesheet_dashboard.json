@@ -1,0 +1,23 @@
+{
+ "content": null, 
+ "creation": "2018-01-30 12:45:12.139566", 
+ "docstatus": 0, 
+ "doctype": "Page", 
+ "idx": 0, 
+ "modified": "2018-02-01 08:49:12.076517", 
+ "modified_by": "Administrator", 
+ "module": "TDashboard", 
+ "name": "timesheet-dashboard", 
+ "owner": "Administrator", 
+ "page_name": "Timesheet Dashboard", 
+ "roles": [
+  {
+   "role": "System Manager"
+  }
+ ], 
+ "script": null, 
+ "standard": "Yes", 
+ "style": null, 
+ "system_page": 1, 
+ "title": "Timesheet Dashboard"
+}

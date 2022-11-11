@@ -1,0 +1,47 @@
+{% var visible_columns = row.get_visible_columns(["item_code", "item_name", "title_above", "amount", "stock_uom", "qty", "current_cost", "selling_price", "cost_amount", "sale_amount", "margin", "margin_percent"]); %}
+
+{% if(!doc) { %}
+	<div class="row">
+		<div class="col-sm-4">{%= __("Item") %}</div>
+		<div class="col-sm-2">{%= __("Qty") %}</div>
+		<div class="col-sm-3">{%= __("Cost") %}</div>
+		<div class="col-sm-3">{%= __("Sale") %}</div>
+	</div>
+{% } else { %}
+	<div class="row">
+		<div class="col-sm-4">
+			{% if(doc.title_above){ %}
+				<strong>{%= doc.section_title %}{% } %}</strong>
+        <br>{%= doc.item_code %}
+			{% if(doc.item_name != doc.item_code) { %}
+				<br>{%= doc.item_name %}{% } %}
+            <!-- {% if(doc.item_name != doc.description) { %}
+                <p>{%= doc.description %}</p>{% } %} -->
+
+		</div>
+
+
+		<!-- qty -->
+		<div class="col-sm-2">
+			{%= doc.get_formatted("qty") %}
+			<span class="small">{%= doc.uom || doc.stock_uom %}</span>
+		</div>
+
+
+    <!-- cost -->
+	<div class="col-sm-3">
+		{%= doc.get_formatted("cost_amount") %}
+				<br><span class="label label-default"
+					title="{%= __("unit")  %}">
+					{%= doc.get_formatted("current_cost") %}</span>
+			</div>
+
+			<!-- sale -->
+	<div class="col-sm-3">
+		{%= doc.get_formatted("sale_amount") %}
+				<br><span class="label label-default"
+					title="{%= __("unit")  %}">
+					{%= doc.get_formatted("selling_price") %}</span>
+			</div>
+ </div>
+{% } %}

@@ -1,0 +1,3 @@
+tablix.commands.migrations
+tablix.commands.commands
+tablix.commands

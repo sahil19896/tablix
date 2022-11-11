@@ -1,0 +1,105 @@
+<style>
+	{% include "templates/print_formats/invoices/proposal.css" %}
+</style>
+<table class="table table-bordered" style="border-collapse:collapse;">
+	<tbody>
+		<thead><tr>
+
+			<th style="text-align:center;width:5%;"><b>Sr No.</b></th>
+			<th style="text-align:center;width:40%;"><b>Description</b></th>
+			<th style="text-align:center;width:10%;"><b>HSN/SAC</b></th>
+			<th style="text-align:center;width:15%;"><b>Qty</b></th>
+			{% if flags.with_price == True %}
+				<th style="text-align:center;width:15%;">
+					<b>Unit Price (₹)</b>
+				</th>
+				<th style="text-align:center;width:15%;">
+					<b>Total Price (₹)</b>
+				</th>
+			{% endif %}
+		</tr></thead>	
+		{%- for row in doc.items -%}
+			<tr>	
+				<td style="width: 5%; text-align: center;">{{row.idx}}</td>
+				<td style="width: 40%; text-align: justify;">
+					<span>
+						Model&nbsp;No:<b>{{row.item_code}}</b>
+						<br>{{row.description}}
+					</span>
+				</td>
+				<td style="width: 5%; text-align: center;">{{row.gst_hsn_code}}</td>
+				<td style="width: 15%; text-align: center;">
+					<span>
+						{{row.stock_uom}}:&nbsp; {{ row.qty|replace(".0", "") }}
+					</span>
+				</td>
+				{% if flags.with_price == True %}
+					<td style="width: 15%; text-align: right;"> 
+						{{"{:,.2f}".format(row.rate)}}
+					</td>
+					<td style="width: 15%; text-align: right;"> 
+						{{"{:,.2f}".format(row.amount)}}
+					</td>
+				{% endif %}
+			</tr>
+		{% endfor %}
+		{% if flags.with_price == True %}
+			<tr>
+				<td></td>
+				<td colspan="3" class="grand-total"><b>Sub Total</b></td>
+				<td  colspan="2" class="grand-total"><b>₹ {{"{:,.2f}".format(doc.total)}}</b></td>
+			</tr>
+			{% if doc.get("discount_amount") %}
+				<tr>
+					<td></td>
+					<td colspan="3"  class="grand-total"><b>(-) Discount</b></td>
+					<td  colspan="2" class="grand-total"><b>₹ {{"{:,.2f}".format(doc.discount_amount)}}</b></td>
+				</tr>
+			{%  endif %}
+			<tr>
+				<td></td>
+				<td colspan="3"  class="grand-total"><b>Total Amount Before TAX</b></td>
+				<td colspan="2" class="grand-total"><b>₹ {{"{:,.2f}".format(doc.net_total)}}</b></b></td>
+			</tr>
+			{% if doc.get("taxes_and_charges") == "IND GST - T-IND" %}
+				{%- for row in doc.taxes -%}
+				{% if row.description == "SGST 9%" %}
+				<tr>
+					<td></td>
+					<td colspan="3" class="grand-total"><b>(+) {{ row.description }}</b></td>
+					<td colspan="2" class="grand-total"><b>₹ {{"{:,.2f}".format(row.tax_amount)}}</b></td>
+				</tr>
+				{% elif row.description == "CGST 9%" %}
+				<tr>
+					<td></td>
+					<td colspan="3" class="grand-total"><b>(+) {{row.description}}</b></td>
+					<td colspan="2" class="grand-total"><b>₹ {{"{:,.2f}".format(row.tax_amount)}}</b></td>
+				</tr>
+				{% endif %}
+				{% endfor %}
+			{% endif %}
+			{% if doc.get("total_advance") %}
+				<tr>
+					<td></td>
+					<td  colspan="3"class="grand-total"><b>(-) Advance Received</b></td>
+					<td colspan="2"class="grand-total"><b>₹ {{"{:,.2f}".format(doc.total_advance)}}</b></td>
+				</tr>
+			{% endif %}
+			<tr>
+				<td></td>
+				<td colspan="3" class="grand-total"><b>Total Amount After TAX</b></td>
+				<td colspan="2" class="grand-total"><b>₹ {{"{:,.2f}".format(doc.grand_total)}}</b></td>
+			</tr>
+		{% endif %}
+	</tbody>
+</table>
+<p style="font-size:11px;text-align:right;"><b>Amount in Words:&nbsp;{{ doc.in_words}}</b></p>
+<!--
+{% if flags.include_terms == True %}
+	<div class="col-xs-12">
+		{% if doc.get("terms") %}
+			<p><u><b>Terms and Conditions:</b></u></p>
+			{{ doc.get("terms") }}
+		{% endif %}
+	</div>
+{% endif %} -->

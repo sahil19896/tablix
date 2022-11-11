@@ -1,0 +1,115 @@
+<style>
+	{% include "templates/print_formats/quotation/proposal.css" %}
+</style>
+
+{% set company_profile = frappe.get_doc("Company Profile", doc.get("company")).as_dict() %}
+{% set boq_profile = frappe.get_doc("BOQ Profile", doc.get("boq_profile")).as_dict() %}
+{% set bdm = frappe.get_doc("BDM", doc.get("bdm")) %},
+{% set table_of_contents = doc.get("quotation_index_items") or []%}
+{% set valid_days = boq_profile.get("validity_of_proposal") %}
+{% set valid = valid_days %}
+{% set valid_date = frappe.utils.add_days(doc.transaction_date, valid) %}
+{% set i = 1 %}
+{% set total_val = [] %}
+{% set j = 0 %}
+
+<!--Header Footer Content-->
+{% include "templates/print_formats/quotation/proposal_headers.html" %}
+<!--Header Footer Ends Here-->
+
+<div class="row">
+	<div class="col-xs-12">
+		{%- if boq_profile.get("company_image") -%}
+			<p style="text-align:center;"><img src="{{boq_profile.company_image}}" height="341" width="635"></p>
+		{%- endif -%}
+		<p class="proposal-title-22 text-uppercase" style="font-size:22px;text-align:center;">
+			<b>TECHNICAL PROPOSAL</b>
+		</p>
+		<p class="proposal-title-18 text-uppercase" style="font-size:20px;text-align:center;">
+			<b>{{boq_profile.get("project_type")}}</b>
+		</p>
+		<p class="proposal-title-20 text-uppercase" style="font-size:18px;text-align:center;">
+			<b>{{boq_profile.get("solution_type")}}</b>
+		</p>
+		<div class="col-xs-8"><br><br>
+			<p style="font-size:15px;">
+				Client:<b>{{doc.customer_name}}</b>
+			</p>
+			<p style="font-size:15px;">Prepared for: 
+				<b>Administration & Finance Division</b>
+			</p>
+		</div>
+		<div class="col-xs-4"><br><br>
+			{%- if doc.logo -%}
+				<p class="text-left"><img src="{{boq_profile.company_logo}}" height="72" width="198"></b></p>
+			{%- endif -%}
+		</div>
+		<div class="col-xs-7"><br><br>
+			<p style="font-size:16px;">Submitted on:<b>{{frappe.utils.get_datetime(transaction_date).strftime('%d-%b-%Y')}}</b></p>
+			<p style="font-size:16px;">Submitted by:<b>{{doc.get("bdm_name")}}</b></p><br>
+		</div>
+		<div class="col-xs-5"><br><br>
+			<p style="font-size:15px;text-align:left;">Project Ref:<b>{{boq_profile.get("boq_profile_name")}}</b></p>
+			<p style="font-size:15px;text-align:left;">Version: <b>V1.0</b></p><br>
+		</div>
+		<p style="font-size:13px;"><img src="/assets/tablix/images/proposals/titleheader.jpg" height="60" width="100%"></p>
+	</div>
+</div>
+<!--
+	COMMONS
+!-->
+	<p style="page-break-after: always;"></p>
+	<!-- START OF TABLE OF CONTENTS  ALREADY INDENTED!-->
+		{% include "templates/print_formats/quotation/commons/table_of_contents.html" %}
+	<!-- END OF TABLE OF CONTENTS !-->
+	<p style="page-break-after: always;"></p>
+
+<div class="indented reset-section" id="content">
+		<!-- COMPANY INFORMATION HERE --!>
+			{% include "templates/print_formats/quotation/commons/company_profile.html" %}
+		<!-- COMPANY INFORMATION HERE --!>
+
+		<p style="page-break-after: always;"></p>
+			<!--  START NEED OF IDENTIFICATION !-->
+				{% include "templates/print_formats/quotation/commons/need_identifications.html" %}
+			<!-- END NEED OF IDENTIFICATION !-->
+
+		<p style="page-break-after: always;"></p>
+			<!-- START WHY TABLIX !-->
+				{% include "templates/print_formats/quotation/commons/why_tablix.html" %}
+			<!-- START WHY TABLIX !-->
+
+		<p style="page-break-after: always;"></p>
+			<!-- START IMPLEMENTATION PLAN !-->
+				{% include "templates/print_formats/quotation/commons/implementation_plan.html" %}
+			<!-- END IMPLEMENTATION PLAN !-->
+
+		<p style="page-break-after: always;"></p>
+			<!-- START TECHNICAL PROPOSAL BREAKDOWN !-->
+				{% include "templates/print_formats/quotation/technical/technical_proposal_breakdown.html" %}
+			<!-- END TECHNICAL PROPOSAL BREAKDOWN !-->
+
+		<p style="page-break-after: always;"></p>
+			<!-- START TERMS AND CONDITIONS !-->
+				{% include "templates/print_formats/quotation/commons/terms_and_conditions.html" %}	
+			<!-- END TERMS AND CONDITIONS !-->
+		<p style="page-break-after: always;"></p>
+			<!-- START OF CONCLUSION !-->
+				{% include "templates/print_formats/quotation/commons/conclusion.html" %}
+			<!-- END OF CONCLUSION !-->
+		<p style="page-break-after: always;"></p>
+			<!-- START OF PROPOSAL ACCEPTANCE !-->
+				{% include "templates/print_formats/quotation/commons/proposal_acceptance.html" %}
+			<!-- END OF PROPOSAL ACCEPTANCE !-->
+		<p style="page-break-after: always;"></p>
+
+			<!-- START OF APPENDIX !-->
+				{% include "templates/print_formats/quotation/commons/appendix.html" %}	
+			<!-- END OF APPENDIX !-->
+<!-- END OF COMMONS !-->
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.js" type="text/javascript"></script>
+<script>
+	{% include "templates/print_formats/quotation/proposal.js" %}
+</script>
+

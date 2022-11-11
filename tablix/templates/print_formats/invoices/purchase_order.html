@@ -1,0 +1,72 @@
+<!--Header Footer Content-->
+{% include "templates/print_formats/commons/header.html" %}
+{% include "templates/print_formats/commons/footer.html" %}
+
+<!--Header Footer Ends Here-->
+<style>
+	#a{
+		width: 35%;
+		display: inline-block;
+	}
+	
+	#b{
+		display: inline-block;
+		width: 60%;
+	}
+</style>
+
+<div class="row">
+	<div class="col-xs-12 single-page-info" style="display: contents;">
+		<div class="col-xs-6 column-break" style="width:50%;float: left;">
+			<div class="row">
+				<span id="a"><p><b>Supplier:</b></p></span>
+				<span id="b"><p><b>{{doc.supplier}}</b></p></span>
+			</div>
+			<div class="row">
+				<span id="a"><p><b>Supplier Address:</b></p></span>
+				<span id="b"><p>{{doc.address_display}}</p></span>
+			</div>
+
+			<div class="row">
+				<span id="a"><p><b>Supplier Contact:</b></p></span>
+				<span id="b"><p>{{doc.contact_display}}<br>{{ doc.contact_mobile}}</p></span>
+			</div>
+
+			<div class="row">
+				<span id="a"><p><b>Payment Terms:</b></p></span>
+				<span id="b"><p>{{doc.term}}</p></span>
+			</div>
+
+		</div>
+		<div class="col-xs-6" style="width:50%;float:left;">
+                	<div class="row">
+				<span id="a"><p><b>Date:</b></p></span>
+				<span id="b"><p>{{frappe.utils.get_datetime(doc.transaction_date).strftime('%d-%b-%Y')}}</p></span>
+                	</div>
+
+			<div class="row">
+				<span id="a"><p><b>Delivery Address:</b></p></span>
+				<span id="b"><p>{{doc.shipping_address_display}}</p></span>
+			</div>
+			<div class="row">
+				<span id="a"><p><b>Delivery Contact:</b></p></span>
+				<span id="b"><p>{{ doc.contact_name }}<br>{{ doc.contact_phone_no }}</p></span>
+			</div>
+			{% if doc.get("warranty") %}
+				<div class="row">
+					<span id="a"><p><b>Warranty:</b></p></span>
+					<span id="b"><p>{{ doc.warranty }}</p></span>
+				</div>
+			{% endif %}
+		</div>
+		
+	</div>
+</div><br><br>
+{% include "templates/print_formats/commons/purchase_order_items.html" %}
+<div style="text-align:center;">
+	Thank You for your business!<br>
+	Any futher enquiries relating to this Purchase Order<br>
+	Please contact: <b>{{doc.rep_name}}</b>
+	&nbsp;&nbsp;Contact No: <b>{{doc.rep_phone}}</b>
+	&nbsp;&nbsp;E-Mail:<b>{{doc.rep_email}}</b><hr>  	
+</div>

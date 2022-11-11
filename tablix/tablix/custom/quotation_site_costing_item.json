@@ -1,0 +1,32 @@
+{
+ "custom_fields": [],
+ "custom_perms": [],
+ "doctype": "Quotation Site Costing Item",
+ "property_setters": [
+  {
+   "_assign": null,
+   "_comments": null,
+   "_liked_by": null,
+   "_user_tags": null,
+   "creation": "2019-02-17 17:20:28.206900",
+   "default_value": null,
+   "doc_type": "Quotation Site Costing Item",
+   "docstatus": 0,
+   "doctype_or_field": "DocField",
+   "field_name": "site",
+   "idx": 0,
+   "modified": "2019-02-17 17:20:28.206900",
+   "modified_by": "sriram@tablix.ae",
+   "name": "Quotation Site Costing Item-site-width",
+   "owner": "sriram@tablix.ae",
+   "parent": null,
+   "parentfield": null,
+   "parenttype": null,
+   "property": "width",
+   "property_type": null,
+   "row_name": null,
+   "value": "261"
+  }
+ ],
+ "sync_on_migrate": 1
+}

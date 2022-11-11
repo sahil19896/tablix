@@ -1,0 +1,29 @@
+.navbar-default{
+	background-color: #0184A7;
+}
+
+.navbar-default .navbar-nav > li > a{
+	color: #000000;
+	font-weight: bold;
+}
+
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:hover, .navbar-default .navbar-nav > .open > a:focus{
+	color: #555;
+	background-color: #0184A7;
+}
+
+.btn-primary{
+
+	background-color:#0184A7 !important;
+	border-color: #0184A7 !important;
+}
+.indicator.blue::before, .indicator-right.blue::after{
+	background:#0184A7 !important;
+	
+}
+
+.container {
+	
+	width: 95% !important;
+}
+

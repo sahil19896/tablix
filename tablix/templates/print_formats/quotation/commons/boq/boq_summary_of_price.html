@@ -1,0 +1,103 @@
+{% if flags.proposal_type == "Commercial" %}
+	<br>
+	<p><b><u>{{ doc.get("currency") }} &nbsp;  {{ "{:,.2f}".format(doc.grand_total) }}/-&nbsp;({{doc.get("in_words") }}).</u></b></p>
+	<p style="font-size:13px;"><u><b>Summary of Price:</b></u></p>
+	<table class="table table-bordered" style="border-collapse:collapse;">
+		<tbody>
+			<thead>
+				<tr>
+					<th class="text-center"><b>Name</b></th>
+					<th class="text-center"><b>Amount ({{doc.currency}})</b></th>
+				</tr>
+			</thead>
+			{% if boq_profile.get("is_project") %}
+				<tr>
+					<td  class="summary-of-price">
+						<b>BOQ Total</b>
+					</td>
+					<td class="summary-of-price">
+						<b>{{"{:,.2f}".format(doc.boq_selling_amount)}}</b>
+					</td>
+				</tr>	
+			{% endif %}
+			{% if boq_profile.get("is_amc") %}
+				<tr>
+					<td  class="summary-of-price">
+						<b>AMC Total</b>
+					</td>
+					<td class="summary-of-price">
+						<b>{{"{:,.2f}".format(doc.amc_selling_amount)}}</b>
+					</td>
+				</tr>	
+				
+			{% endif %}
+			<tr>
+				<td  class="summary-of-price">
+					<b>Total Price</b>
+				</td>
+				<td class="summary-of-price">
+					<b>{{ frappe.format_value(doc.total, currency=doc.currency)}}</b>
+				</td>
+			</tr>
+			{% if doc.get("discount_amount") %}
+				<tr>
+					<td  class="summary-of-price">
+						<b>(less)Discount</b>
+					</td>
+					<td class="summary-of-price">
+						<b>{{"{:,.2f}".format(doc.discount_amount)}}</b>
+					</td>
+				</tr>	
+				<tr>
+					<td  class="summary-of-price">
+						<b>(after discount)Total Price </b>
+					</td>
+					<td class="summary-of-price">
+						<b>{{"{:,.2f}".format(doc.net_total)}}</b>
+					</td>
+				</tr>
+			
+			{% endif %}
+			{% if doc.total_taxes_and_charges > 0.0 %}
+				{% if doc.get("duties") and doc.get("duties") > 0.0 %}
+					<tr>
+						<td class="summary-of-price">
+							<b>(add) Duties</b>
+						</td>
+						<td class="summary-of-price">
+							<b>{{"{:,.2f}".format(doc.duties)}}</b>
+						</td>
+					</tr>
+				{% endif %}
+				{% if doc.get("other_charges") %}
+					<tr>
+						<td  class="summary-of-price">
+							<b>(add) Other Charges</b>
+						</td>
+						<td class="summary-of-price">
+							<b>{{"{:,.2f}".format(doc.other_charges)}}</b>
+						</td>
+					</tr>
+				{% endif %}
+				{% if doc.get("vat") and doc.get("vat") > 0.0 %}
+					<tr>
+						<td  class="summary-of-price">
+							<b>(add) VAT</b>
+						</td>
+						<td class="summary-of-price">
+							<b>{{"{:,.2f}".format(doc.vat)}}</b>
+						</td>
+					</tr>
+				{% endif %}
+			{% endif %}
+			<tr>
+				<td class="summary-of-price"`>
+					<b>Grand Total</b>
+				</td>
+				<td class="summary-of-price">
+					<b>{{"{:,.2f}".format(doc.grand_total)}}</b>
+				</td>
+			</tr>
+		</tbody>
+	</table><br>
+{% endif %}

@@ -1,0 +1,49 @@
+<div class="col-lg-3" style="height:250px;">
+	<div class="panel panel-default bootcards-media"> 
+		<div class="panel-heading"> 
+			<h3 class="text-center">{{ __("Expected Closure Count") }}</h3>
+		</div>
+		<div class="panel-body">
+			<div style="float:right;font-size:30px">
+				<span style="font-size:30px">{{ data.cur_closure_total }}</span>
+				{% if(data.cur_closure_total >= data.prev_closure_total){ %}	
+					<i class="fa fa-arrow-circle-up" style="color:green"></i>
+				{% } %}
+				{% if(data.cur_closure_total < data.prev_closure_total){ %}	
+					<i class="fa fa-arrow-circle-down" style="color:red"></i>
+				{% } %}
+			</div>	
+		</div> 
+		<div class="panel-footer">
+			<p class="float-right">
+				{{ data.prev_label }} {{ data.sep }} {{data.prev_closure_total }}
+			</p>
+		</div>
+	</div>
+</div>
+<div class="col-lg-3" style="height:250px;">
+	<div class="panel panel-default bootcards-media"> 
+		<div class="panel-heading"> 
+			<h3 class="text-center">
+				{{ __("Expected Closure Value") }}
+				({{ __(frappe.sys_defaults.currency) }})
+			</h3>
+		</div>
+		<div class="panel-body">
+			<div style="float:right;font-size:30px">
+				<span style="font-size:30px">{{ data.cur_closure_value }}</span>
+				{% if(data.cur_closure_value >= data.prev_closure_value){ %}	
+					<i class="fa fa-arrow-circle-up" style="color:green"></i>
+				{% } %}
+				{% if(data.cur_closure_value < data.prev_closure_value){ %}	
+					<i class="fa fa-arrow-circle-down" style="color:red"></i>
+				{% } %}
+			</div>	
+		</div> 
+		<div class="panel-footer">
+			<p class="float-right">
+				<span>{{data.prev_label}}{{data.sep}}{{data.prev_closure_value}}</span>
+			</p>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,762 @@
+{% set valid_days = doc.validity_of_proposal %}
+{% set valid = valid_days %}
+{% set valid_date = frappe.utils.add_days(doc.transaction_date, valid) %}
+{% set j = 0 %}	
+
+<!--Header Footer Content-->
+{%- from "templates/print_formats/standard_macros.html" import add_header, render_field -%}
+  
+  <div id="header-html" class="hidden-pdf">
+     <br>
+     <br>	
+     <b>{{ add_header(0,1,doc,letter_head, no_letterhead)|replace("DRAFT", "") }}</b>	
+  </div>
+
+<!--Header Footer Ends Here-->
+
+<div class="row">
+<div class="col-xs-2">
+<div style="height: 25px;">
+	       <p style="text-align:right;"><b>Customer:</b></p>
+</div>
+	       <br>
+	       <p style="text-align:right;"><b>Contact:</b></p>  
+	       <br>
+	       <p style="text-align:right;"><b>Contact No:</b></p>  	
+	       <br>
+	       <p style="text-align:right;"><b>Email ID:</b></p> 
+	      
+	  </div>
+
+<div class="col-xs-4">
+<div style="height: 25px;">
+	       <p style="font-size:12px;text-align:left;"><b>{{doc.customer_name}}</b></p>
+</div>
+	       <br>
+	       <p style="text-align:left;">{{doc.contact_display}}</p>
+ 	       <br>
+	       <p style="text-align:left;">{{doc.contact_mobile}}</p>
+ 	       <br>
+	       <p style="text-align:left;">{{doc.contact_email}}</p>
+	       
+	    </div>
+<div class="col-xs-2">
+<div style="height: 25px;">
+		<p style="text-align:right;"><b>Date:</b></p>
+</div>
+		<br>
+		<p style="text-align:right;"><b>Sales Person:</b></p>
+		<br>
+		<p style="text-align:right;"><b>Project:</b></p> 	
+	        <br>
+		<p style="text-align:right;"><b>Solution:</b></p>
+		
+	  </div>
+<div class="col-xs-4">
+<div style="height: 25px;">
+		<p style="text-align:left;">{{frappe.utils.get_datetime(doc.transaction_date).strftime('%d-%b-%Y')}}</p>
+</div>
+		<br>
+	       <p style="text-align:left;">{{doc.tablix_rep_name}}</p>
+	       <br>
+	       <p style="text-align:left;">{{doc.project_site_name}}</p>
+ 	        <br>
+	       <p style="text-align:left;">{{doc.solution}}</p>
+				                  
+	  </div>
+</div>
+<br>
+<br> 
+
+{% set blank = [] %}
+{%- for d in doc.site_costing -%}
+{%- if d.site != "" and d.site != None  -%} 
+
+{% if blank.append("Yes") %}{% endif %}
+
+{%- endif -%}
+{%- endfor -%}
+
+{%- if blank[0] != "Yes" -%}
+
+<div class="col-xs-12">           
+<table class="table table-bordered">
+	<tbody>
+	   <thead>
+		<tr>
+			
+	    <th class="text-center"><b>Sr No.</b></th>
+            <th class="text-center"><b>Description</b></th>
+            <th class="text-right"><b>Qty</b></th>
+            <th class="text-right"><b>Unit Price ({{doc.currency}})</b></th>
+            <th class="text-right"><b>Total Price ({{doc.currency}})</b></th>
+                   
+		</tr>
+	     </thead>	
+		{%- for row in doc.items -%}
+		<ol type="I">
+                {% if row.section_title is defined and row.section_title != None %}
+			<tr>
+			<td style="text-align: center;"><li></li></td>
+			<td style="width: 60%; text-align: left;font-size:12px;"><b>{{row.section_title|upper}}</b></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			</tr>
+		{% endif %}  
+		<tr>	
+			<td style="width: 5%; text-align: center;">{{row.idx}}</td>
+            		<td style="width: 60%; text-align: left;">
+				<span style="float:left;">Model&nbsp;No:</span>
+				<span style="display:inline-block; margin-left:1%;"><b>{{row.item_code}}</b></span>
+				{% if row.oem_no is defined and row.oem_no != None %}
+				<span style="display:inline-block;margin-left:3%;">Part&nbsp;No:</span>
+				<span style="display:inline-block;margin-left:1%;"><b>{{row.oem_no}}</b>
+</span>
+				{% endif %}
+
+				{% if row.sub_title is defined and row.sub_title != None %}
+				<span style="display:inline-block;margin-left:3%;">Title:</span>
+				<span style="display:inline-block;margin-left:1%;"><b>{{row.sub_title}}</b>
+</span>
+				{% endif %}
+
+				{% if row.brand is defined and row.brand != None %}
+				<span style="display:inline-block;margin-left:3%;">Brand:</span>
+				<span style="display:inline-block;margin-left:1%;"><b>{{row.brand}}</b>
+</span>
+				{% endif %}
+				<br>
+				<span style="display:inline-block;width:375px;">{{row.description}}</span>
+			</td>
+			<td style="width: 12%; text-align: right;">
+				<span style="display:inline-block;float:left;font-size:10px;">{{row.uom}}</span>
+				<span style="display:inline-block;float:right;font-size:12px;">{{ row.qty|replace(".0", "") }}</span>
+			</td>
+			
+			<td style="width: 10%; text-align: right;"> {{"{:,.2f}".format(row.rate)}}
+			</td>
+			<td style="width: 13%; text-align: right;"> {{"{:,.2f}".format(row.amount)}}
+			</td>
+        </tr>
+                 
+		{% if row.page_break == True%}
+		hieee
+	</tbody>
+</table>
+</div>
+<div class="page-break"></div>
+<div class="col-xs-12">       
+<table class="table table-bordered" style="width:100%">
+	<tbody>
+	   <thead>
+		<tr>
+			
+	    <th class="text-center">Sr.</th>
+            <th class="text-left">Description</th>
+            <th class="text-right">Qty</th>
+	
+	    <th class="text-right">Unit Price</th>
+            <th class="text-right">Total Price</th>
+		</tr>
+	   </thead>
+        {%- endif -%} 
+
+	{%- endfor -%}
+	</ol>
+
+<tr>
+<td colspan="4" style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>Total Price</b></td>
+<td style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>{{"{:,.2f}".format(doc.total)}}</b></td>
+</tr>
+{% if doc.discount_ > 0 %}
+<tr>
+<td colspan="4" style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>(less) Discount</b></td>
+<td style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>{{"{:,.2f}".format(doc.discount_)}}</b></td>
+</tr>
+{% endif %}
+{% if doc.special_discount > 0 %}
+<tr>
+<td colspan="4" style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>(less) Special Discount</b></td>
+<td style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>{{"{:,.2f}".format(doc.special_discount)}}</b></td>
+</tr>
+{% endif %}
+{% if doc.project_discount > 0 %}
+<tr>
+<td colspan="4" style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>(less) Project Discount</b></td>
+<td style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>{{"{:,.2f}".format(doc.project_discount)}}</b></td>
+</tr>
+{% endif %}
+{% if doc.special_project_discount > 0 %}
+<tr>
+<td colspan="4" style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>(less) Special Project Discount</b></td>
+<td style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>{{"{:,.2f}".format(doc.special_project_discount)}}</b></td>
+</tr>
+{% endif %}
+{% if doc.total_taxes_and_charges > 0 %}
+<tr>
+<td colspan="4"  style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>(add) VAT</b></td>
+<td style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>{{"{:,.2f}".format(doc.total_taxes_and_charges)}}</b></td>
+</tr>
+{% endif %}
+{% if doc.duties > 0 %}
+<tr>
+<td  colspan="4"  style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>(add) Duties</b></td>
+<td style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>{{"{:,.2f}".format(doc.duties)}}</b></td>
+</tr>
+{% endif %}
+{% if doc.other_charges > 0 %}
+<tr>
+<td  colspan="4"  style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>(add) Other Charges</b></td>
+<td style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>{{"{:,.2f}".format(doc.other_charges)}}</b></td>
+</tr>
+{% endif %}
+<tr>
+<td colspan="4" style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>Grand Total</b></td>
+<td style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>{{"{:,.2f}".format(doc.grand_total)}}</b></td>
+</tr>
+{% if doc.change_currency_to != None and doc.change_currency_to != ""  %}
+<tr>
+<td colspan="4" style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:13px;"><b>Grand Total({{doc.change_currency_to}})</b></td>
+<td style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:13px;"><b>{{"{:,.2f}".format(doc.grand_total_new_currency)}}</b></td>
+</tr>
+{% endif %}
+   </tbody>
+</table>
+<p style="font-size:11px;text-align:right;"><b>Amount in Words:&nbsp;{{doc.in_words|replace(".", "")|replace(",", "")}}</b></p>
+{% if doc.change_currency_to != None and doc.change_currency_to != ""  %}
+<p style="font-size:12px;text-align:right;"><b>Amount in Words:&nbsp;{{doc.in_words_new_currency|replace(",", "")}}</b></p>
+{% endif %}
+</div>
+
+{% else %}
+<div class="col-xs-12"> 
+{% set total_val = [] %}
+{% set i = 1 %}
+{%- for d in doc.site_costing -%}
+{%- if d.idx == i -%} 
+
+{% if total_val.append(d.site) %}{% endif %}
+
+{% if total_val.append(d.total_sale) %}{% endif %}
+
+{%- endif -%} 
+{%- endfor -%}  
+  
+<p style="font-size:13px;text-align:left;text-indent:1em;"><b>{{i}})<u>Project Site: {{total_val[0]}}</u></b></p>  
+<table class="table table-bordered">
+	<tbody>
+	   <thead>
+		<tr>
+			
+	    <th class="text-center"><b>Sr No.</b></th>
+            <th class="text-center"><b>Item Description</b></th>
+            <th class="text-right"><b>Qty</b></th>
+	    
+            <th class="text-right"><b>Unit Price ({{doc.currency}})</b></th>
+            <th class="text-right"><b>Total Price ({{doc.currency}})</b></th>
+                   
+		</tr>
+	     </thead>
+
+{% set total_site = [] %}		
+{%- for row in doc.items -%}
+
+{% if row.site is defined and row.site != "" and row.site!= None and row.site != total_val[0]|string %}
+		
+<tr>
+<td colspan="4" style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>Site Total</b></td>
+<td style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>{{"{:,.2f}".format(total_val[1])}}</b></td>
+</tr>
+</tbody>
+</table> 
+
+{% set i = i + 1 %}
+{% set total_val = [] %}
+{%- for d in doc.site_costing -%}
+{%- if d.idx == i -%} 
+{% if total_val.append(d.site) %}{% endif %}
+
+{% if total_val.append(d.total_sale) %}{% endif %}
+
+{%- endif -%} 
+{%- endfor -%} 
+<br>
+<p style="font-size:13px;text-align:left;text-indent:1em;"><b>{{i}})<u>Project Site: {{total_val[0]}}</u></b></p>  
+<table class="table table-bordered" style="width:100%">
+	<tbody>
+	   <thead>
+		<tr>
+			
+	    <th class="text-center">Sr No.</th>
+            <th class="text-center">Item Description</th>
+            <th class="text-right">Qty</th>
+	    
+	    <th class="text-right">Unit Price ({{doc.currency}})</th>
+            <th class="text-right">Total Price ({{doc.currency}})</th>
+		</tr>
+	   </thead>
+{%- endif -%} 
+
+		<ol type="I">
+                {% if row.section_title is defined and row.section_title != None %}
+			<tr>
+			<td style="text-align: center;"><li></li></td>
+			<td style="width: 60%; text-align: left;font-size:12px;"><b>{{row.section_title|upper}}</b></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			</tr>
+		</ol>
+		{% endif %}  
+		<tr>
+{% set j = j+1 %}	
+			<td style="width: 3%; text-align: center;">{{row.idx}}</td>
+           		 <td style="width: 60%; text-align: left;">
+				<span style="float:left;">Model&nbsp;No:</span>
+				<span style="display:inline-block; margin-left:1%;"><b>{{row.item_code}}</b></span>
+				{% if row.oem_no is defined and row.oem_no != None %}
+				<span style="display:inline-block;margin-left:3%;">Part&nbsp;No:</span>
+				<span style="display:inline-block;margin-left:1%;"><b>{{row.oem_no}}</b>
+				</span>
+				{% endif %}
+
+				{% if row.sub_title is defined and row.sub_title != None %}
+				<span style="display:inline-block;margin-left:3%;">Title:</span>
+				<span style="display:inline-block;margin-left:1%;"><b>{{row.sub_title}}</b>
+</span>
+				{% endif %}
+
+				{% if row.brand is defined and row.brand != None %}
+				<span style="display:inline-block;margin-left:3%;">Brand:</span>
+				<span style="display:inline-block;margin-left:1%;"><b>{{row.brand}}</b>
+				</span>
+				{% endif %}
+				<br>{{row.description}}
+			</td>
+			<td style="width: 12%; text-align: right;">
+				<span style="display:inline-block;float:left;font-size:10px;">{{row.uom}}</span>
+				<span style="display:inline-block;font-size:12px;">{{ row.qty|replace(".0", "") }}</span>
+			</td>
+			
+			<td style="width: 12%; text-align: right;"> {{"{:,.2f}".format(row.rate)}}
+			</td>
+			<td style="width: 13%; text-align: right;"> {{"{:,.2f}".format(row.amount)}}
+			</td>
+        </tr>
+{%- endfor -%}
+{% set total_site = [] %}
+{%- for row in doc.items -%}
+ {%- if row.site != None and row.site != "" -%}
+   {% if total_site.append(row.site) %}{% endif %}
+ {%- endif -%}
+{%- endfor -%}
+
+{% set total_val = [] %}
+{%- for d in doc.site_costing -%}
+{% if d.site == total_site[-1] %}
+{% if total_val.append(d.site) %}{% endif %}
+{% if total_val.append(d.total_sale) %}{% endif %}
+{% endif %}
+{%- endfor -%}  
+
+{% if doc.include_total %}
+<tr>
+<td colspan="4" style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>Site Total</b></td>
+<td style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>{{"{:,.2f}".format(total_val[1])}}</b></td>
+</tr>          
+<tr>
+<td colspan="4" style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>Total</b></td>
+<td style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>{{"{:,.2f}".format(doc.total)}}</b></td>
+</tr>
+{% if doc.discount_ > 0 %}
+<tr>
+<td colspan="4" style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>(less) Discount</b></td>
+<td style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>{{"{:,.2f}".format(doc.discount_)}}</b></td>
+</tr>
+{% endif %}
+{% if doc.special_discount > 0 %}
+<tr>
+<td colspan="4" style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>(less) Special Discount</b></td>
+<td style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>{{"{:,.2f}".format(doc.special_discount)}}</b></td>
+</tr>
+{% endif %}
+{% if doc.project_discount > 0 %}
+<tr>
+<td colspan="4" style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>(less) Project Discount</b></td>
+<td style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>{{"{:,.2f}".format(doc.project_discount)}}</b></td>
+</tr>
+{% endif %}
+{% if doc.special_project_discount > 0 %}
+<tr>
+<td colspan="4" style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>(less) Special Project Discount</b></td>
+<td style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>{{"{:,.2f}".format(doc.special_project_discount)}}</b></td>
+</tr>
+{% endif %}
+{% if doc.total_taxes_and_charges > 0 %}
+<tr>
+<td colspan="4"  style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>(add) VAT</b></td>
+<td style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>{{"{:,.2f}".format(doc.total_taxes_and_charges)}}</b></td>
+</tr>
+{% endif %}
+{% if doc.duties > 0 %}
+<tr>
+<td  colspan="4"  style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>(add) Duties</b></td>
+<td style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>{{"{:,.2f}".format(doc.duties)}}</b></td>
+</tr>
+{% endif %}
+{% if doc.other_charges > 0 %}
+<tr>
+<td  colspan="4"  style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>(add) Other Charges</b></td>
+<td style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>{{"{:,.2f}".format(doc.other_charges)}}</b></td>
+</tr>
+{% endif %}
+<tr>
+<td colspan="4" style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>Grand Total</b></td>
+<td style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;"><b>{{"{:,.2f}".format(doc.grand_total)}}</b></td>
+</tr>
+{% if doc.change_currency_to != None and doc.change_currency_to != ""  %}
+<tr>
+<td colspan="4" style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:13px;"><b>Grand Total({{doc.change_currency_to}})</b></td>
+<td style="text-align:right;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:13px;"><b>{{"{:,.2f}".format(doc.grand_total_new_currency)}}</b></td>
+</tr>
+{% endif %}
+   </tbody>
+</table>
+<p style="font-size:11px;text-align:right;"><b>Amount in Words:&nbsp;{{doc.in_words|replace(".", "")|replace(",", "")}}</b></p>
+{% if doc.change_currency_to != None and doc.change_currency_to != ""  %}
+<p style="font-size:12px;text-align:right;"><b>Amount in Words:&nbsp;{{doc.in_words_new_currency|replace(",", "")}}</b></p>
+{% endif %}
+</div>
+{% endif %}
+{% endif %}
+<br>
+<br>
+<br>
+<div class="col-xs-12">
+<br>
+<p id="toc" style="font-size:12px;text-align:left;"><b>Notes:</b></p>
+<br>
+{% if doc.notes %}
+<p style="font-size:11px;text-align:left;font-family: Helvetica Bold;">
+ {{doc.notes}}
+{% else %}
+ None
+</p>
+{% endif %}
+<br>
+<br>
+<p style="font-size:12px;"><b>Terms and Conditions:</b></p>
+   {%- for row in doc.terms_checklist -%}
+		{% if row.terms == "Scope of Work" and row.check == 1%}
+		<p style="text-align: justify;font-size: 11px;"><b>1. Scope of work</b>
+</p>
+ <ul style="margin-left: -24px;">
+				<li style="font-size: 8px;"> <p style="text-align: justify;"><span style="font-size: 11px;"> The scope of work specified in this offer will be fixed and any additions and /or revision to the scope will be considered only as variation and will be at additional cost.
+				</span></p></li>
+				<li style="font-size: 8px;"> <p style="text-align: justify;"><span style="font-size: 11px;">The proposal was prepared based on tender specification received (attachments are stamped by Tablix), so that any change in specification and/or drawings may result in corresponding price variation or change order.
+				</span></p></li>
+				{% if doc.scope_of_work %}
+				{% set list1 = doc.scope_of_work.split('.') %}
+				{%- for data in list1 -%}
+				    {% if data != '' %}
+				    	<li style="font-size: 8px;"> <p style="text-align: justify;"><span style="font-size: 11px;">{{data}}</span></p></li>
+				    {% endif %}
+				{%- endfor -%}
+				{% endif %}
+			   </ul>
+
+{% elif row.terms == "Price" and row.check == 1%}
+<p style="text-align: justify;font-size: 11px;"><b>2. Price</b>
+</p>
+
+<ul style="margin-left: -24px;">
+				<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;"> Prices are quoted in {{doc.currency}}. 
+				</span></p></li>
+				<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;">Prices specified herein are inclusive of Freight cost (based on ocean freight), transit insurance, cost for customs clearance and charges for the delivery of the equipment until customers site in Dubai.
+				</span></p></li>
+				<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;">The prices will be excluding any taxes and levies imposed on the goods and/or services other than those explicitly specified herein.
+				</span></p></li>
+				<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;">Prices mentioned are for the vendors specified in the BOQ.  
+				</span></p></li>
+				<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;">Prices mentioned are excluding any form of bank charges like Advance Guarantee, Performance bond, Bid bond. Bank charges will be applied additional over & above the quoted final price. 
+				</span></p></li>
+			   </ul>
+
+{% elif row.terms == "Payment Terms" and row.check == 1%}
+<p style="text-align: justify;font-size: 11px;"><b>5. Billing Terms</b>
+</p>
+    {% if doc.payment_term_table  %}
+			    <ul style="margin-left: -24px;">
+				{%- for row in doc.payment_term_table -%}
+				<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;">{{row.value}} {{row.payment_term_description}}</span></p></li>
+				{%- endfor -%}
+			{% endif %}
+			   </ul>
+
+    <p style="text-align: justify;font-size: 11px;"><b>6. Payment Terms</b>
+        <br>
+    </p>
+	<ul style="margin-left: -24px;">
+	   <li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;">All Advance payment are NET 0 day credit from the date of invoice.</span></p></li>
+	   <li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;">All payment milestone are NET {{doc.payment_days}} days credit from date of invoice.</span></p></li>
+	 </ul>
+
+{% elif row.terms == "Validity" and row.check == 1%}
+		<p style="text-align: justify;font-size: 11px;"><b>3. Validity</b>
+    </p>
+     <ul style="margin-left: -24px;">
+	<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;">{{doc.validity_of_proposal}} days from date of tender closing. This offer is valid only if the offered scope is accepted/ordered in full, unless agreed otherwise by both parties.
+	</span></p></li>
+	<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;">In the event of partial order, Tablix reserves the right to adjust the mentioned prices.
+				</span></p></li>
+			   </ul>
+   
+
+{% elif row.terms == "Certification" and row.check == 1%}
+	  	<p style="text-align: justify;font-size: 11px;"><b>4. Certification</b>
+        </p>
+		 <ul style="margin-left: -24px;">
+			<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;">All Invoices to be certified & confirmed within 2 working days.</span></p></li>
+			 <li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;">All submitted project/work related documents to be certified within 3 working days. </span></p></li>
+		</ul>
+		
+{% elif row.terms == "Mobilization Period" and row.check == 1%}
+	  <p style="text-align: justify;font-size: 11px;"><b>7. Mobilization Period</b>
+        </p>
+      <ul style="margin-left: -24px;">
+	<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;">{{doc.mobilization_period}} days from the date of receipt of the LOA/Purchase Order/Contract signature which ever occur earlier.
+	 </span></p></li>
+	<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;"> Mobilization is subject to site availability & conditions. </span></p></li>
+     </ul>      
+     
+{% elif row.terms == "Material Delivery Period" and row.check == 1%}
+		<p style="text-align: justify;font-size: 11px;"><b>8. Material Delivery period</b>
+        </p>
+        
+      <ul style="margin-left: -24px;">
+				<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;">{{doc.material_delivery_period}} days from the date of receipt of the LOA/ Purchase Order/ Contract signature/ Consultant’s approval.
+				</span></p></li>
+				<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;">In case of non-availability/shipment delay/vendor manufacturing delay of quoted brand/product/specification ; equivalent or higher specifications will be offered by Tablix to adhere the project timelines. 
+				</span></p></li>
+			   </ul>
+        
+   {% elif row.terms == "Completion Period" and row.check == 1%}
+	<p style="text-align: justify;font-size: 11px;"><b>9. Completion Period</b>
+        </p>
+            <ul style="margin-left: -24px;">
+		<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;">Tablix will perform the scope of work in accordance with the Programme/ project plan agreed between the parties which will be dependent on the Responsibility Matrix specified here above.
+		</span></p></li>
+		<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;">Tablix will not be responsible for any delays other than those solely attributable to Tablix. However, any delays occurred which are beyond the reasonable control of Tablix including Force Majeure will also be excluded.
+		</span></p></li>
+	    </ul>
+
+{% elif row.terms == "Delivery Location" and row.check == 1%}
+		<p style="text-align: justify;font-size: 11px;"><b>10. Delivery Location</b>
+        </p>
+        <ul style="margin-left: -24px;">
+	<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;">Customers Site or such other place in UAE specifically requested by the Client prior to the award of the Contract.
+	</span></p></li>
+	</ul>
+      
+{% elif row.terms == "Title and Risk" and row.check == 1 %}
+<p style="text-align: justify;font-size: 11px;"><b>11. Title and Risk</b>
+        </p>
+	<ul style="margin-left: -24px;">
+		<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;">The Risk of loss and/or damages to the Equipment, goods or materials delivered will be transferred to the Client/Customer upon the delivery of the same at the Customer/clients site or the facility advised by the Client.
+		</span></p></li>
+		<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;">Notwithstanding the delivery of the Equipment/goods/ materials to the Client/Customer, the full and absolute ownership and Tile in the equipment/goods/materials supplied by Tablix will not be transferred until the payments are made in full and in cleared funds.
+		</span></p></li>
+	 </ul>
+  
+		
+{% elif row.terms == "Incoterm" and row.check == 1%}
+		 <p style="text-align: justify;font-size: 11px;"><b>12. Incoterm</b>
+        </p>
+	 	<ul style="margin-left: -24px;">
+		<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;">The System is provided DDP (Delivery Duty paid) Dubai according to Incoterm 2012.
+		</span></p></li>
+	 </ul>				
+
+{% elif row.terms == "Warranty" and row.check == 1%}
+		<p style="text-align: justify;font-size: 11px;"><b>13. Warranty</b>
+        </p>
+	<ul style="margin-left: -24px;">
+			<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;">
+			Warranty of materials will start from the date of delivery to customer site.
+			</span></p></li>
+			<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;">
+			Warranty will be in accordance with the specifications.
+			</span></p></li>
+			<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;">
+			Warranty will cover against all defects/failures arising solely due to
+any design defect or faulty material or caused due to defects in the
+workmanship which appear therein when used in proper manner as
+specified in the operational manuals.
+			</span></p></li>
+			<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;">
+			Warranty coverage will not apply with respect to faults sustained
+by normal wear and tear, damages arising as a consequence of any
+negligence, improper handling and/or improper storage or due to
+operation other than for the intended purpose or any other cause
+beyond the range of normal usage for the Equipment.
+			</span></p></li>
+			<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;"> 
+			Defects Liability Period (DLP) of {{doc.dlp_period}} months. The material delivered & work executed will be guaranteed for the performance, quality of material, workmanship for the period from the date of handing over.
+			</span></p></li>
+		    </ul>			
+		
+{% elif row.terms == "Ownership of the Software and documentation" and row.check == 1%}
+<p style="text-align: justify;font-size: 11px;"><b>14. Ownership of the Software and documentation</b>
+        </p>
+        
+	<ul style="margin-left: -24px;">
+			<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;"> 
+			Ownership of the Software and Documentation provided as a part of the scope of work will always remain vested with us and/or the third party who authorized us to sublicense its software, regardless of whether it was or was not prepared specifically for the use of the Client/Customer.
+			</span></p></li>
+			<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;"> 
+			The Client/Customer will in no event reproduce, reverse engineer or modify the Software unless and to the extent permitted by mandatory law applicable to these General Condition of Sale.
+		</span></p></li>
+			<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;"> 
+			The Client will use the software only for its own use and for the intended purpose and will not permit or make available the software in any form, to any third party without prior written consent.
+			</span></p></li>
+			</ul>			
+
+
+{% elif row.terms == "Other Conditions" and row.check == 1 %}
+		<p style="text-align: justify;font-size: 11px;"><b>15. Other Conditions</b>
+        </p>
+	<ul style="margin-left: -24px;">
+	      <li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;"> 
+		Our proposal is subject to Tablix's standard terms and conditions of contract unless explicitly agreed in writing by the parties.
+	      </span></p></li>
+	</ul>		
+
+{%- elif row.terms == "Inclusions" and row.check == 1 -%}
+		<p class="MsoNormal" style="text-align: justify;font-size: 11px;"><b>16. Inclusions</b></p>
+        </p>
+        <p class="MsoNormal" style="text-align: justify;font-size: 11px;">
+	{% if doc.inclusions is defined and doc.inclusions != "" and doc.inclusions is not none %}
+	 {{doc.inclusions}}
+	{% else %}
+	-
+	{% endif %}	
+       </p>
+
+
+{%- elif row.terms == "Exclusions" and row.check == 1  -%}
+		<p class="MsoNormal" style="text-align: justify;font-size: 11px;"><b>17. Exclusions, Our proposal DOES NOT include supply and services for the following</b></p>
+        
+	 <ul style="margin-left: -24px;">
+			<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;"> 
+			All site office with facilities for project team.			
+			</span></p></li>
+			<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;"> 
+			Store not in the scope.		
+			</span></p></li>
+			<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;"> 
+			Factory Acceptance Test are excluded from our offer. Only onsite POC knowledge transfer and hands on training are included in our offer.		
+			</span></p></li>
+			<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;"> 
+			Any upgrade might be required for the software of existing operational systems.		
+			</span></p></li>
+			<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;"> 
+			Any additional equipment required after the detailed design stage will be considered as variation.
+			</span></p></li>
+			<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;"> 
+			Warranty/Maintenance of existing building elements, items, material, Equipment and operating systems.
+			</span></p></li>
+			<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;"> 
+			Existing conditions information, As built, operation manuals, and specification. (To be provided by Client).
+			</span></p></li>
+			<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;"> 
+			Facility existing condition durability, capacity, functionality, existing defects & deficiencies and any related implications are considered out of our responsibility.
+			</span></p></li>
+			<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;"> 
+			Implications due to lack of availability of End of Life (EOL) Architectural/Interiors items & material.
+			</span></p></li>
+			<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;"> 
+			Architectural/Interiors Design & Re-design.
+			</span></p></li>
+			<li style="font-size: 8px;"><p style="text-align: justify;"><span style="font-size: 11px;"> 
+			Changes to existing construction: describe anticipated results. Include changes to structural elements and operating components as well as changes in building's appearance and other significant visual elements.
+			</span></p></li>
+		</ul>
+			{% if doc.exclusions is defined and doc.exclusions != "" and doc.exclusions is not none %}
+			{{doc.exclusions}}
+			{% endif %}	
+
+	{%- endif -%}
+	{%- endfor -%}
+</div>
+
+{% if doc.print_to_next_page == True %}
+.
+<div class="page-break"></div>
+{% endif %}
+
+<div class="col-xs-12">
+<br>
+<p style="text-align:left;font-size:12px;"><b>Proposal Acceptance:</b></p>
+<br>
+<br>
+<table style="width:100%;border-color:#DCDCDC;">
+    <tbody>
+<tr>
+<td style="text-align:left;border-top-style:none;border-right:1px solid #DCDCDC;border-bottom-style:none;border-left-style:none;font-size:11px;width:50%">SIGNED by</td>
+<td style="text-align:left;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;width:50%">SIGNED by</td>
+</tr>
+<tr>
+<td style="text-align:left;border-top-style:none;border-right:1px solid #DCDCDC;border-bottom-style:none;border-left-style:none;font-size:11px;width:50%">Duly authorized for and on behalf of</td>
+<td style="text-align:left;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;width:50%">Duly authorized for and on behalf of</td>
+</tr>
+<tr>
+<td style="text-align:left;border-top-style:none;border-right:1px solid #DCDCDC;border-bottom-style:none;border-left-style:none;font-size:11px;width:50%"><b>{{doc.customer_name}}</b></td>
+<td style="text-align:left;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;width:50%"><b>Tablix Technology LLC</b></td>
+</tr>
+<tr>
+<td style="text-align:left;border-top-style:none;border-right:1px solid #DCDCDC;border-bottom-style:none;border-left-style:none;font-size:11px;width:50%">Name:</td>
+<td style="text-align:left;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;width:50%">Name:</td>
+</tr>
+<tr>
+</tr>
+<tr>
+<td style="text-align:left;border-top-style:none;border-right:1px solid #DCDCDC;border-bottom-style:none;border-left-style:none;font-size:11px;width:50%">Signature:......................</td>
+<td style="text-align:left;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;width:50%">Signature:......................</td>
+</tr>
+<tr>
+</tr>
+<tr>
+<td style="text-align:left;border-top-style:none;border-right:1px solid #DCDCDC;border-bottom-style:none;border-left-style:none;font-size:11px;width:50%">Stamp:.................</td>
+<td style="text-align:left;border-top-style:none;border-right-style:none;border-bottom-style:none;border-left-style:none;font-size:11px;width:50%">Stamp:.................</td>
+</tr>
+    </tbody>
+</table>
+<br>
+<br>
+
+</div>
+
+<div style="text-align:center;">
+<br>
+<br>
+
+     				 Thank You for your business!<br>
+	Your Sales Contact: <b>{{doc.tablix_rep_name}}</b>&nbsp;&nbsp;Contact No: <b>{{doc.phone_number}}</b>&nbsp;&nbsp;E-Mail:<b>{{doc.tablix_rep}}</b>
+                <hr>  	
+<span style="line-height: 9px;">THIS IS A COMPUTER GENERATED DOCUMENT & REQUIRE NO SIGNATURE</span>	
+</div>
+
+
+  <div id="footer-html" class="visible-pdf">
+		{% if not no_letterhead and footer %}
+		<div class="letter-head-footer">
+			{{ footer }}
+		</div>
+		{% endif %}
+		<p class="text-right small page-number visible-pdf">
+			{{ _("Page {0} of {1}").format('<span class="page"></span>', '<span class="topage"></span>') }}
+		</p>
+   </div>
+
+

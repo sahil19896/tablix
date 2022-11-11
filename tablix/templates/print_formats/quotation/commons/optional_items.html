@@ -1,0 +1,84 @@
+{% if doc.get("optional_items") %}
+	<h3 class="sectiontwo sectiontwo-title">Optional Items</h3>
+	<table class="table table-bordered">
+		<tbody>
+			<thead>
+				<tr>
+					<th class="text-center"><b>Sr No.</b></th>
+					<th class="text-center"><b>Item Description</b></th>
+					<th class="text-right"><b>Qty</b></th>
+					{% if proposal_type == "Commercial"  %}
+						{% if doc.get("print_without_price") %}
+							<th class="text-right">
+								<b>{{doc.currency}}</b>
+							</th>
+							<th class="text-right">
+								<b>{{doc.currency}}</b>
+							</th>
+						{% else %}
+							<th class="text-right">
+								<b>Unit Price ({{doc.currency}})</b>
+							</th>
+							<th class="text-right">
+								<b>Total Price ({{doc.currency}})</b>
+							</th>
+						{% endif %}
+					{% endif %}
+
+				</tr>
+			<thead>
+			{% for item in doc.get("optional_items") %}
+				<tr>
+					<td style="width: 14%; text-align: center;">
+						{{item.idx}}
+					</td>
+					<td style="width: 70%; text-align: left;">
+						{% if not doc.get("print_without_model") %}
+							<span>Model&nbsp;No:&nbsp;<b>{{item.get("item_code")}}</b></span><br>
+							{% if item.get("oem_no") %}
+								<span>Part&nbsp;No:&nbsp;<b>{{item.get("oem_no")}}</b></span>
+								<br>
+							{% endif %}
+						{% endif %}
+						{% if item.get("brand") %}
+							<span>Brand: &nbsp;<b>{{item.get("brand")}}</b></span><br>
+						{% endif %}
+						{{ item.get("description")}}
+					</td>
+					<td style="width: 25%; text-align: right;">
+						<span style="float:left;font-size:10px;">
+							{{item.get("stock_uom")}}
+						</span>
+						<span style="font-size:12px;">
+							{{ item.get("qty")|replace(".0", "") }}
+						</span>
+					</td>
+					{% if proposal_type == "Commercial" %}
+						{% if doc.get("print_without_price") %}
+							<td style="width: 12%; text-align: right;">
+								-
+							</td>
+							<td style="width: 13%; text-align: right;">
+								-
+							</td>
+						{% else %}
+							<td style="width: 12%; text-align: right;">
+								{{"{:,.2f}".format(item.get("selling_amount"))}}
+							</td>
+							<td style="width: 13%; text-align: right;">
+								{{"{:,.2f}".format(item.get("total_selling_amount"))}}
+							</td>
+						{% endif %}
+					{% endif %}
+				</tr>
+			{% endfor %}
+			<tr>
+				{% if proposal_type == "Commercial" %}
+					<td colspan="4" class="grand-total">Total Price</td>	
+					<td class="grand-total">{{"{:,.2f}".format(doc.get("optional_item_selling_amount"))}}</td>
+				{% endif %}
+			</tr>
+		</tbody>	
+	</table>
+{% endif %}
+

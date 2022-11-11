@@ -1,0 +1,8 @@
+execute:print("Tablix App Installed")
+tablix.patches.v1.print_app_info
+tablix.patches.v1.remove_duplicate_custom_fields
+tablix.patches.v1.migrate_status
+tablix.patches.v1.rename_label
+tablix.patches.v1.migrate_custom_fields_data
+tablix.patches.v1.delete_desktop_icon
+tablix.patches.v1.delete_data

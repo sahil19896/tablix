@@ -1,0 +1,44 @@
+<style>
+	{% include "templates/print_formats/quotation/proposal.css" %}
+
+</style>
+{% set boq_profile = frappe.get_doc("BOQ Profile", doc.get("boq_profile")) %}
+{% set flags = namespace() %}
+{% set flags.is_amc = True %}
+{% set bdm = frappe.get_doc("BDM", doc.get("bdm")) %}
+{% set table_of_contents =  doc.get("amc_commercial_index_items") %}
+{% set account_manager = frappe.get_doc("Account Manager", doc.get("account_manager")) %}
+{% set valid_days = doc.get("validity_of_proposal") %}
+{% set valid = valid_days %}
+{% set valid_date = frappe.utils.add_days(doc.transaction_date, valid) %}
+
+<!--Header Footer Content-->
+{% include "templates/print_formats/quotation/proposal_headers.html" %}
+<!--Header Footer Ends Here-->
+<!-- FRONT PAGE !-->
+	{% include "templates/print_formats/quotation/commons/front_page.html" %}
+<!-- END OF FRONT PAGE !-->
+<p style="page-break-after: always;"></p>
+<!-- TABLE OF CONTENTS !-->
+	<div class="indented">
+		{% include "templates/print_formats/quotation/commons/table_of_contents.html" %}
+	</div>
+<!-- END OF TABLE OF CONTENT !-->
+<p style="page-break-after: always;"></p>
+<h3 class="reset-section"></h3>
+<div class= "indented" id="content">
+	<!--INTRODUCTION  --!>
+	{% include "templates/print_formats/quotation/commons/amc/introduction.html" %}
+	<p style="page-break-after:always;"></p>
+	<!-- SOLUTION DESCRIPTION !-->
+	{% include "templates/print_formats/quotation/commons/amc/solution_description.html" %}
+	<p style="page-break-after:always;"></p>	
+	<!-- PRICING AND TERMS !-->
+	{% include "templates/print_formats/quotation/commons/amc/amc_pricing_and_terms.html" %}
+	<p style="page-break-after:always;"></p>	
+	<!-- PRICE INCLUSIONS AND EXCLUSION --!>
+	{% include "templates/print_formats/quotation/commons/amc/prices_inclusions_and_exclusions.html" %}
+	<!-- PROPOSAL ACEEPTANCE --!>
+	<p style="page-break-after:always;"></p>
+	{% include "templates/print_formats/quotation/commons/proposal_acceptance.html" %}
+</div>

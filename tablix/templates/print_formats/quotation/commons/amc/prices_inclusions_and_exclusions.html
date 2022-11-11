@@ -1,0 +1,45 @@
+<div class="row">
+	<div class="col-xs-12">
+		<h3 class="sectionone sectionon-title"><b>Price Inclusion & Exclusion</b></h3><hr>
+		<div class="col-xs-12">
+			{% if boq_profile.get("inclusion") %}
+				<h3 class="sectiontwo sectiontwo-title">
+					<b>Solution Inclusions</b>
+				</h3>
+				<ul>
+					<li>
+						{{boq_profile.get("inclusion")}}
+					</li>
+				</ul>
+			{% endif %}
+			<h3 class="sectiontwo sectiontwo-title">
+				<b>Solution Exclusions</b>
+			</h3>
+			<ul>
+				<li>Tablix's obligation to provide maintenance service here under is contingent upon the proper use of all equipment and does not cover equipment which has been modified without CONTRACTOR's approval or which has been subjected to unusual physical or electrical stress.
+				</li>
+				<li>Tablix  shall not be obligated to furnish maintenance service, under this proposal in the following conditions:
+				</li>
+				<li>If adjustment, repair or parts replacement is required because of accident, neglect, misuse, transportation or cause other than normal working use. If the equipment is maintained, modified or repaired, or if attempts to repair or service the equipment are made, by other than tablix's personnel, without the prior approval of tablix.
+				</li>
+				<li>If the equipment is either removed from its initial installation location or is reinstalled without the prior approval of tablix.
+				</li>
+				<li>All Kinds of Software & Hardware Updates/Upgrades</li>
+				<li>If the service is required as a result of the causes stated above, such repair would be made at a mutually agreed rate depending upon the time and nature of services to be provided.
+				</li>
+				<li>Tablix's obligation to provide software upgrades (if not provided free from the existing system manufacturer/Product supplier). Either the client need to have a support contract with the manufacturer, which can authorize contractor to extract support and free upgrades from the equipment manufacturer.
+				</li>
+				<li>Existing conditions information, As built, operation manuals, and specification. (To be provided by Client).
+				</li>
+				<li>Implications due to lack of availability of End of Life (EOL) Architectural/Interiors items & material.
+				</li>
+				<li>Architectural/Interiors Design & Re-design.</li>
+				<li>Changes to existing construction: describe anticipated results. Include changes to structural elements and operating components as well as changes in building's appearance and other significant visual elements.
+				</li>
+				{% if boq_profile.get("exclusion") %}
+					<li>{{boq_profile.get("exclusion")}}</li>
+				{% endif %}
+			</ul>
+		</div>
+	</div>
+</div>

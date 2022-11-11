@@ -1,0 +1,171 @@
+<style>
+	{% include "templates/print_formats/quotation/proposal.css" %}
+</style>
+
+<!--Header Footer Content-->
+{% include "templates/print_formats/commons/header.html" %}
+{% include "templates/print_formats/commons/footer.html" %}
+<!--Header Footer Ends Here-->
+<div class="row">
+	<div class="single-page-info">
+		<div class="col-xs-6">
+			<div class="col-xs-5">
+				<p><b>Customer:</b></p>
+			</div>
+			<div class="col-xs-7">
+				<p><b>{{doc.customer}}</b></p>
+			</div>
+			{% if flags.with_tax == True %}
+				<div class="col-xs-5">
+					<p><b>TRN:</b></p>
+				</div>
+				<div class="col-xs-7">
+					<p><b>{{doc.tax_id}}</b></p>
+				</div>
+			{% endif %}
+			<div class="col-xs-5">
+				<p><b>Bill to Address:</b></p>
+			</div>
+			<div class="col-xs-7">
+				{% if doc.address_display %}
+					<p>{{doc.address_display}}</p>
+				{% else %}
+					<p>None</p>
+				{% endif %}
+			</div>
+			{% if doc.get("po_no") %}
+				<div class="col-xs-5">
+					<p><b>Customer Order:</b></p>
+				</div>
+				<div class="col-xs-7">
+					<p>{{doc.po_no}}</p>
+				</div>
+			{% endif %}
+		</div>
+	 	<div class="col-xs-6">
+                	<div class="col-xs-5">
+                        	<p><b>Date:</b></p>
+                	</div>
+                	<div class="col-xs-7">
+                        	<p>
+					{{frappe.utils.get_datetime(doc.transaction_date).strftime('%d-%b-%Y')}}
+				</p>
+                	</div>	
+			<div class="col-xs-5">
+				<p><b>Due Date:</b></p>
+			</div>
+			<div class="col-xs-7">
+				<p>
+					{{ frappe.utils.get_datetime(doc.due_date).strftime('%d-%b-%Y') }}<br>
+						
+				</p>
+			</div>
+			<div class="col-xs-5">
+				<p><b>Ship to Address:</b></p>
+			</div>
+			<div class="col-xs-7">
+				<p>{{doc.shipping_address}}</p>
+			</div>
+		</div>
+		
+	</div>
+</div><br></br>
+{% include "templates/print_formats/commons/items.html" %}
+<div class="row">
+	<div class="col-xs-12">
+		{% if doc.notice_of_assignment == False %}
+			<table class="table table-bordered" style="width:100%">
+				<tr>
+					<td style="text-align:left;" colspan="2">
+						<p><b>Payment Details:</b></p>
+					</td>
+					<td style="text-align:left;font-size:10px;">
+						<p>
+							<b>Tablix Technology LLC &nbsp;|&nbsp;
+							{{doc.bank_name}}-{{doc.ac_details}}
+							&nbsp;|&nbsp;IBAN No.{{doc.iban}}&nbsp;|&nbsp;</b><br>
+							{{doc.address}}<b>&nbsp;|&nbsp;</b>
+							&nbsp;Swift Code: {{doc.swift_code}}<br>
+						</p>
+        				</td>
+      				</tr>
+    			</table>
+		{% else %}
+			<table class="table table-bordered" style="width:100%">
+				<tr><td><p style="font-size:12px;">
+					<b>Notice of Assignment & Payment Details:</b></p>
+					{% if doc.bank_name == "Mashreq Bank PSC" %}
+						<p style="font-size:10px;text-align:justify;">
+							The right to demand and receive payment under 
+							this invoice has been irrevocably and 
+							uncondionally assignned by the issuer of 
+							this invoice to {{doc.bank_name}}. 
+							Your payment MUST therefore be sent to the 
+							account of {{doc.bank_name}} as below/<br>
+							Cheques should be made payable to the order 
+							of:<br><br>
+							<b>Tablix Technology LLC &nbsp;|&nbsp;
+							{{doc.bank_name}}-
+							{{doc.ac_details}}&nbsp;|&nbsp;
+							IBAN No.{{doc.iban}}&nbsp;|&nbsp;
+							</b><br>{{doc.address}}<b>&nbsp;|&nbsp;</b>
+							&nbsp;
+							Swift Code: {{doc.swift_code}}<br>
+							For any clarification please contact 
+							{{doc.bank_name}} 
+							( Factoring Services Unit) at 
+							{{doc.bank_phone1}} or 4246744.<br>
+						</p>
+ 
+					{% elif doc.bank_name == "Standard Chartered Bank" %}
+						<p style="font-size:10px;text-align:justify;">
+							The right to demand and receive payment 
+							under this invoice has been irrevocably and 
+							unconditionally assigned by the issuer 
+							of this invoice to Standard Chartered 
+							Bank Dubai UAE. Your payment 
+							MUST therefore be sent to our account 
+							in SCB A/c. No.{{doc.ac_details}} 
+							AED IBAN No.{{doc.iban}}.<br>
+							Cheques should be made payable to the 
+							order of:<br><br>
+							<b>Tablix Technology LLC &nbsp;|&nbsp;
+							{{doc.bank_name}}-{{doc.ac_details}}&nbsp;|
+							&nbsp;IBAN No.{{doc.iban}}&nbsp;|&nbsp;
+							</b><br>{{doc.address}}<b>&nbsp;|&nbsp;
+							</b>&nbsp;Swift Code: 
+							{{doc.swift_code}}<br>
+							You are therefore requiested to act 
+							on this irrevocable authority unless 
+							otherwise advised in writing by Standard 
+							Chartered Bank. Apart from the transfer of the
+							 receivables and payment instructions, 
+							our business relationship remains the same.<br>
+						</p>
+
+					{% else %}
+						<p>
+							<b>Tablix Technology LLC &nbsp;|&nbsp;
+								{{doc.bank_name}}-
+							{{doc.ac_details}}&nbsp;|&nbsp;IBAN No.
+							{{doc.iban}}&nbsp;|&nbsp;
+							</b><br>{{doc.address}}<b>&nbsp;|&nbsp;</b>
+							&nbsp;Swift Code: 
+							{{doc.swift_code}}<br>
+						</p>
+					{% endif %}
+				</td></tr>
+    			</table>
+		{% endif %}
+	</div>
+</div>
+{% include "templates/print_formats/terms_and_conditions/invoice.html" %}
+<div style="text-align:center;"><br><br>
+     	 Thank You for your business!<br>
+	Your Sales Contact: <b>{{doc.tablix_rep_name}}</b>
+	&nbsp;&nbsp;Contact No: <b>{{doc.tablix_rep_phone}}</b>
+	&nbsp;&nbsp;E-Mail:<b>{{doc.tablix_rep}}</b><hr>  	
+</div>
+
+
+

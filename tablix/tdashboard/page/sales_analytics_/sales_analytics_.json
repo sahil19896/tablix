@@ -1,0 +1,23 @@
+{
+ "content": null, 
+ "creation": "2018-05-31 09:57:50.314795", 
+ "docstatus": 0, 
+ "doctype": "Page", 
+ "idx": 0, 
+ "modified": "2018-05-31 09:57:50.314795", 
+ "modified_by": "Administrator", 
+ "module": "TDashboard", 
+ "name": "sales-analytics-", 
+ "owner": "Administrator", 
+ "page_name": "Sales Analytics ", 
+ "roles": [
+  {
+   "role": "System Manager"
+  }
+ ], 
+ "script": null, 
+ "standard": "Yes", 
+ "style": null, 
+ "system_page": 1, 
+ "title": "Sales Analytics"
+}

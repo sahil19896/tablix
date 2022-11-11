@@ -1,0 +1,27 @@
+
+<div style="font-family: Times New Roman, Times, serif;" class="row">
+
+	<div class="form-dashboard-section purchase-dashboard">
+		<strong>{{ __("Purchase Detail") }}</strong>
+		<div class="row purchase-detail">
+			{% if purchase_info %}
+				{% include ./purchase_dashboard.html %}	
+			{% endif %}
+		</div>
+	</div>
+
+	<div class="form-dashboard-section invoice-dashboard">
+		<strong>{{ __("Invoice  Detail") }}</strong>
+		<div class="row invoice-detail">
+			{% if invoice_info %}
+				{% include ./invoice_dashboard.html %}	
+			{% endif %}
+		</div>
+	</div>
+</div>
+<style>
+
+.margin-left-15{
+	margin-left: 15px !important;
+}
+</style>

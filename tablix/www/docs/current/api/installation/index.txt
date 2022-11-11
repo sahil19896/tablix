@@ -1,0 +1,3 @@
+tablix.installation.after_install
+tablix.installation.before_install
+tablix.installation

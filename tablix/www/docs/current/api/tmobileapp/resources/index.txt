@@ -1,0 +1,6 @@
+tablix.tmobileapp.resources.clock_in_clock_out
+tablix.tmobileapp.resources.project
+tablix.tmobileapp.resources
+tablix.tmobileapp.resources.utils
+tablix.tmobileapp.resources.timesheet
+tablix.tmobileapp.resources.base
